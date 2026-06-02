@@ -1,0 +1,42 @@
+#!/bin/sh
+# configure - detect OpenSSL and write src/Makevars
+# Fallback order: pkg-config -> MacPorts -> Homebrew (ARM) -> Homebrew (Intel) -> system
+
+OPENSSL_CFLAGS=""
+OPENSSL_LIBS=""
+
+# 1. Try pkg-config
+if command -v pkg-config > /dev/null 2>&1; then
+  OPENSSL_CFLAGS=$(pkg-config --cflags openssl 2>/dev/null)
+  OPENSSL_LIBS=$(pkg-config --libs openssl 2>/dev/null)
+fi
+
+# 2. Fallbacks when pkg-config found nothing
+if [ -z "$OPENSSL_CFLAGS" ]; then
+  if [ -f /opt/local/libexec/openssl3/include/openssl/evp.h ]; then
+    # MacPorts
+    OPENSSL_CFLAGS="-I/opt/local/libexec/openssl3/include"
+    OPENSSL_LIBS="-L/opt/local/libexec/openssl3/lib -lssl -lcrypto"
+  elif [ -f /opt/homebrew/opt/openssl@3/include/openssl/evp.h ]; then
+    # Homebrew (Apple Silicon)
+    OPENSSL_CFLAGS="-I/opt/homebrew/opt/openssl@3/include"
+    OPENSSL_LIBS="-L/opt/homebrew/opt/openssl@3/lib -lssl -lcrypto"
+  elif [ -f /usr/local/opt/openssl@3/include/openssl/evp.h ]; then
+    # Homebrew (Intel)
+    OPENSSL_CFLAGS="-I/usr/local/opt/openssl@3/include"
+    OPENSSL_LIBS="-L/usr/local/opt/openssl@3/lib -lssl -lcrypto"
+  else
+    # Linux system default
+    OPENSSL_LIBS="-lssl -lcrypto"
+  fi
+fi
+
+echo "OpenSSL CFLAGS: ${OPENSSL_CFLAGS}"
+echo "OpenSSL LIBS:   ${OPENSSL_LIBS}"
+
+sed \
+  -e "s|@OPENSSL_CFLAGS@|${OPENSSL_CFLAGS}|g" \
+  -e "s|@OPENSSL_LIBS@|${OPENSSL_LIBS}|g" \
+  src/Makevars.in > src/Makevars
+
+exit 0

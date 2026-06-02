@@ -1,0 +1,28 @@
+test_that("FileStream handles raw vectors correctly", {
+  skip_on_cran()
+  raw_data <- as.raw(1:10)
+  fs <- FileStream$new(raw_data)
+  expect_equal(fs$file_size, length(raw_data))
+  expect_equal(fs$name, "unnamed")
+  chunk <- fs$read(4)
+  expect_true(is.raw(chunk))
+  expect_equal(length(chunk), 4)
+  expect_equal(chunk, raw_data[1:4])
+})
+
+test_that("FileStream handles file paths and explicit file_size", {
+  skip_on_cran()
+  tmp <- tempfile(fileext = ".bin")
+  on.exit(unlink(tmp), add = TRUE)
+  writeBin(as.raw(1:6), tmp)
+  fs <- FileStream$new(tmp)
+  expect_equal(fs$file_size, file.info(tmp)$size)
+  expect_equal(fs$name, basename(tmp))
+  chunk <- fs$read(10)
+  expect_true(is.raw(chunk))
+  expect_equal(length(chunk), 6)
+  expect_equal(chunk, as.raw(1:6))
+
+  fs2 <- FileStream$new(tmp, file_size = 12345)
+  expect_equal(fs2$file_size, 12345)
+})

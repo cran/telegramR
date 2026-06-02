@@ -1,0 +1,19 @@
+meta <- suppressWarnings(utils::packageDescription("telegramR"))
+pkg_version <- if (is.list(meta)) meta$Version else "0.0.1"
+pkg_url <- if (is.list(meta) && !is.null(meta$URL)) meta$URL else
+  "https://github.com/RomanKyrychenko/telegramR"
+
+citHeader("To cite telegramR in publications use:")
+
+bibentry(
+  bibtype = "Manual",
+  title = "telegramR: R Client for the Telegram MTProto API",
+  author = person(given = "Roman", family = "Kyrychenko"),
+  year = "2026",
+  note = sprintf("R package version %s", pkg_version),
+  url = pkg_url,
+  textVersion = paste0(
+    "Kyrychenko, R. (2026). telegramR: R Client for the Telegram MTProto API. ",
+    "R package version ", pkg_version, ". ", pkg_url
+  )
+)

@@ -1,0 +1,95 @@
+---
+title: "Downloading Channel Media"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Downloading Channel Media}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette shows how to download media (photos/videos/documents) from a Telegram channel using `download_channel_media()`.
+
+## Offline Demo (No Telegram Connection)
+
+To keep this vignette fully reproducible, the output below is generated from a small bundled sample dataset. The commands shown are real; if you have credentials and a live session, you can run them by setting `eval=TRUE` in your environment.
+
+```{r sample_data, include=FALSE}
+sample <- readRDS(system.file("extdata/vignettes/channel_sample.rds", package = "telegramR"))
+media_sample <- sample$media
+library(telegramR)
+library(dplyr)
+```
+
+## Setup and Authentication
+
+```{r setup, eval=FALSE}
+library(telegramR)
+library(dplyr)
+
+# Replace these with your own API ID and Hash
+api_id <- 123456
+api_hash <- "0123456789abcdef0123456789abcdef"
+
+client <- TelegramClient$new("my_session", api_id, api_hash)
+client$start()
+```
+
+## Download Media
+
+```{r download_media, eval=FALSE}
+# Download media into ./downloads
+media <- download_channel_media(
+  client,
+  "telegram",
+  limit = 200,
+  media_types = c("photo", "video"),
+  start_date = "2025-01-01",
+  end_date = "2025-02-01",
+  out_dir = tempdir()
+)
+```
+
+```{r lll, include=FALSE}
+media <- media_sample
+```
+
+```{r shows, eval=TRUE}
+# Inspect results
+media
+```
+
+```{r display, eval=TRUE}
+photo_path <- media %>% 
+  filter(media_type == "photo") %>% 
+  slice(1) %>% 
+  pull(file_path)
+
+# In a real session with downloaded files, display the photo:
+# knitr::include_graphics(file.path("..", photo_path))
+cat("Photo path:", photo_path, "\n")
+cat("(Photo display omitted in offline demo — run with eval=TRUE and real credentials to download.)\n")
+```
+
+## Common Columns
+
+The result is a tibble with one row per downloaded media item. Typical columns include:
+
+- `message_id`, `channel_id`, `channel_username`, `channel_title`
+- `date`, `text`, `media_type`
+- `file_path`, `error`
+
+## Tips
+
+- Use `start_date`/`end_date` to restrict the window and speed up downloads.
+- Use `media_types` to select only photos or only videos.
+- If you hit rate limits, add a small `wait_time` (e.g., `wait_time = 1`).
+- Some channels send photos as documents (`image/*`). `download_channel_media()` treats `image` as a photo-type alias when `photo` is requested.

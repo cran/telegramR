@@ -1,0 +1,178 @@
+---
+title: "Downloading Channel Data"
+output: rmarkdown::html_vignette
+vignette: >
+  %\VignetteIndexEntry{Downloading Channel Data}
+  %\VignetteEngine{knitr::rmarkdown}
+  %\VignetteEncoding{UTF-8}
+---
+
+```{r, include = FALSE}
+knitr::opts_chunk$set(
+  collapse = TRUE,
+  comment = "#>"
+)
+```
+
+## Introduction
+
+This vignette demonstrates how to download channel data with `telegramR` using the high‑level helpers.
+
+## Offline Demo (No Telegram Connection)
+
+To keep the vignette reproducible, the outputs below come from a bundled sample dataset. The commands shown are the real calls you would use against Telegram.
+
+```{r sample_data, include=FALSE}
+sample <- readRDS(system.file("extdata/vignettes/channel_sample.rds", package = "telegramR"))
+msgs <- sample$msgs
+info <- sample$info
+reactions <- sample$reactions
+replies <- sample$replies
+members <- sample$members
+estimate <- sample$estimate
+library(telegramR)
+```
+
+## Setup and Authentication
+
+```{r setup, eval=FALSE}
+library(telegramR)
+
+# Replace these with your own API ID and Hash
+api_id <- 123456
+api_hash <- "0123456789abcdef0123456789abcdef"
+
+client <- TelegramClient$new("my_session", api_id, api_hash)
+client$start()
+```
+
+## Download Messages
+
+```{r download_messages, eval=FALSE}
+# Download the most recent 200 messages from a channel
+msgs <- download_channel_messages(
+  client,
+  "telegram",
+  limit = 200
+)
+```
+
+### Example Output (Bundled Sample)
+
+```{r msgs_sample_output}
+msgs
+```
+
+The returned tibble includes a compact, analysis‑ready schema:
+
+- `message_id`, `date`, `text`
+- `views`, `forwards`, `replies`
+- `reactions_total`, `reactions_json`
+- `media_type`, `is_forward`, `forward_from_id`, `forward_from_message_id`, `forward_saved_from_message_id`, `forward_from_name`
+- `reply_to_msg_id`, `edit_date`, `post_author`
+- `channel_id`, `channel_username`, `channel_title`
+
+## Download Channel Info
+
+```{r download_info, eval=FALSE}
+info <- download_channel_info(client, "telegram")
+```
+
+```{r inf}
+info
+```
+
+## Estimate Total Posts (Approx.)
+
+This returns the latest message id as an **upper‑bound estimate**.
+
+```{r estimate, eval=FALSE}
+estimate <- estimate_channel_post_count(client, "telegram")
+```
+
+```{r estimate_sample_output}
+estimate
+```
+
+## Download Media
+
+```{r download_media, eval=FALSE}
+# Find the first message with media
+first_media <- msgs[which(!is.na(msgs$media_type) & msgs$media_type != ""), ][1, ]
+
+if (nrow(first_media) > 0) {
+  # You can still use download_media on the underlying message object
+  # if you need the original media data.
+}
+```
+
+## Disconnect
+
+```{r disconnect, eval=FALSE}
+client$disconnect()
+```
+
+```{r download_messages_range, eval=FALSE}
+# Download a date range (UTC)
+msgs_range <- download_channel_messages(
+  client,
+  "telegram",
+  start_date = "2025-01-01",
+  end_date   = "2025-02-01",
+  limit      = Inf
+)
+```
+
+## Download Reactions
+
+```{r download_reactions, eval=FALSE}
+reactions <- download_channel_reactions(
+  client,
+  "telegram",
+  limit = 500
+)
+```
+
+```{r}
+reactions
+```
+
+## Download Replies (Comments)
+
+```{r download_replies, eval=FALSE}
+# Fetch replies for the latest 20 posts
+replies <- download_channel_replies(
+  client,
+  "telegram",
+  message_limit = 20,
+  reply_limit = Inf
+)
+```
+
+```{r}
+replies
+```
+
+
+## Download Members
+
+```{r download_members, eval=FALSE}
+members <- download_channel_members(
+  client,
+  "telegram",
+  limit = 500
+)
+```
+
+```{r}
+members
+```
+
+
+## Numeric Channel IDs
+
+All helpers accept a numeric channel id if it is available in your session cache:
+
+```{r channel_id_example, eval=FALSE}
+msgs_by_id <- download_channel_messages(client, 1234567890, limit = 100)
+```
