@@ -1,15 +1,13 @@
-#  R6 Class Representing a Session
-# 
-# 
-#  @details
-#  This class defines the interface for session management, including
-#  methods for handling data center information, authentication keys,
-#  update states, and file caching.
-#  @title Session
-#  @description Telegram API type Session
-#  @export
-#  @noRd
-#  @noRd
+#' R6 Class Representing a Session
+#'
+#'
+#' @details
+#' This class defines the interface for session management, including
+#' methods for handling data center information, authentication keys,
+#' update states, and file caching.
+#' @title Session
+#' @description Telegram API type Session
+#' @noRd
 Session <- R6::R6Class(
   "Session",
   public = list(

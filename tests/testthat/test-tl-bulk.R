@@ -167,8 +167,9 @@ test_that("classes without declared fields still run initialize up to field assi
       lock_errors <- lock_errors + 1L
     }
   }
-  # Most failures should be the locked-environment variety (known issue)
-  expect_gt(lock_errors, 50L)
+  # Schema-generated classes are created with lock_objects = FALSE; only a
+  # handful of internal (non-api.tl) classes may still lock.
+  expect_lte(lock_errors, 20L)
 })
 
 test_that("spot-check: well-known TL types produce correct to_dict", {

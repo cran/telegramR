@@ -1,9 +1,7 @@
-#  @title FullPacketCodec
-#  @description A codec for full TCP packets for Telegram.
-#  @param connection A connection object.
-#  @export
-#  @noRd
-#  @noRd
+#' @title FullPacketCodec
+#' @description A codec for full TCP packets for Telegram.
+#' @param connection A connection object.
+#' @noRd
 FullPacketCodec <- R6::R6Class("FullPacketCodec",
   inherit = PacketCodec,
   public = list(
@@ -70,12 +68,10 @@ FullPacketCodec <- R6::R6Class("FullPacketCodec",
   )
 )
 
-#  @title ConnectionTcpFull
-#  @description Default Telegram mode. Sends 12 additional bytes and calculates the CRC for each packet.
-#  @param ... Additional parameters passed to the parent connection.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpFull
+#' @description Default Telegram mode. Sends 12 additional bytes and calculates the CRC for each packet.
+#' @param ... Additional parameters passed to the parent connection.
+#' @noRd
 ConnectionTcpFull <- R6::R6Class("ConnectionTcpFull",
   inherit = Connection,
   public = list(

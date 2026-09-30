@@ -1,34 +1,34 @@
-#  Various helpers not related to the Telegram API itself
-#  Enum for entity types
-#  @export
+#' Various helpers not related to the Telegram API itself
+#' Enum for entity types
+#' @noRd
 EntityType <- list(
   USER = 0,
   CHAT = 1,
   CHANNEL = 2
 )
 
-#  Logging setup
-#  A simple logging function that prints formatted messages to the console.
-#  @param ... Arguments passed to sprintf for formatting the log message.
-#  @return None. Prints the formatted message to the console.
-#  @examples
-#  \donttest{
-#  logg("This is a log message with a number: %d", 42)
-#  }
-#  @export
+#' Logging setup
+#' A simple logging function that prints formatted messages to the console.
+#' @param ... Arguments passed to sprintf for formatting the log message.
+#' @return None. Prints the formatted message to the console.
+#' @examples
+#' \donttest{
+#' logg("This is a log message with a number: %d", 42)
+#' }
+#' @noRd
 logg <- function(...) cat(sprintf(...), "\n", sep = "")
 
-#  Generate a random long integer (8 bytes), optionally signed
-#  @param signed Logical indicating if the integer should be signed (default TRUE)
-#  @return A random long integer
-#  @examples
-#  \donttest{
-#  random_long <- generate_random_long()
-#  print(random_long)
-#  random_unsigned_long <- generate_random_long(signed = FALSE)
-#  print(random_unsigned_long)
-#  }
-#  @export
+#' Generate a random long integer (8 bytes), optionally signed
+#' @param signed Logical indicating if the integer should be signed (default TRUE)
+#' @return A random long integer
+#' @examples
+#' \donttest{
+#' random_long <- generate_random_long()
+#' print(random_long)
+#' random_unsigned_long <- generate_random_long(signed = FALSE)
+#' print(random_unsigned_long)
+#' }
+#' @noRd
 generate_random_long <- function(signed = TRUE) {
   raw_bytes <- as.raw(sample(0:255, 8, replace = TRUE))
   int_value <- sum(as.integer(raw_bytes) * 256^(seq_along(raw_bytes) - 1))
@@ -38,14 +38,14 @@ generate_random_long <- function(signed = TRUE) {
   return(int_value)
 }
 
-#  Ensure the parent directory exists
-#  @param file_path The file path for which to ensure the parent directory exists.
-#  @return None. Creates the parent directory if it does not exist.
-#  @examples
-#  \donttest{
-#  ensure_parent_dir_exists("path/to/some/file.txt")
-#  }
-#  @export
+#' Ensure the parent directory exists
+#' @param file_path The file path for which to ensure the parent directory exists.
+#' @return None. Creates the parent directory if it does not exist.
+#' @examples
+#' \donttest{
+#' ensure_parent_dir_exists("path/to/some/file.txt")
+#' }
+#' @noRd
 ensure_parent_dir_exists <- function(file_path) {
   parent <- dirname(file_path)
   if (nzchar(parent)) {
@@ -53,16 +53,16 @@ ensure_parent_dir_exists <- function(file_path) {
   }
 }
 
-#  Add surrogate pairs to text
-#  @param text The input text string.
-#  @return The text string with surrogate pairs added.
-#  @examples
-#  \donttest{
-#  text <- "Hello \U0001F600 World" # Contains a surrogate pair
-#  surrogate_text <- add_surrogate(text)
-#  print(surrogate_text) # "Hello 😀 World"
-#  }
-#  @export
+#' Add surrogate pairs to text
+#' @param text The input text string.
+#' @return The text string with surrogate pairs added.
+#' @examples
+#' \donttest{
+#' text <- "Hello \U0001F600 World" # Contains a surrogate pair
+#' surrogate_text <- add_surrogate(text)
+#' print(surrogate_text) # "Hello 😀 World"
+#' }
+#' @noRd
 add_surrogate <- function(text) {
   paste0(sapply(strsplit(text, NULL)[[1]], function(x) {
     code <- utf8ToInt(x)
@@ -76,31 +76,31 @@ add_surrogate <- function(text) {
   }, USE.NAMES = FALSE), collapse = "")
 }
 
-#  Remove surrogate pairs from text
-#  @param text The input text string.
-#  @return The text string with surrogate pairs removed.
-#  @examples
-#  \donttest{
-#  text <- "Hello \U0001F600 World" # Contains a surrogate pair
-#  cleaned_text <- del_surrogate(text)
-#  print(cleaned_text) # "Hello  World"
-#  }
-#  @export
+#' Remove surrogate pairs from text
+#' @param text The input text string.
+#' @return The text string with surrogate pairs removed.
+#' @examples
+#' \donttest{
+#' text <- "Hello \U0001F600 World" # Contains a surrogate pair
+#' cleaned_text <- del_surrogate(text)
+#' print(cleaned_text) # "Hello  World"
+#' }
+#' @noRd
 del_surrogate <- function(text) {
   intToUtf8(utf8ToInt(text), multiple = TRUE)
 }
 
-#  Check if index is within a surrogate pair
-#  @param text The input text string.
-#  @param index The index to check (1-based).
-#  @param text_length Optional length of the text; if NULL, computed from text.
-#  @return Logical indicating if the index is within a surrogate pair.
-#  @examples
-#  \donttest{
-#  text <- "\U0001F400"
-#  within_surrogate(text, 2)
-#  }
-#  @export
+#' Check if index is within a surrogate pair
+#' @param text The input text string.
+#' @param index The index to check (1-based).
+#' @param text_length Optional length of the text; if NULL, computed from text.
+#' @return Logical indicating if the index is within a surrogate pair.
+#' @examples
+#' \donttest{
+#' text <- "\U0001F400"
+#' within_surrogate(text, 2)
+#' }
+#' @noRd
 within_surrogate <- function(text, index, text_length = NULL) {
   if (is.na(index)) {
     return(FALSE)
@@ -123,20 +123,20 @@ within_surrogate <- function(text, index, text_length = NULL) {
   )
 }
 
-#  Strip text and adjust entities
-#  @param text The original text string.
-#  @param entities A list of entity objects, each with 'offset' and 'length
-#  fields.
-#  @return The stripped text with adjusted entities.
-#  @examples
-#  \donttest{
-#  text <- "  Hello, World!  "
-#  entities <- list(list(offset = 2, length = 5), list(offset = 10, length = 3))
-#  stripped_text <- strip_text(text, entities)
-#  print(stripped_text) # "Hello, World!"
-#  print(entities) # Adjusted entities
-#  }
-#  @export
+#' Strip text and adjust entities
+#' @param text The original text string.
+#' @param entities A list of entity objects, each with 'offset' and 'length
+#' fields.
+#' @return The stripped text with adjusted entities.
+#' @examples
+#' \donttest{
+#' text <- "  Hello, World!  "
+#' entities <- list(list(offset = 2, length = 5), list(offset = 10, length = 3))
+#' stripped_text <- strip_text(text, entities)
+#' print(stripped_text) # "Hello, World!"
+#' print(entities) # Adjusted entities
+#' }
+#' @noRd
 strip_text <- function(text, entities) {
   if (base::length(entities) == 0) {
     return(trimws(text))
@@ -180,18 +180,18 @@ strip_text <- function(text, entities) {
   return(text)
 }
 
-#  Generate key data from nonce
-#  @param server_nonce A raw vector representing the server nonce (16 bytes).
-#  @param new_nonce A raw vector representing the new nonce (32 bytes).
-#  @return A list containing 'key' and 'iv' as raw vectors.
-#  @examples
-#  \donttest{
-#  server_nonce <- as.raw(sample(0:255, 16, replace = TRUE))
-#  new_nonce <- as.raw(sample(0:255, 32, replace = TRUE))
-#  key_data <- generate_key_data_from_nonce(server_nonce, new_nonce)
-#  str(key_data)
-#  }
-#  @export
+#' Generate key data from nonce
+#' @param server_nonce A raw vector representing the server nonce (16 bytes).
+#' @param new_nonce A raw vector representing the new nonce (32 bytes).
+#' @return A list containing 'key' and 'iv' as raw vectors.
+#' @examples
+#' \donttest{
+#' server_nonce <- as.raw(sample(0:255, 16, replace = TRUE))
+#' new_nonce <- as.raw(sample(0:255, 32, replace = TRUE))
+#' key_data <- generate_key_data_from_nonce(server_nonce, new_nonce)
+#' str(key_data)
+#' }
+#' @noRd
 generate_key_data_from_nonce <- function(server_nonce, new_nonce) {
   server_nonce <- as.raw(server_nonce)
   new_nonce <- as.raw(new_nonce)
@@ -206,18 +206,16 @@ generate_key_data_from_nonce <- function(server_nonce, new_nonce) {
   return(list(key = key, iv = iv))
 }
 
-#  TotalList R6 class
-# 
-# 
-#  @details
-#  The class keeps arbitrary R objects in the `items` field and a scalar numeric `total`
-#  initialized to 0. It provides methods to construct an instance and to obtain
-#  two textual representations: a human-readable form and a dput()-based reproducible form.
-#  @title TotalList
-#  @description Telegram API type TotalList
-#  @export
-#  @noRd
-#  @noRd
+#' TotalList R6 class
+#'
+#'
+#' @details
+#' The class keeps arbitrary R objects in the `items` field and a scalar numeric `total`
+#' initialized to 0. It provides methods to construct an instance and to obtain
+#' two textual representations: a human-readable form and a dput()-based reproducible form.
+#' @title TotalList
+#' @description Telegram API type TotalList
+#' @noRd
 TotalList <- R6::R6Class(
   "TotalList",
   public = list(
@@ -252,13 +250,11 @@ TotalList <- R6::R6Class(
   )
 )
 
-#  FileStream Class
-#  A class to handle file streams from various sources.
-#  @title FileStream
-#  @description Telegram API type FileStream
-#  @export
-#  @noRd
-#  @noRd
+#' FileStream Class
+#' A class to handle file streams from various sources.
+#' @title FileStream
+#' @description Telegram API type FileStream
+#' @noRd
 FileStream <- R6::R6Class(
   "FileStream",
   public = list(
@@ -342,10 +338,10 @@ FileStream <- R6::R6Class(
   )
 )
 
-#  get_running_loop function
-#  Get or create a running event loop (cluster) for asynchronous operations.
-#  @return A cluster object representing the running event loop.
-#  @export
+#' get_running_loop function
+#' Get or create a running event loop (cluster) for asynchronous operations.
+#' @return A cluster object representing the running event loop.
+#' @noRd
 get_running_loop <- function() {
   if (getRversion() >= "3.7.0") {
     tryCatch(
@@ -361,15 +357,15 @@ get_running_loop <- function() {
   }
 }
 
-#  fmt_flood
-# 
-#  @description ftm_flood - Format flood wait message
-#  @param delay Delay time in seconds
-#  @param request The request object
-#  @param early Boolean indicating if the message is for an early flood wait
-#  @param td Function to convert delay to time difference
-#  @return Formatted flood wait message
-#  @export
+#' fmt_flood
+#'
+#' @description ftm_flood - Format flood wait message
+#' @param delay Delay time in seconds
+#' @param request The request object
+#' @param early Boolean indicating if the message is for an early flood wait
+#' @param td Function to convert delay to time difference
+#' @return Formatted flood wait message
+#' @noRd
 fmt_flood <- function(delay, request, early = FALSE, td = as.difftime) {
   sprintf(
     "Sleeping%s for %ds (%s) on %s flood wait",

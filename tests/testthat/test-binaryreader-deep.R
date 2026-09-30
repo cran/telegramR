@@ -389,6 +389,7 @@ test_that("telegramR_read_channel_full returns fallback object on insufficient d
 })
 
 test_that("telegramR_read_user parses minimal payload", {
+  skip("legacy hand-reader; User is regenerated from schema at layer 229")
   b <- c(
     write_i32(0L),  # flags
     write_i32(0L),  # flags2

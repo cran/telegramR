@@ -1,12 +1,8 @@
-#  CheckChatlistInviteRequest R6 class
-# 
-#  Request to check a chatlist invite by slug.
-# 
-#  @title CheckChatlistInviteRequest
-#  @description Telegram API type CheckChatlistInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckChatlistInviteRequest
+#' @description Telegram API request \code{chatlists.checkChatlistInvite} (constructor \code{#41c10fff}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckChatlistInviteRequest <- R6::R6Class(
   "CheckChatlistInviteRequest",
   public = list(
@@ -70,22 +66,17 @@ CheckChatlistInviteRequest <- R6::R6Class(
 #  Reads slug from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_string
 #  @return CheckChatlistInviteRequest instance
-#  @export
 CheckChatlistInviteRequest$set("public", "from_reader", function(reader) {
   slug_val <- reader$tgread_string()
   CheckChatlistInviteRequest$new(slug = slug_val)
 })
 
 
-#  DeleteExportedInviteRequest R6 class
-# 
-#  Request to delete an exported invite for a chatlist.
-# 
-#  @title DeleteExportedInviteRequest
-#  @description Telegram API type DeleteExportedInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteExportedInviteRequest
+#' @description Telegram API request \code{chatlists.deleteExportedInvite} (constructor \code{#719c5c5e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteExportedInviteRequest <- R6::R6Class(
   "DeleteExportedInviteRequest",
   public = list(
@@ -159,7 +150,6 @@ DeleteExportedInviteRequest <- R6::R6Class(
 #  Reads chatlist and slug from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object and tgread_string
 #  @return DeleteExportedInviteRequest instance
-#  @export
 DeleteExportedInviteRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   slug_val <- reader$tgread_string()
@@ -167,15 +157,11 @@ DeleteExportedInviteRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  EditExportedInviteRequest R6 class
-# 
-#  Request to edit an exported invite for a chatlist (optional title and peers).
-# 
-#  @title EditExportedInviteRequest
-#  @description Telegram API type EditExportedInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditExportedInviteRequest
+#' @description Telegram API request \code{chatlists.editExportedInvite} (constructor \code{#653db63d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditExportedInviteRequest <- R6::R6Class(
   "EditExportedInviteRequest",
   public = list(
@@ -312,7 +298,6 @@ EditExportedInviteRequest <- R6::R6Class(
 #  Reads flags, chatlist, slug, optional title and optional peers from a reader and returns a new instance.
 #  @param reader Reader object providing read_int, tgread_object and tgread_string
 #  @return EditExportedInviteRequest instance
-#  @export
 EditExportedInviteRequest$set("public", "from_reader", function(reader) {
   flags <- reader$read_int()
   has_title <- bitwAnd(flags, 2L) != 0L
@@ -345,15 +330,11 @@ EditExportedInviteRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  ExportChatlistInviteRequest R6 class
-# 
-#  Request to export an invite for a chatlist with a title and list of peers.
-# 
-#  @title ExportChatlistInviteRequest
-#  @description Telegram API type ExportChatlistInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ExportChatlistInviteRequest
+#' @description Telegram API request \code{chatlists.exportChatlistInvite} (constructor \code{#8472478e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ExportChatlistInviteRequest <- R6::R6Class(
   "ExportChatlistInviteRequest",
   public = list(
@@ -469,7 +450,6 @@ ExportChatlistInviteRequest <- R6::R6Class(
 #  Reads chatlist, title and peers from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object, tgread_string and read_int
 #  @return ExportChatlistInviteRequest instance
-#  @export
 ExportChatlistInviteRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   title_val <- reader$tgread_string()
@@ -487,15 +467,11 @@ ExportChatlistInviteRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetChatlistUpdatesRequest R6 class
-# 
-#  Request to get updates for a chatlist.
-# 
-#  @title GetChatlistUpdatesRequest
-#  @description Telegram API type GetChatlistUpdatesRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChatlistUpdatesRequest
+#' @description Telegram API request \code{chatlists.getChatlistUpdates} (constructor \code{#89419521}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChatlistUpdatesRequest <- R6::R6Class(
   "GetChatlistUpdatesRequest",
   public = list(
@@ -543,22 +519,17 @@ GetChatlistUpdatesRequest <- R6::R6Class(
 #  Reads chatlist from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object
 #  @return GetChatlistUpdatesRequest instance
-#  @export
 GetChatlistUpdatesRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   GetChatlistUpdatesRequest$new(chatlist = chatlist_obj)
 })
 
 
-#  GetExportedInvitesRequest R6 class
-# 
-#  Request to get exported invites for a chatlist.
-# 
-#  @title GetExportedInvitesRequest
-#  @description Telegram API type GetExportedInvitesRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetExportedInvitesRequest
+#' @description Telegram API request \code{chatlists.getExportedInvites} (constructor \code{#ce03da83}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetExportedInvitesRequest <- R6::R6Class(
   "GetExportedInvitesRequest",
   public = list(
@@ -606,22 +577,17 @@ GetExportedInvitesRequest <- R6::R6Class(
 #  Reads chatlist from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object
 #  @return GetExportedInvitesRequest instance
-#  @export
 GetExportedInvitesRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   GetExportedInvitesRequest$new(chatlist = chatlist_obj)
 })
 
 
-#  GetLeaveChatlistSuggestionsRequest R6 class
-# 
-#  Request to get suggestions of peers to leave from a chatlist.
-# 
-#  @title GetLeaveChatlistSuggestionsRequest
-#  @description Telegram API type GetLeaveChatlistSuggestionsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetLeaveChatlistSuggestionsRequest
+#' @description Telegram API request \code{chatlists.getLeaveChatlistSuggestions} (constructor \code{#fdbcd714}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetLeaveChatlistSuggestionsRequest <- R6::R6Class(
   "GetLeaveChatlistSuggestionsRequest",
   public = list(
@@ -669,22 +635,17 @@ GetLeaveChatlistSuggestionsRequest <- R6::R6Class(
 #  Reads chatlist from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object
 #  @return GetLeaveChatlistSuggestionsRequest instance
-#  @export
 GetLeaveChatlistSuggestionsRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   GetLeaveChatlistSuggestionsRequest$new(chatlist = chatlist_obj)
 })
 
 
-#  HideChatlistUpdatesRequest R6 class
-# 
-#  Request to hide updates for a chatlist.
-# 
-#  @title HideChatlistUpdatesRequest
-#  @description Telegram API type HideChatlistUpdatesRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title HideChatlistUpdatesRequest
+#' @description Telegram API request \code{chatlists.hideChatlistUpdates} (constructor \code{#66e486fb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 HideChatlistUpdatesRequest <- R6::R6Class(
   "HideChatlistUpdatesRequest",
   public = list(
@@ -733,22 +694,17 @@ HideChatlistUpdatesRequest <- R6::R6Class(
 #  Reads chatlist from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object
 #  @return HideChatlistUpdatesRequest instance
-#  @export
 HideChatlistUpdatesRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   HideChatlistUpdatesRequest$new(chatlist = chatlist_obj)
 })
 
 
-#  JoinChatlistInviteRequest R6 class
-# 
-#  Request to join a chatlist invite (by slug) with specific peers.
-# 
-#  @title JoinChatlistInviteRequest
-#  @description Telegram API type JoinChatlistInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title JoinChatlistInviteRequest
+#' @description Telegram API request \code{chatlists.joinChatlistInvite} (constructor \code{#a6b1e39a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 JoinChatlistInviteRequest <- R6::R6Class(
   "JoinChatlistInviteRequest",
   public = list(
@@ -859,7 +815,6 @@ JoinChatlistInviteRequest <- R6::R6Class(
 #  Reads slug and peers from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_string, read_int and tgread_object
 #  @return JoinChatlistInviteRequest instance
-#  @export
 JoinChatlistInviteRequest$set("public", "from_reader", function(reader) {
   slug_val <- reader$tgread_string()
   # read and ignore an int (vector marker)
@@ -876,15 +831,11 @@ JoinChatlistInviteRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  JoinChatlistUpdatesRequest R6 class
-# 
-#  Request to join a chatlist with specific peers.
-# 
-#  @title JoinChatlistUpdatesRequest
-#  @description Telegram API type JoinChatlistUpdatesRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title JoinChatlistUpdatesRequest
+#' @description Telegram API request \code{chatlists.joinChatlistUpdates} (constructor \code{#e089f8f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 JoinChatlistUpdatesRequest <- R6::R6Class(
   "JoinChatlistUpdatesRequest",
   public = list(
@@ -972,7 +923,6 @@ JoinChatlistUpdatesRequest <- R6::R6Class(
 #  Reads chatlist and peers from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object and read_int
 #  @return JoinChatlistUpdatesRequest instance
-#  @export
 JoinChatlistUpdatesRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   # read and ignore an int (as per original structure)
@@ -989,15 +939,11 @@ JoinChatlistUpdatesRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  LeaveChatlistRequest R6 class
-# 
-#  Request to leave a chatlist for specific peers.
-# 
-#  @title LeaveChatlistRequest
-#  @description Telegram API type LeaveChatlistRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title LeaveChatlistRequest
+#' @description Telegram API request \code{chatlists.leaveChatlist} (constructor \code{#74fae13a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 LeaveChatlistRequest <- R6::R6Class(
   "LeaveChatlistRequest",
   public = list(
@@ -1050,7 +996,7 @@ LeaveChatlistRequest <- R6::R6Class(
     bytes = function() {
       pack_int32 <- function(i) writeBin(as.integer(i), raw(), size = 4, endian = "little")
       parts <- list()
-      parts[[length(parts) + 1]] <- as.raw(c(0x3a, 0xe1, 0x7f, 0x74)) # b':\xe1\xfat'
+      parts[[length(parts) + 1]] <- as.raw(c(0x3a, 0xe1, 0xfa, 0x74)) # b':\xe1\xfat'
       if (!is.null(self$chatlist) && is.function(self$chatlist$bytes)) {
         parts[[length(parts) + 1]] <- self$chatlist$bytes()
       } else {
@@ -1077,7 +1023,6 @@ LeaveChatlistRequest <- R6::R6Class(
 #  Reads chatlist and peers from a reader and returns a new instance.
 #  @param reader Reader object providing tgread_object and read_int
 #  @return LeaveChatlistRequest instance
-#  @export
 LeaveChatlistRequest$set("public", "from_reader", function(reader) {
   chatlist_obj <- reader$tgread_object()
   # read and ignore an int (as per original structure)

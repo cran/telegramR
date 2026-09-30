@@ -1,12 +1,12 @@
-#  Check if an object is list-like (list, vector, etc.)
-# 
-#  Determines whether an object can be treated like a list or collection
-#  in the context of MTProto requests.
-# 
-#  @param obj The object to check
-#  @param allow_data_frames Whether to consider data frames as list-like (default: FALSE)
-#  @return TRUE if the object is list-like, FALSE otherwise
-#  @export
+#' Check if an object is list-like (list, vector, etc.)
+#'
+#' Determines whether an object can be treated like a list or collection
+#' in the context of MTProto requests.
+#'
+#' @param obj The object to check
+#' @param allow_data_frames Whether to consider data frames as list-like (default: FALSE)
+#' @return TRUE if the object is list-like, FALSE otherwise
+#' @noRd
 is_list_like <- function(obj, allow_data_frames = FALSE) {
   # NULL is not list-like
   if (is.null(obj)) {
@@ -38,14 +38,14 @@ is_list_like <- function(obj, allow_data_frames = FALSE) {
   return(FALSE)
 }
 
-#  Generate a sequence for retry attempts
-# 
-#  Creates a sequence from 1 to n for retry attempts with optional forcing of at least one retry
-# 
-#  @param n Number of retries to perform
-#  @param force_retry Whether to force at least one retry attempt even if n is 0 (default: FALSE)
-#  @return An integer sequence to iterate over for retry attempts
-#  @export
+#' Generate a sequence for retry attempts
+#'
+#' Creates a sequence from 1 to n for retry attempts with optional forcing of at least one retry
+#'
+#' @param n Number of retries to perform
+#' @param force_retry Whether to force at least one retry attempt even if n is 0 (default: FALSE)
+#' @return An integer sequence to iterate over for retry attempts
+#' @noRd
 retry_range <- function(n, force_retry = FALSE) {
   # Ensure n is a non-negative integer
   n <- as.integer(n)
@@ -62,14 +62,15 @@ retry_range <- function(n, force_retry = FALSE) {
   return(seq_len(max(1, n)))
 }
 
-#  Normalize a message ID to a consistent string key.
-# 
-#  Handles bigz, numeric (double), and character inputs to always produce
-#  the same decimal string representation for the same underlying value.
-# 
-#  @param msg_id Message ID (bigz, numeric, or character)
-#  @return Character string key
-#  @keywords internal
+#' Normalize a message ID to a consistent string key.
+#'
+#' Handles bigz, numeric (double), and character inputs to always produce
+#' the same decimal string representation for the same underlying value.
+#'
+#' @param msg_id Message ID (bigz, numeric, or character)
+#' @return Character string key
+#' @keywords internal
+#' @noRd
 msg_id_key <- function(msg_id) {
   # Always normalize to sprintf("%.0f", numeric) so that both bigz (from
 
@@ -82,21 +83,22 @@ msg_id_key <- function(msg_id) {
   sprintf("%.0f", as.numeric(msg_id))
 }
 
-#  Synchronously resolve a promise by pumping the later event loop.
-# 
-#  R promises schedule their callbacks via `later::later()`.  When running
-#  inside a tight synchronous loop (no Shiny / httpuv reactor) those callbacks
-#  never fire unless we explicitly call `later::run_now()`.  This helper does
-#  exactly that: it installs fulfillment/rejection handlers and then pumps
-#  `later::run_now()` in a busy-wait until the promise settles.
-# 
-#  If the input is NOT a promise it is returned as-is, so this is safe to call
-#  on any value.
-# 
-#  @param p A promise (or plain value).
-#  @param timeout Maximum seconds to wait before raising an error.
-#  @return The fulfilled value, or stops with the rejection reason.
-#  @keywords internal
+#' Synchronously resolve a promise by pumping the later event loop.
+#'
+#' R promises schedule their callbacks via `later::later()`.  When running
+#' inside a tight synchronous loop (no Shiny / httpuv reactor) those callbacks
+#' never fire unless we explicitly call `later::run_now()`.  This helper does
+#' exactly that: it installs fulfillment/rejection handlers and then pumps
+#' `later::run_now()` in a busy-wait until the promise settles.
+#'
+#' If the input is NOT a promise it is returned as-is, so this is safe to call
+#' on any value.
+#'
+#' @param p A promise (or plain value).
+#' @param timeout Maximum seconds to wait before raising an error.
+#' @return The fulfilled value, or stops with the rejection reason.
+#' @keywords internal
+#' @noRd
 await_promise <- function(p, timeout = 30) {
   if (!inherits(p, "promise")) {
     return(p)
@@ -136,11 +138,11 @@ await_promise <- function(p, timeout = 30) {
   result
 }
 
-#  Cancel futures if they are not resolved
-# 
-#  @param log Logger object for logging messages
-#  @param ... Named future objects to cancel
-#  @export
+#' Cancel futures if they are not resolved
+#'
+#' @param log Logger object for logging messages
+#' @param ... Named future objects to cancel
+#' @noRd
 cancel_futures <- function(log, ...) {
   # Get named arguments
   futures <- list(...)
@@ -162,13 +164,13 @@ cancel_futures <- function(log, ...) {
   }
 }
 
-#  Extract traceback information from an error
-# 
-#  Formats an error's traceback into a readable string for logging
-# 
-#  @param error The error object to extract the traceback from
-#  @return A formatted string containing the traceback
-#  @export
+#' Extract traceback information from an error
+#'
+#' Formats an error's traceback into a readable string for logging
+#'
+#' @param error The error object to extract the traceback from
+#' @return A formatted string containing the traceback
+#' @noRd
 get_traceback <- function(error) {
   # Get the traceback if available
   tb <- if (inherits(error, "error") && !is.null(attr(error, "traceback"))) {
@@ -187,13 +189,13 @@ get_traceback <- function(error) {
   ))
 }
 
-#  Clone an error object
-# 
-#  Creates a copy of an error object preserving its class, message and other attributes
-# 
-#  @param error The error object to clone
-#  @return A new error object with the same properties
-#  @export
+#' Clone an error object
+#'
+#' Creates a copy of an error object preserving its class, message and other attributes
+#'
+#' @param error The error object to clone
+#' @return A new error object with the same properties
+#' @noRd
 clone_error <- function(error) {
   if (!inherits(error, "error")) {
     stop("Input must be an error object")
@@ -216,20 +218,16 @@ clone_error <- function(error) {
   return(new_error)
 }
 
-#  MTProto Mobile Protocol sender
-# 
-#  This class is responsible for wrapping requests into TLMessage objects,
-#  sending them over the network and receiving them in a safe manner.
-#  Automatic reconnection due to temporary network issues is handled by this class,
-#  including retry of messages that could not be sent successfully.
-#  A new authorization key will be generated on connection if no other key exists yet.
-#  @importFrom R6 R6Class
-#  @importFrom future plan multisession resolved value
-#  @title MTProtoSender
-#  @description Telegram API type MTProtoSender
-#  @export
-#  @noRd
-#  @noRd
+#' MTProto Mobile Protocol sender
+#'
+#' This class is responsible for wrapping requests into TLMessage objects,
+#' sending them over the network and receiving them in a safe manner.
+#' Automatic reconnection due to temporary network issues is handled by this class,
+#' including retry of messages that could not be sent successfully.
+#' A new authorization key will be generated on connection if no other key exists yet.
+#' @title MTProtoSender
+#' @description Telegram API type MTProtoSender
+#' @noRd
 MTProtoSender <- R6::R6Class("MTProtoSender",
   public = list(
     #  @field auth_key Authentication key
@@ -237,6 +235,9 @@ MTProtoSender <- R6::R6Class("MTProtoSender",
 
     #  @field time_offset Time offset with server
     time_offset = NULL,
+
+    #  @field dc_id Data centre this sender is connected to (set for exported senders).
+    dc_id = NULL,
 
     # disconnected = future::future(NULL, seed = TRUE),
 
@@ -473,8 +474,11 @@ MTProtoSender <- R6::R6Class("MTProtoSender",
         private$user_connected <- FALSE
         return(future::future(NULL))
       }
-      result <- future(private$disconnect())
-      return(result)
+      # Run synchronously: closing the socket inside a future() triggers
+      # future's modified-connections warning. Return a resolved future
+      # so callers can still future::value() the result.
+      private$.disconnect()
+      return(future::future(NULL))
     },
 
     #  @description
@@ -827,6 +831,11 @@ MTProtoSender <- R6::R6Class("MTProtoSender",
     },
     .connect = function() {
       private$log$info("Connecting to %s...", private$connection$to_string())
+      # Keep the encryption state bound to the current auth_key object in
+      # case a caller replaced self$auth_key (e.g. during a DC switch).
+      if (!is.null(private$state) && !identical(private$state$auth_key, self$auth_key)) {
+        private$state$auth_key <- self$auth_key
+      }
 
       connected <- FALSE
       last_connect_error <- NULL

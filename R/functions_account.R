@@ -1,9 +1,8 @@
-#  @title AcceptAuthorizationRequest
-#  @description R6 class representing an AcceptAuthorizationRequest.
-#  @details This class handles accepting authorization for a bot with specified bot ID, scope, public key, value hashes, and credentials.
-#  @export
-#  @noRd
-#  @noRd
+#' @title AcceptAuthorizationRequest
+#' @description Telegram API request \code{account.acceptAuthorization} (constructor \code{#f3ed4c73}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AcceptAuthorizationRequest <- R6::R6Class(
   "AcceptAuthorizationRequest",
   inherit = TLRequest,
@@ -45,7 +44,7 @@ AcceptAuthorizationRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x73, 0x4c, 0xed, 0xf3)),
-        writeBin(as.integer(self$botId), raw(), size = 8, endian = "little"),
+        packInt64(self$botId),
         self$serialize_bytes(self$scope),
         self$serialize_bytes(self$publicKey),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
@@ -77,12 +76,11 @@ AcceptAuthorizationRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title CancelPasswordEmailRequest
-#  @description R6 class representing a CancelPasswordEmailRequest.
-#  @details This class handles canceling a password email request.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CancelPasswordEmailRequest
+#' @description Telegram API request \code{account.cancelPasswordEmail} (constructor \code{#c1cbd5b6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CancelPasswordEmailRequest <- R6::R6Class(
   "CancelPasswordEmailRequest",
   inherit = TLRequest,
@@ -118,12 +116,11 @@ CancelPasswordEmailRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ChangeAuthorizationSettingsRequest
-#  @description R6 class representing a ChangeAuthorizationSettingsRequest.
-#  @details This class handles changing authorization settings with hash and optional flags for confirmed, encrypted requests disabled, and call requests disabled.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ChangeAuthorizationSettingsRequest
+#' @description Telegram API request \code{account.changeAuthorizationSettings} (constructor \code{#40f48462}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ChangeAuthorizationSettingsRequest <- R6::R6Class(
   "ChangeAuthorizationSettingsRequest",
   inherit = TLRequest,
@@ -166,7 +163,7 @@ ChangeAuthorizationSettingsRequest <- R6::R6Class(
       c(
         as.raw(c(0x62, 0x84, 0xf4, 0x40)),
         writeBin(as.integer(flags), raw(), size = 4, endian = "little"),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little"),
+        packInt64(self$hash),
         if (!is.null(self$encryptedRequestsDisabled)) if (self$encryptedRequestsDisabled) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc)) else raw(),
         if (!is.null(self$callRequestsDisabled)) if (self$callRequestsDisabled) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc)) else raw()
       )
@@ -190,12 +187,11 @@ ChangeAuthorizationSettingsRequest <- R6::R6Class(
 )
 
 
-#  @title ChangePhoneRequest
-#  @description R6 class representing a ChangePhoneRequest.
-#  @details This class handles changing the phone number with code hash and code.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ChangePhoneRequest
+#' @description Telegram API request \code{account.changePhone} (constructor \code{#70c32edb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ChangePhoneRequest <- R6::R6Class(
   "ChangePhoneRequest",
   inherit = TLRequest,
@@ -253,12 +249,11 @@ ChangePhoneRequest <- R6::R6Class(
 )
 
 
-#  @title ClearRecentEmojiStatusesRequest
-#  @description R6 class representing a ClearRecentEmojiStatusesRequest.
-#  @details This class handles clearing recent emoji statuses.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClearRecentEmojiStatusesRequest
+#' @description Telegram API request \code{account.clearRecentEmojiStatuses} (constructor \code{#18201aae}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClearRecentEmojiStatusesRequest <- R6::R6Class(
   "ClearRecentEmojiStatusesRequest",
   inherit = TLRequest,
@@ -295,12 +290,11 @@ ClearRecentEmojiStatusesRequest <- R6::R6Class(
 )
 
 
-#  @title ConfirmPasswordEmailRequest
-#  @description R6 class representing a ConfirmPasswordEmailRequest.
-#  @details This class handles confirming a password email with a code.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConfirmPasswordEmailRequest
+#' @description Telegram API request \code{account.confirmPasswordEmail} (constructor \code{#8fdf1920}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ConfirmPasswordEmailRequest <- R6::R6Class(
   "ConfirmPasswordEmailRequest",
   inherit = TLRequest,
@@ -347,12 +341,11 @@ ConfirmPasswordEmailRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ConfirmPhoneRequest
-#  @description R6 class representing a ConfirmPhoneRequest.
-#  @details This class handles confirming a phone with code hash and code.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConfirmPhoneRequest
+#' @description Telegram API request \code{account.confirmPhone} (constructor \code{#5f2178c3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ConfirmPhoneRequest <- R6::R6Class(
   "ConfirmPhoneRequest",
   inherit = TLRequest,
@@ -404,12 +397,11 @@ ConfirmPhoneRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title CreateBusinessChatLinkRequest
-#  @description R6 class representing a CreateBusinessChatLinkRequest.
-#  @details This class handles creating a business chat link.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateBusinessChatLinkRequest
+#' @description Telegram API request \code{account.createBusinessChatLink} (constructor \code{#8851e68e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateBusinessChatLinkRequest <- R6::R6Class(
   "CreateBusinessChatLinkRequest",
   inherit = TLRequest,
@@ -457,12 +449,11 @@ CreateBusinessChatLinkRequest <- R6::R6Class(
 )
 
 
-#  @title CreateThemeRequest
-#  @description R6 class representing a CreateThemeRequest.
-#  @details This class handles creating a theme with specified slug, title, optional document, and settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateThemeRequest
+#' @description Telegram API request \code{account.createTheme} (constructor \code{#652e4400}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateThemeRequest <- R6::R6Class(
   "CreateThemeRequest",
   inherit = TLRequest,
@@ -546,12 +537,11 @@ CreateThemeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title DeclinePasswordResetRequest
-#  @description R6 class representing a DeclinePasswordResetRequest.
-#  @details This class handles declining a password reset request.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeclinePasswordResetRequest
+#' @description Telegram API request \code{account.declinePasswordReset} (constructor \code{#4c9409f6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeclinePasswordResetRequest <- R6::R6Class(
   "DeclinePasswordResetRequest",
   inherit = TLRequest,
@@ -587,12 +577,11 @@ DeclinePasswordResetRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title DeleteAccountRequest
-#  @description R6 class representing a DeleteAccountRequest.
-#  @details This class handles deleting an account with a reason and optional password.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteAccountRequest
+#' @description Telegram API request \code{account.deleteAccount} (constructor \code{#a2c0cf74}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteAccountRequest <- R6::R6Class(
   "DeleteAccountRequest",
   inherit = TLRequest,
@@ -648,12 +637,11 @@ DeleteAccountRequest <- R6::R6Class(
 )
 
 
-#  @title DeleteAutoSaveExceptionsRequest
-#  @description R6 class representing a DeleteAutoSaveExceptionsRequest.
-#  @details This class handles deleting auto-save exceptions.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteAutoSaveExceptionsRequest
+#' @description Telegram API request \code{account.deleteAutoSaveExceptions} (constructor \code{#53bc0020}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteAutoSaveExceptionsRequest <- R6::R6Class(
   "DeleteAutoSaveExceptionsRequest",
   inherit = TLRequest,
@@ -689,12 +677,11 @@ DeleteAutoSaveExceptionsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title DeleteBusinessChatLinkRequest
-#  @description R6 class representing a DeleteBusinessChatLinkRequest.
-#  @details This class handles deleting a business chat link with a specified slug.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteBusinessChatLinkRequest
+#' @description Telegram API request \code{account.deleteBusinessChatLink} (constructor \code{#60073674}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteBusinessChatLinkRequest <- R6::R6Class(
   "DeleteBusinessChatLinkRequest",
   inherit = TLRequest,
@@ -741,12 +728,11 @@ DeleteBusinessChatLinkRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title DeleteSecureValueRequest
-#  @description R6 class representing a DeleteSecureValueRequest.
-#  @details This class handles deleting secure values for specified types.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteSecureValueRequest
+#' @description Telegram API request \code{account.deleteSecureValue} (constructor \code{#b880bc4b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteSecureValueRequest <- R6::R6Class(
   "DeleteSecureValueRequest",
   inherit = TLRequest,
@@ -801,12 +787,11 @@ DeleteSecureValueRequest <- R6::R6Class(
 )
 
 
-#  @title DisablePeerConnectedBotRequest
-#  @description R6 class representing a DisablePeerConnectedBotRequest.
-#  @details This class handles disabling a connected bot for a peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DisablePeerConnectedBotRequest
+#' @description Telegram API request \code{account.disablePeerConnectedBot} (constructor \code{#5e437ed9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DisablePeerConnectedBotRequest <- R6::R6Class(
   "DisablePeerConnectedBotRequest",
   inherit = TLRequest,
@@ -860,12 +845,11 @@ DisablePeerConnectedBotRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title EditBusinessChatLinkRequest
-#  @description R6 class representing an EditBusinessChatLinkRequest.
-#  @details This class handles editing a business chat link.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditBusinessChatLinkRequest
+#' @description Telegram API request \code{account.editBusinessChatLink} (constructor \code{#8c3410af}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditBusinessChatLinkRequest <- R6::R6Class(
   "EditBusinessChatLinkRequest",
   inherit = TLRequest,
@@ -917,12 +901,11 @@ EditBusinessChatLinkRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title FinishTakeoutSessionRequest
-#  @description R6 class representing a FinishTakeoutSessionRequest.
-#  @details This class handles finishing a takeout session.
-#  @export
-#  @noRd
-#  @noRd
+#' @title FinishTakeoutSessionRequest
+#' @description Telegram API request \code{account.finishTakeoutSession} (constructor \code{#1d2652ee}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 FinishTakeoutSessionRequest <- R6::R6Class(
   "FinishTakeoutSessionRequest",
   inherit = TLRequest,
@@ -972,12 +955,11 @@ FinishTakeoutSessionRequest <- R6::R6Class(
 )
 
 
-#  @title GetAccountTTLRequest
-#  @description R6 class representing a GetAccountTTLRequest.
-#  @details This class handles requesting the current account TTL (time to live) settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAccountTTLRequest
+#' @description Telegram API request \code{account.getAccountTTL} (constructor \code{#08fc711d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAccountTTLRequest <- R6::R6Class(
   "GetAccountTTLRequest",
   inherit = TLRequest,
@@ -1016,12 +998,11 @@ GetAccountTTLRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetAllSecureValuesRequest
-#  @description R6 class representing a GetAllSecureValuesRequest.
-#  @details This class handles requesting all secure values.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAllSecureValuesRequest
+#' @description Telegram API request \code{account.getAllSecureValues} (constructor \code{#b288bc7d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAllSecureValuesRequest <- R6::R6Class(
   "GetAllSecureValuesRequest",
   inherit = TLRequest,
@@ -1060,12 +1041,11 @@ GetAllSecureValuesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetAuthorizationFormRequest
-#  @description R6 class representing a GetAuthorizationFormRequest.
-#  @details This class handles requesting an authorization form for a bot with specified scope and public key.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAuthorizationFormRequest
+#' @description Telegram API request \code{account.getAuthorizationForm} (constructor \code{#a929597a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAuthorizationFormRequest <- R6::R6Class(
   "GetAuthorizationFormRequest",
   inherit = TLRequest,
@@ -1101,7 +1081,7 @@ GetAuthorizationFormRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x7a, 0x59, 0x29, 0xa9)),
-        writeBin(as.integer(self$botId), raw(), size = 8, endian = "little"),
+        packInt64(self$botId),
         self$serialize_bytes(self$scope),
         self$serialize_bytes(self$publicKey)
       )
@@ -1122,12 +1102,11 @@ GetAuthorizationFormRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetAuthorizationsRequest
-#  @description R6 class representing a GetAuthorizationsRequest.
-#  @details This class handles requesting the list of authorizations.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAuthorizationsRequest
+#' @description Telegram API request \code{account.getAuthorizations} (constructor \code{#e320c158}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAuthorizationsRequest <- R6::R6Class(
   "GetAuthorizationsRequest",
   inherit = TLRequest,
@@ -1167,12 +1146,11 @@ GetAuthorizationsRequest <- R6::R6Class(
 )
 
 
-#  @title GetAutoDownloadSettingsRequest
-#  @description R6 class representing a GetAutoDownloadSettingsRequest.
-#  @details This class handles requesting auto-download settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAutoDownloadSettingsRequest
+#' @description Telegram API request \code{account.getAutoDownloadSettings} (constructor \code{#56da0b3f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAutoDownloadSettingsRequest <- R6::R6Class(
   "GetAutoDownloadSettingsRequest",
   inherit = TLRequest,
@@ -1211,12 +1189,11 @@ GetAutoDownloadSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetAutoSaveSettingsRequest
-#  @description R6 class representing a GetAutoSaveSettingsRequest.
-#  @details This class handles requesting auto-save settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAutoSaveSettingsRequest
+#' @description Telegram API request \code{account.getAutoSaveSettings} (constructor \code{#adcbbcda}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAutoSaveSettingsRequest <- R6::R6Class(
   "GetAutoSaveSettingsRequest",
   inherit = TLRequest,
@@ -1255,12 +1232,11 @@ GetAutoSaveSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetBotBusinessConnectionRequest
-#  @description R6 class representing a GetBotBusinessConnectionRequest.
-#  @details This class handles requesting bot business connection with a connection ID.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBotBusinessConnectionRequest
+#' @description Telegram API request \code{account.getBotBusinessConnection} (constructor \code{#76a86270}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBotBusinessConnectionRequest <- R6::R6Class(
   "GetBotBusinessConnectionRequest",
   inherit = TLRequest,
@@ -1307,12 +1283,11 @@ GetBotBusinessConnectionRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetBusinessChatLinksRequest
-#  @description R6 class representing a GetBusinessChatLinksRequest.
-#  @details This class handles requesting business chat links.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBusinessChatLinksRequest
+#' @description Telegram API request \code{account.getBusinessChatLinks} (constructor \code{#6f70dde1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBusinessChatLinksRequest <- R6::R6Class(
   "GetBusinessChatLinksRequest",
   inherit = TLRequest,
@@ -1352,12 +1327,11 @@ GetBusinessChatLinksRequest <- R6::R6Class(
 )
 
 
-#  @title GetChannelDefaultEmojiStatusesRequest
-#  @description R6 class representing a GetChannelDefaultEmojiStatusesRequest.
-#  @details This class handles requesting channel default emoji statuses with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChannelDefaultEmojiStatusesRequest
+#' @description Telegram API request \code{account.getChannelDefaultEmojiStatuses} (constructor \code{#7727a7d5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChannelDefaultEmojiStatusesRequest <- R6::R6Class(
   "GetChannelDefaultEmojiStatusesRequest",
   inherit = TLRequest,
@@ -1387,7 +1361,7 @@ GetChannelDefaultEmojiStatusesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xd5, 0xa7, 0x27, 0x77)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1404,12 +1378,11 @@ GetChannelDefaultEmojiStatusesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetChannelRestrictedStatusEmojisRequest
-#  @description R6 class representing a GetChannelRestrictedStatusEmojisRequest.
-#  @details This class handles requesting channel restricted status emojis with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChannelRestrictedStatusEmojisRequest
+#' @description Telegram API request \code{account.getChannelRestrictedStatusEmojis} (constructor \code{#35a9e0d5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChannelRestrictedStatusEmojisRequest <- R6::R6Class(
   "GetChannelRestrictedStatusEmojisRequest",
   inherit = TLRequest,
@@ -1439,7 +1412,7 @@ GetChannelRestrictedStatusEmojisRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xd5, 0xe0, 0xa9, 0x35)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1456,12 +1429,11 @@ GetChannelRestrictedStatusEmojisRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetChatThemesRequest
-#  @description R6 class representing a GetChatThemesRequest.
-#  @details This class handles requesting chat themes with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChatThemesRequest
+#' @description Telegram API request \code{account.getChatThemes} (constructor \code{#d638de89}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChatThemesRequest <- R6::R6Class(
   "GetChatThemesRequest",
   inherit = TLRequest,
@@ -1491,7 +1463,7 @@ GetChatThemesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x89, 0xde, 0x38, 0xd6)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1509,12 +1481,11 @@ GetChatThemesRequest <- R6::R6Class(
 )
 
 
-#  @title GetCollectibleEmojiStatusesRequest
-#  @description R6 class representing a GetCollectibleEmojiStatusesRequest.
-#  @details This class handles requesting collectible emoji statuses with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCollectibleEmojiStatusesRequest
+#' @description Telegram API request \code{account.getCollectibleEmojiStatuses} (constructor \code{#2e7b4543}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCollectibleEmojiStatusesRequest <- R6::R6Class(
   "GetCollectibleEmojiStatusesRequest",
   inherit = TLRequest,
@@ -1544,7 +1515,7 @@ GetCollectibleEmojiStatusesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x43, 0x45, 0x7b, 0x2e)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1561,12 +1532,11 @@ GetCollectibleEmojiStatusesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetConnectedBotsRequest
-#  @description R6 class representing a GetConnectedBotsRequest.
-#  @details This class handles requesting connected bots.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetConnectedBotsRequest
+#' @description Telegram API request \code{account.getConnectedBots} (constructor \code{#4ea4c80f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetConnectedBotsRequest <- R6::R6Class(
   "GetConnectedBotsRequest",
   inherit = TLRequest,
@@ -1602,12 +1572,11 @@ GetConnectedBotsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetContactSignUpNotificationRequest
-#  @description R6 class representing a GetContactSignUpNotificationRequest.
-#  @details This class handles requesting contact sign-up notification settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetContactSignUpNotificationRequest
+#' @description Telegram API request \code{account.getContactSignUpNotification} (constructor \code{#9f07c728}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetContactSignUpNotificationRequest <- R6::R6Class(
   "GetContactSignUpNotificationRequest",
   inherit = TLRequest,
@@ -1643,12 +1612,11 @@ GetContactSignUpNotificationRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetContentSettingsRequest
-#  @description R6 class representing a GetContentSettingsRequest.
-#  @details This class handles requesting content settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetContentSettingsRequest
+#' @description Telegram API request \code{account.getContentSettings} (constructor \code{#8b9b4dae}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetContentSettingsRequest <- R6::R6Class(
   "GetContentSettingsRequest",
   inherit = TLRequest,
@@ -1685,12 +1653,11 @@ GetContentSettingsRequest <- R6::R6Class(
 )
 
 
-#  @title GetDefaultBackgroundEmojisRequest
-#  @description R6 class representing a GetDefaultBackgroundEmojisRequest.
-#  @details This class handles requesting default background emojis with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultBackgroundEmojisRequest
+#' @description Telegram API request \code{account.getDefaultBackgroundEmojis} (constructor \code{#a60ab9ce}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultBackgroundEmojisRequest <- R6::R6Class(
   "GetDefaultBackgroundEmojisRequest",
   inherit = TLRequest,
@@ -1720,7 +1687,7 @@ GetDefaultBackgroundEmojisRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xce, 0xb9, 0x0a, 0xa6)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1737,12 +1704,11 @@ GetDefaultBackgroundEmojisRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetDefaultEmojiStatusesRequest
-#  @description R6 class representing a GetDefaultEmojiStatusesRequest.
-#  @details This class handles requesting default emoji statuses with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultEmojiStatusesRequest
+#' @description Telegram API request \code{account.getDefaultEmojiStatuses} (constructor \code{#d6753386}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultEmojiStatusesRequest <- R6::R6Class(
   "GetDefaultEmojiStatusesRequest",
   inherit = TLRequest,
@@ -1772,7 +1738,7 @@ GetDefaultEmojiStatusesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x86, 0x33, 0x75, 0xd6)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1789,12 +1755,11 @@ GetDefaultEmojiStatusesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetDefaultGroupPhotoEmojisRequest
-#  @description R6 class representing a GetDefaultGroupPhotoEmojisRequest.
-#  @details This class handles requesting default group photo emojis with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultGroupPhotoEmojisRequest
+#' @description Telegram API request \code{account.getDefaultGroupPhotoEmojis} (constructor \code{#915860ae}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultGroupPhotoEmojisRequest <- R6::R6Class(
   "GetDefaultGroupPhotoEmojisRequest",
   inherit = TLRequest,
@@ -1824,7 +1789,7 @@ GetDefaultGroupPhotoEmojisRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xae, 0x60, 0x58, 0x91)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1842,12 +1807,11 @@ GetDefaultGroupPhotoEmojisRequest <- R6::R6Class(
 )
 
 
-#  @title GetDefaultProfilePhotoEmojisRequest
-#  @description R6 class representing a GetDefaultProfilePhotoEmojisRequest.
-#  @details This class handles requesting default profile photo emojis with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultProfilePhotoEmojisRequest
+#' @description Telegram API request \code{account.getDefaultProfilePhotoEmojis} (constructor \code{#e2750328}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultProfilePhotoEmojisRequest <- R6::R6Class(
   "GetDefaultProfilePhotoEmojisRequest",
   inherit = TLRequest,
@@ -1877,7 +1841,7 @@ GetDefaultProfilePhotoEmojisRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x28, 0x03, 0x75, 0xe2)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -1894,12 +1858,11 @@ GetDefaultProfilePhotoEmojisRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetGlobalPrivacySettingsRequest
-#  @description R6 class representing a GetGlobalPrivacySettingsRequest.
-#  @details This class handles requesting global privacy settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGlobalPrivacySettingsRequest
+#' @description Telegram API request \code{account.getGlobalPrivacySettings} (constructor \code{#eb2b4cf6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGlobalPrivacySettingsRequest <- R6::R6Class(
   "GetGlobalPrivacySettingsRequest",
   inherit = TLRequest,
@@ -1935,12 +1898,11 @@ GetGlobalPrivacySettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetMultiWallPapersRequest
-#  @description R6 class representing a GetMultiWallPapersRequest.
-#  @details This class handles requesting multiple wallpapers.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMultiWallPapersRequest
+#' @description Telegram API request \code{account.getMultiWallPapers} (constructor \code{#65ad71dc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMultiWallPapersRequest <- R6::R6Class(
   "GetMultiWallPapersRequest",
   inherit = TLRequest,
@@ -1995,12 +1957,11 @@ GetMultiWallPapersRequest <- R6::R6Class(
 )
 
 
-#  @title GetNotifyExceptionsRequest
-#  @description R6 class representing a GetNotifyExceptionsRequest.
-#  @details This class handles requesting notification exceptions with optional compare flags and peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetNotifyExceptionsRequest
+#' @description Telegram API request \code{account.getNotifyExceptions} (constructor \code{#53577479}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetNotifyExceptionsRequest <- R6::R6Class(
   "GetNotifyExceptionsRequest",
   inherit = TLRequest,
@@ -2069,12 +2030,11 @@ GetNotifyExceptionsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetNotifySettingsRequest
-#  @description R6 class representing a GetNotifySettingsRequest.
-#  @details This class handles requesting notification settings for a peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetNotifySettingsRequest
+#' @description Telegram API request \code{account.getNotifySettings} (constructor \code{#12b3ad31}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetNotifySettingsRequest <- R6::R6Class(
   "GetNotifySettingsRequest",
   inherit = TLRequest,
@@ -2128,12 +2088,11 @@ GetNotifySettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetPaidMessagesRevenueRequest
-#  @description R6 class representing a GetPaidMessagesRevenueRequest.
-#  @details This class handles requesting paid messages revenue for a user with optional parent peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPaidMessagesRevenueRequest
+#' @description Telegram API request \code{account.getPaidMessagesRevenue} (constructor \code{#19ba4a67}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPaidMessagesRevenueRequest <- R6::R6Class(
   "GetPaidMessagesRevenueRequest",
   inherit = TLRequest,
@@ -2199,12 +2158,11 @@ GetPaidMessagesRevenueRequest <- R6::R6Class(
 )
 
 
-#  @title GetPasswordRequest
-#  @description R6 class representing a GetPasswordRequest.
-#  @details This class handles requesting the current password information.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPasswordRequest
+#' @description Telegram API request \code{account.getPassword} (constructor \code{#548a30f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPasswordRequest <- R6::R6Class(
   "GetPasswordRequest",
   inherit = TLRequest,
@@ -2240,12 +2198,11 @@ GetPasswordRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetPasswordSettingsRequest
-#  @description R6 class representing a GetPasswordSettingsRequest.
-#  @details This class handles requesting password settings with a password input.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPasswordSettingsRequest
+#' @description Telegram API request \code{account.getPasswordSettings} (constructor \code{#9cd4eaf9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPasswordSettingsRequest <- R6::R6Class(
   "GetPasswordSettingsRequest",
   inherit = TLRequest,
@@ -2292,12 +2249,11 @@ GetPasswordSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetPrivacyRequest
-#  @description R6 class representing a GetPrivacyRequest.
-#  @details This class handles requesting privacy rules for a given key.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPrivacyRequest
+#' @description Telegram API request \code{account.getPrivacy} (constructor \code{#dadbc950}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPrivacyRequest <- R6::R6Class(
   "GetPrivacyRequest",
   inherit = TLRequest,
@@ -2344,12 +2300,11 @@ GetPrivacyRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetReactionsNotifySettingsRequest
-#  @description R6 class representing a GetReactionsNotifySettingsRequest.
-#  @details This class handles requesting reactions notify settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetReactionsNotifySettingsRequest
+#' @description Telegram API request \code{account.getReactionsNotifySettings} (constructor \code{#06dd654c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetReactionsNotifySettingsRequest <- R6::R6Class(
   "GetReactionsNotifySettingsRequest",
   inherit = TLRequest,
@@ -2370,7 +2325,7 @@ GetReactionsNotifySettingsRequest <- R6::R6Class(
     #  @description Serialize to bytes.
     #  @return Raw bytes.
     bytes = function() {
-      as.raw(c(0x4c, 0xd6, 0xdd, 0x06))
+      as.raw(c(0x4c, 0x65, 0xdd, 0x06))
     },
 
     #  @description Create from reader.
@@ -2386,12 +2341,11 @@ GetReactionsNotifySettingsRequest <- R6::R6Class(
 )
 
 
-#  @title GetRecentEmojiStatusesRequest
-#  @description R6 class representing a GetRecentEmojiStatusesRequest.
-#  @details This class handles requesting recent emoji statuses with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRecentEmojiStatusesRequest
+#' @description Telegram API request \code{account.getRecentEmojiStatuses} (constructor \code{#0f578105}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRecentEmojiStatusesRequest <- R6::R6Class(
   "GetRecentEmojiStatusesRequest",
   inherit = TLRequest,
@@ -2421,7 +2375,7 @@ GetRecentEmojiStatusesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x05, 0x81, 0x57, 0x0f)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -2438,12 +2392,11 @@ GetRecentEmojiStatusesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetSavedMusicIdsRequest
-#  @description R6 class representing a GetSavedMusicIdsRequest.
-#  @details This class handles requesting saved music IDs with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedMusicIdsRequest
+#' @description Telegram API request \code{account.getSavedMusicIds} (constructor \code{#e09d5faf}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedMusicIdsRequest <- R6::R6Class(
   "GetSavedMusicIdsRequest",
   inherit = TLRequest,
@@ -2473,7 +2426,7 @@ GetSavedMusicIdsRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xaf, 0x5f, 0x9d, 0xe0)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -2490,12 +2443,11 @@ GetSavedMusicIdsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetSavedRingtonesRequest
-#  @description R6 class representing a GetSavedRingtonesRequest.
-#  @details This class handles requesting saved ringtones with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedRingtonesRequest
+#' @description Telegram API request \code{account.getSavedRingtones} (constructor \code{#e1902288}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedRingtonesRequest <- R6::R6Class(
   "GetSavedRingtonesRequest",
   inherit = TLRequest,
@@ -2525,7 +2477,7 @@ GetSavedRingtonesRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x88, 0x22, 0x90, 0xe1)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -2543,12 +2495,11 @@ GetSavedRingtonesRequest <- R6::R6Class(
 )
 
 
-#  @title GetSecureValueRequest
-#  @description R6 class representing a GetSecureValueRequest.
-#  @details This class handles requesting secure values for specified types.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSecureValueRequest
+#' @description Telegram API request \code{account.getSecureValue} (constructor \code{#73665bc2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSecureValueRequest <- R6::R6Class(
   "GetSecureValueRequest",
   inherit = TLRequest,
@@ -2602,12 +2553,11 @@ GetSecureValueRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetThemeRequest
-#  @description R6 class representing a GetThemeRequest.
-#  @details This class handles requesting a theme with specified format and theme input.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetThemeRequest
+#' @description Telegram API request \code{account.getTheme} (constructor \code{#3a5869ec}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetThemeRequest <- R6::R6Class(
   "GetThemeRequest",
   inherit = TLRequest,
@@ -2659,12 +2609,11 @@ GetThemeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetThemesRequest
-#  @description R6 class representing a GetThemesRequest.
-#  @details This class handles requesting themes with specified format and hash.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetThemesRequest
+#' @description Telegram API request \code{account.getThemes} (constructor \code{#7206e458}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetThemesRequest <- R6::R6Class(
   "GetThemesRequest",
   inherit = TLRequest,
@@ -2698,7 +2647,7 @@ GetThemesRequest <- R6::R6Class(
       c(
         as.raw(c(0x58, 0xe4, 0x06, 0x72)),
         self$serialize_bytes(self$format),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -2717,12 +2666,11 @@ GetThemesRequest <- R6::R6Class(
 )
 
 
-#  @title GetTmpPasswordRequest
-#  @description R6 class representing a GetTmpPasswordRequest.
-#  @details This class handles requesting a temporary password with a password and period.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetTmpPasswordRequest
+#' @description Telegram API request \code{account.getTmpPassword} (constructor \code{#449e0b51}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetTmpPasswordRequest <- R6::R6Class(
   "GetTmpPasswordRequest",
   inherit = TLRequest,
@@ -2774,74 +2722,67 @@ GetTmpPasswordRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetUniqueGiftChatThemesRequest
-#  @description R6 class representing a GetUniqueGiftChatThemesRequest.
-#  @details This class handles requesting unique gift chat themes with offset, limit, and hash.
-#  @export
-#  @noRd
-#  @noRd
-GetUniqueGiftChatThemesRequest <- R6::R6Class(
-  "GetUniqueGiftChatThemesRequest",
+#' @title GetUniqueGiftChatThemesRequest
+#' @description Telegram API request \code{account.getUniqueGiftChatThemes} (constructor \code{#e42ce9c9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+GetUniqueGiftChatThemesRequest <- R6::R6Class("GetUniqueGiftChatThemesRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID for the request.
-    CONSTRUCTOR_ID = 0xfe74ef9f,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xe42ce9c9,
     SUBCLASS_OF_ID = 0x15c14aa8,
-
-    #  @description Initialize the GetUniqueGiftChatThemesRequest.
-    #  @param offset The offset for pagination.
-    #  @param limit The limit for the number of themes.
-    #  @param hash The hash for caching.
+    offset = NULL,
+    limit = NULL,
+    hash = NULL,
     initialize = function(offset, limit, hash) {
       self$offset <- offset
       self$limit <- limit
       self$hash <- hash
     },
-
-    #  @description Convert to dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "GetUniqueGiftChatThemesRequest",
-        offset = self$offset,
-        limit = self$limit,
-        hash = self$hash
+        `_` = "GetUniqueGiftChatThemesRequest",
+        "offset" = if (inherits(self$offset, "TLObject")) self$offset$toDict() else self$offset,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$toDict() else self$limit,
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$toDict() else self$hash
       )
     },
-
-    #  @description Serialize to bytes.
-    #  @return Raw bytes.
+    to_list = function() {
+      list(
+        `_` = "GetUniqueGiftChatThemesRequest",
+        "offset" = if (inherits(self$offset, "TLObject")) self$offset$toDict() else self$offset,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$toDict() else self$limit,
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$toDict() else self$hash
+      )
+    },
     bytes = function() {
       c(
-        as.raw(c(0x9f, 0xef, 0x74, 0xfe)),
-        writeBin(as.integer(self$offset), raw(), size = 4, endian = "little"),
-        writeBin(as.integer(self$limit), raw(), size = 4, endian = "little"),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        as.raw(c(0xc9, 0xe9, 0x2c, 0xe4)),
+        serialize_bytes(self$offset),
+        pack("<i", self$limit),
+        packInt64(self$hash)
       )
     },
-
-    #  @description Create from reader.
-    #  @param reader The reader object.
-    #  @return An instance of GetUniqueGiftChatThemesRequest.
-    fromReader = function(reader) {
-      offset <- readBin(reader$readRaw(4), "integer", size = 4, endian = "little")
-      limit <- readBin(reader$readRaw(4), "integer", size = 4, endian = "little")
-      hash <- readBin(reader$readRaw(8), "integer", size = 8, endian = "little")
-      GetUniqueGiftChatThemesRequest$new(offset = offset, limit = limit, hash = hash)
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$offset <- reader$tgread_string()
+      self$limit <- reader$read_int()
+      self$hash <- reader$read_long()
+      self
     }
   ),
-  private = list(),
-  active = list(),
+  class = TRUE,
   lock_objects = FALSE
 )
 
-#  @title GetWallPaperRequest
-#  @description R6 class representing a GetWallPaperRequest.
-#  @details This class handles requesting a wallpaper.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetWallPaperRequest
+#' @description Telegram API request \code{account.getWallPaper} (constructor \code{#fc8ddbea}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetWallPaperRequest <- R6::R6Class(
   "GetWallPaperRequest",
   inherit = TLRequest,
@@ -2889,12 +2830,11 @@ GetWallPaperRequest <- R6::R6Class(
 )
 
 
-#  @title GetWallPapersRequest
-#  @description R6 class representing a GetWallPapersRequest.
-#  @details This class handles requesting wallpapers with a hash for caching.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetWallPapersRequest
+#' @description Telegram API request \code{account.getWallPapers} (constructor \code{#07967d36}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetWallPapersRequest <- R6::R6Class(
   "GetWallPapersRequest",
   inherit = TLRequest,
@@ -2924,7 +2864,7 @@ GetWallPapersRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x36, 0x7d, 0x96, 0x07)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -2941,12 +2881,11 @@ GetWallPapersRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title GetWebAuthorizationsRequest
-#  @description R6 class representing a GetWebAuthorizationsRequest.
-#  @details This class handles requesting web authorizations.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetWebAuthorizationsRequest
+#' @description Telegram API request \code{account.getWebAuthorizations} (constructor \code{#182e6d6f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetWebAuthorizationsRequest <- R6::R6Class(
   "GetWebAuthorizationsRequest",
   inherit = TLRequest,
@@ -2982,12 +2921,11 @@ GetWebAuthorizationsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title InitTakeoutSessionRequest
-#  @description R6 class representing an InitTakeoutSessionRequest.
-#  @details This class handles initializing a takeout session with various options.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InitTakeoutSessionRequest
+#' @description Telegram API request \code{account.initTakeoutSession} (constructor \code{#8ef3eab0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InitTakeoutSessionRequest <- R6::R6Class(
   "InitTakeoutSessionRequest",
   inherit = TLRequest,
@@ -3043,7 +2981,7 @@ InitTakeoutSessionRequest <- R6::R6Class(
       c(
         as.raw(c(0xb0, 0xea, 0xf3, 0x8e)),
         writeBin(as.integer(flags), raw(), size = 4, endian = "little"),
-        if (!is.null(self$fileMaxSize) && self$fileMaxSize != 0) writeBin(as.integer(self$fileMaxSize), raw(), size = 8, endian = "little") else raw()
+        if (!is.null(self$fileMaxSize) && self$fileMaxSize != 0) packInt64(self$fileMaxSize) else raw()
       )
     },
 
@@ -3068,12 +3006,11 @@ InitTakeoutSessionRequest <- R6::R6Class(
 )
 
 
-#  @title InstallThemeRequest
-#  @description R6 class representing an InstallThemeRequest.
-#  @details This class handles installing a theme with optional dark mode, theme, format, and base theme.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InstallThemeRequest
+#' @description Telegram API request \code{account.installTheme} (constructor \code{#c727bb3b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InstallThemeRequest <- R6::R6Class(
   "InstallThemeRequest",
   inherit = TLRequest,
@@ -3140,12 +3077,11 @@ InstallThemeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title InstallWallPaperRequest
-#  @description R6 class representing an InstallWallPaperRequest.
-#  @details This class handles installing a wallpaper with settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InstallWallPaperRequest
+#' @description Telegram API request \code{account.installWallPaper} (constructor \code{#feed5769}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InstallWallPaperRequest <- R6::R6Class(
   "InstallWallPaperRequest",
   inherit = TLRequest,
@@ -3197,12 +3133,11 @@ InstallWallPaperRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title InvalidateSignInCodesRequest
-#  @description R6 class representing an InvalidateSignInCodesRequest.
-#  @details This class handles invalidating sign-in codes.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InvalidateSignInCodesRequest
+#' @description Telegram API request \code{account.invalidateSignInCodes} (constructor \code{#ca8ae8ba}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvalidateSignInCodesRequest <- R6::R6Class(
   "InvalidateSignInCodesRequest",
   inherit = TLRequest,
@@ -3257,12 +3192,11 @@ InvalidateSignInCodesRequest <- R6::R6Class(
 )
 
 
-#  @title RegisterDeviceRequest
-#  @description R6 class representing a RegisterDeviceRequest.
-#  @details This class handles registering a device with token details, app sandbox status, secret, and other user IDs.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RegisterDeviceRequest
+#' @description Telegram API request \code{account.registerDevice} (constructor \code{#ec86017a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RegisterDeviceRequest <- R6::R6Class(
   "RegisterDeviceRequest",
   inherit = TLRequest,
@@ -3315,7 +3249,7 @@ RegisterDeviceRequest <- R6::R6Class(
         self$serialize_bytes(self$secret),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
         writeBin(length(self$otherUids), raw(), size = 4, endian = "little"),
-        do.call(c, lapply(self$otherUids, function(x) writeBin(as.integer(x), raw(), size = 8, endian = "little")))
+        do.call(c, lapply(self$otherUids, function(x) packInt64(x)))
       )
     },
 
@@ -3343,12 +3277,11 @@ RegisterDeviceRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ReorderUsernamesRequest
-#  @description R6 class representing a ReorderUsernamesRequest.
-#  @details This class handles reordering usernames.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderUsernamesRequest
+#' @description Telegram API request \code{account.reorderUsernames} (constructor \code{#ef500eab}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderUsernamesRequest <- R6::R6Class(
   "ReorderUsernamesRequest",
   inherit = TLRequest,
@@ -3402,12 +3335,11 @@ ReorderUsernamesRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ReportPeerRequest
-#  @description R6 class representing a ReportPeerRequest.
-#  @details This class handles reporting a peer with a reason and message.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportPeerRequest
+#' @description Telegram API request \code{account.reportPeer} (constructor \code{#c5ba3d86}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportPeerRequest <- R6::R6Class(
   "ReportPeerRequest",
   inherit = TLRequest,
@@ -3472,12 +3404,11 @@ ReportPeerRequest <- R6::R6Class(
 )
 
 
-#  @title ReportProfilePhotoRequest
-#  @description R6 class representing a ReportProfilePhotoRequest.
-#  @details This class handles reporting a profile photo with a peer, photo ID, reason, and message.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportProfilePhotoRequest
+#' @description Telegram API request \code{account.reportProfilePhoto} (constructor \code{#fa8cc6f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportProfilePhotoRequest <- R6::R6Class(
   "ReportProfilePhotoRequest",
   inherit = TLRequest,
@@ -3547,12 +3478,11 @@ ReportProfilePhotoRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResendPasswordEmailRequest
-#  @description R6 class representing a ResendPasswordEmailRequest.
-#  @details This class handles resending the password email.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResendPasswordEmailRequest
+#' @description Telegram API request \code{account.resendPasswordEmail} (constructor \code{#7a7f2a15}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResendPasswordEmailRequest <- R6::R6Class(
   "ResendPasswordEmailRequest",
   inherit = TLRequest,
@@ -3588,12 +3518,11 @@ ResendPasswordEmailRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResetAuthorizationRequest
-#  @description R6 class representing a ResetAuthorizationRequest.
-#  @details This class handles resetting authorization with a hash.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetAuthorizationRequest
+#' @description Telegram API request \code{account.resetAuthorization} (constructor \code{#df77f3bc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetAuthorizationRequest <- R6::R6Class(
   "ResetAuthorizationRequest",
   inherit = TLRequest,
@@ -3623,7 +3552,7 @@ ResetAuthorizationRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xbc, 0xf3, 0x77, 0xdf)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -3641,12 +3570,11 @@ ResetAuthorizationRequest <- R6::R6Class(
 )
 
 
-#  @title ResetNotifySettingsRequest
-#  @description R6 class representing a ResetNotifySettingsRequest.
-#  @details This class handles resetting notification settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetNotifySettingsRequest
+#' @description Telegram API request \code{account.resetNotifySettings} (constructor \code{#db7e1747}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetNotifySettingsRequest <- R6::R6Class(
   "ResetNotifySettingsRequest",
   inherit = TLRequest,
@@ -3682,12 +3610,11 @@ ResetNotifySettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResetPasswordRequest
-#  @description R6 class representing a ResetPasswordRequest.
-#  @details This class handles resetting the password.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetPasswordRequest
+#' @description Telegram API request \code{account.resetPassword} (constructor \code{#9308ce1b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetPasswordRequest <- R6::R6Class(
   "ResetPasswordRequest",
   inherit = TLRequest,
@@ -3723,12 +3650,11 @@ ResetPasswordRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResetWallPapersRequest
-#  @description R6 class representing a ResetWallPapersRequest.
-#  @details This class handles resetting wallpapers.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetWallPapersRequest
+#' @description Telegram API request \code{account.resetWallPapers} (constructor \code{#bb3b9804}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetWallPapersRequest <- R6::R6Class(
   "ResetWallPapersRequest",
   inherit = TLRequest,
@@ -3764,12 +3690,11 @@ ResetWallPapersRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResetWebAuthorizationRequest
-#  @description R6 class representing a ResetWebAuthorizationRequest.
-#  @details This class handles resetting web authorization with a hash.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetWebAuthorizationRequest
+#' @description Telegram API request \code{account.resetWebAuthorization} (constructor \code{#2d01b9ef}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetWebAuthorizationRequest <- R6::R6Class(
   "ResetWebAuthorizationRequest",
   inherit = TLRequest,
@@ -3799,7 +3724,7 @@ ResetWebAuthorizationRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0xef, 0xb9, 0x01, 0x2d)),
-        writeBin(as.integer(self$hash), raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     },
 
@@ -3817,12 +3742,11 @@ ResetWebAuthorizationRequest <- R6::R6Class(
 )
 
 
-#  @title ResetWebAuthorizationsRequest
-#  @description R6 class representing a ResetWebAuthorizationsRequest.
-#  @details This class handles resetting web authorizations.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetWebAuthorizationsRequest
+#' @description Telegram API request \code{account.resetWebAuthorizations} (constructor \code{#682d2594}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetWebAuthorizationsRequest <- R6::R6Class(
   "ResetWebAuthorizationsRequest",
   inherit = TLRequest,
@@ -3853,12 +3777,11 @@ ResetWebAuthorizationsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ResolveBusinessChatLinkRequest
-#  @description R6 class representing a ResolveBusinessChatLinkRequest.
-#  @details This class handles resolving a business chat link with a slug.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResolveBusinessChatLinkRequest
+#' @description Telegram API request \code{account.resolveBusinessChatLink} (constructor \code{#5492e5ee}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResolveBusinessChatLinkRequest <- R6::R6Class(
   "ResolveBusinessChatLinkRequest",
   inherit = TLRequest,
@@ -3900,12 +3823,11 @@ ResolveBusinessChatLinkRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SaveAutoDownloadSettingsRequest
-#  @description R6 class representing a SaveAutoDownloadSettingsRequest.
-#  @details This class handles saving auto-download settings with optional low and high flags.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveAutoDownloadSettingsRequest
+#' @description Telegram API request \code{account.saveAutoDownloadSettings} (constructor \code{#76f36233}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveAutoDownloadSettingsRequest <- R6::R6Class(
   "SaveAutoDownloadSettingsRequest",
   inherit = TLRequest,
@@ -3960,12 +3882,11 @@ SaveAutoDownloadSettingsRequest <- R6::R6Class(
 )
 
 
-#  @title SaveAutoSaveSettingsRequest
-#  @description R6 class representing a SaveAutoSaveSettingsRequest.
-#  @details This class handles saving auto-save settings with optional flags for users, chats, broadcasts, and a peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveAutoSaveSettingsRequest
+#' @description Telegram API request \code{account.saveAutoSaveSettings} (constructor \code{#d69b8361}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveAutoSaveSettingsRequest <- R6::R6Class(
   "SaveAutoSaveSettingsRequest",
   inherit = TLRequest,
@@ -4039,12 +3960,11 @@ SaveAutoSaveSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SaveMusicRequest
-#  @description R6 class representing a SaveMusicRequest.
-#  @details This class handles saving or unsaving music with an optional after ID.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveMusicRequest
+#' @description Telegram API request \code{account.saveMusic} (constructor \code{#b26732a9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveMusicRequest <- R6::R6Class(
   "SaveMusicRequest",
   inherit = TLRequest,
@@ -4109,12 +4029,11 @@ SaveMusicRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SaveRingtoneRequest
-#  @description R6 class representing a SaveRingtoneRequest.
-#  @details This class handles saving or unsaving a ringtone.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveRingtoneRequest
+#' @description Telegram API request \code{account.saveRingtone} (constructor \code{#3dea5b03}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveRingtoneRequest <- R6::R6Class(
   "SaveRingtoneRequest",
   inherit = TLRequest,
@@ -4169,12 +4088,11 @@ SaveRingtoneRequest <- R6::R6Class(
 )
 
 
-#  @title SaveSecureValueRequest
-#  @description R6 class representing a SaveSecureValueRequest.
-#  @details This class handles saving a secure value with a secure secret ID.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveSecureValueRequest
+#' @description Telegram API request \code{account.saveSecureValue} (constructor \code{#899fe31d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveSecureValueRequest <- R6::R6Class(
   "SaveSecureValueRequest",
   inherit = TLRequest,
@@ -4203,7 +4121,7 @@ SaveSecureValueRequest <- R6::R6Class(
       c(
         as.raw(c(0x1d, 0xe3, 0x9f, 0x89)),
         self$value$bytes(),
-        writeBin(as.integer(self$secureSecretId), raw(), size = 8, endian = "little")
+        packInt64(self$secureSecretId)
       )
     },
 
@@ -4221,12 +4139,11 @@ SaveSecureValueRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SaveThemeRequest
-#  @description R6 class representing a SaveThemeRequest.
-#  @details This class handles saving or unsaving a theme.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveThemeRequest
+#' @description Telegram API request \code{account.saveTheme} (constructor \code{#f257106c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveThemeRequest <- R6::R6Class(
   "SaveThemeRequest",
   inherit = TLRequest,
@@ -4273,12 +4190,11 @@ SaveThemeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SaveWallPaperRequest
-#  @description R6 class representing a SaveWallPaperRequest.
-#  @details This class handles saving or unsaving a wallpaper with settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveWallPaperRequest
+#' @description Telegram API request \code{account.saveWallPaper} (constructor \code{#6c5a5b37}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveWallPaperRequest <- R6::R6Class(
   "SaveWallPaperRequest",
   inherit = TLRequest,
@@ -4331,12 +4247,11 @@ SaveWallPaperRequest <- R6::R6Class(
 )
 
 
-#  @title SendChangePhoneCodeRequest
-#  @description R6 class representing a SendChangePhoneCodeRequest.
-#  @details This class handles sending a change phone code request with phone number and settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendChangePhoneCodeRequest
+#' @description Telegram API request \code{account.sendChangePhoneCode} (constructor \code{#82574ae5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendChangePhoneCodeRequest <- R6::R6Class(
   "SendChangePhoneCodeRequest",
   inherit = TLRequest,
@@ -4383,12 +4298,11 @@ SendChangePhoneCodeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SendConfirmPhoneCodeRequest
-#  @description R6 class representing a SendConfirmPhoneCodeRequest.
-#  @details This class handles sending a confirm phone code request with hash and settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendConfirmPhoneCodeRequest
+#' @description Telegram API request \code{account.sendConfirmPhoneCode} (constructor \code{#1b3faa88}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendConfirmPhoneCodeRequest <- R6::R6Class(
   "SendConfirmPhoneCodeRequest",
   inherit = TLRequest,
@@ -4435,12 +4349,11 @@ SendConfirmPhoneCodeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SendVerifyEmailCodeRequest
-#  @description R6 class representing a SendVerifyEmailCodeRequest.
-#  @details This class handles sending a verify email code request with purpose and email.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendVerifyEmailCodeRequest
+#' @description Telegram API request \code{account.sendVerifyEmailCode} (constructor \code{#98e037bb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendVerifyEmailCodeRequest <- R6::R6Class(
   "SendVerifyEmailCodeRequest",
   inherit = TLRequest,
@@ -4488,12 +4401,11 @@ SendVerifyEmailCodeRequest <- R6::R6Class(
 )
 
 
-#  @title SendVerifyPhoneCodeRequest
-#  @description R6 class representing a SendVerifyPhoneCodeRequest.
-#  @details This class handles sending a verification code to a phone number for verification purposes.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendVerifyPhoneCodeRequest
+#' @description Telegram API request \code{account.sendVerifyPhoneCode} (constructor \code{#a5a356f9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendVerifyPhoneCodeRequest <- R6::R6Class(
   "SendVerifyPhoneCodeRequest",
   inherit = TLRequest,
@@ -4540,12 +4452,11 @@ SendVerifyPhoneCodeRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetAccountTTLRequest
-#  @description R6 class representing a SetAccountTTLRequest.
-#  @details This class handles setting the account TTL (time to live) for messages.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetAccountTTLRequest
+#' @description Telegram API request \code{account.setAccountTTL} (constructor \code{#2442485e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetAccountTTLRequest <- R6::R6Class(
   "SetAccountTTLRequest",
   inherit = TLRequest,
@@ -4587,12 +4498,11 @@ SetAccountTTLRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetAuthorizationTTLRequest
-#  @description R6 class representing a SetAuthorizationTTLRequest.
-#  @details This class handles setting the authorization TTL in days.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetAuthorizationTTLRequest
+#' @description Telegram API request \code{account.setAuthorizationTTL} (constructor \code{#bf899aa0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetAuthorizationTTLRequest <- R6::R6Class(
   "SetAuthorizationTTLRequest",
   inherit = TLRequest,
@@ -4634,12 +4544,11 @@ SetAuthorizationTTLRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetContactSignUpNotificationRequest
-#  @description R6 class representing a SetContactSignUpNotificationRequest.
-#  @details This class handles setting contact sign-up notification settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetContactSignUpNotificationRequest
+#' @description Telegram API request \code{account.setContactSignUpNotification} (constructor \code{#cff43f61}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetContactSignUpNotificationRequest <- R6::R6Class(
   "SetContactSignUpNotificationRequest",
   inherit = TLRequest,
@@ -4681,12 +4590,11 @@ SetContactSignUpNotificationRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetContentSettingsRequest
-#  @description R6 class representing a SetContentSettingsRequest.
-#  @details This class handles setting content settings, such as sensitive content enabled.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetContentSettingsRequest
+#' @description Telegram API request \code{account.setContentSettings} (constructor \code{#b574b16b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetContentSettingsRequest <- R6::R6Class(
   "SetContentSettingsRequest",
   inherit = TLRequest,
@@ -4730,12 +4638,11 @@ SetContentSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetGlobalPrivacySettingsRequest
-#  @description R6 class representing a SetGlobalPrivacySettingsRequest.
-#  @details This class handles setting global privacy settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetGlobalPrivacySettingsRequest
+#' @description Telegram API request \code{account.setGlobalPrivacySettings} (constructor \code{#1edaaac2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetGlobalPrivacySettingsRequest <- R6::R6Class(
   "SetGlobalPrivacySettingsRequest",
   inherit = TLRequest,
@@ -4778,12 +4685,11 @@ SetGlobalPrivacySettingsRequest <- R6::R6Class(
 )
 
 
-#  @title SetMainProfileTabRequest
-#  @description R6 class representing a SetMainProfileTabRequest.
-#  @details This class handles setting the main profile tab.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetMainProfileTabRequest
+#' @description Telegram API request \code{account.setMainProfileTab} (constructor \code{#5dee78b0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetMainProfileTabRequest <- R6::R6Class(
   "SetMainProfileTabRequest",
   inherit = TLRequest,
@@ -4825,12 +4731,11 @@ SetMainProfileTabRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetPrivacyRequest
-#  @description R6 class representing a SetPrivacyRequest.
-#  @details This class handles setting privacy rules for a key.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetPrivacyRequest
+#' @description Telegram API request \code{account.setPrivacy} (constructor \code{#c9f81ce8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetPrivacyRequest <- R6::R6Class(
   "SetPrivacyRequest",
   inherit = TLRequest,
@@ -4884,12 +4789,11 @@ SetPrivacyRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title SetReactionsNotifySettingsRequest
-#  @description R6 class representing a SetReactionsNotifySettingsRequest.
-#  @details This class handles setting reactions notify settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetReactionsNotifySettingsRequest
+#' @description Telegram API request \code{account.setReactionsNotifySettings} (constructor \code{#316ce548}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetReactionsNotifySettingsRequest <- R6::R6Class(
   "SetReactionsNotifySettingsRequest",
   inherit = TLRequest,
@@ -4932,12 +4836,11 @@ SetReactionsNotifySettingsRequest <- R6::R6Class(
 )
 
 
-#  @title ToggleConnectedBotPausedRequest
-#  @description R6 class representing a ToggleConnectedBotPausedRequest.
-#  @details This class handles toggling the paused state of a connected bot for a peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleConnectedBotPausedRequest
+#' @description Telegram API request \code{account.toggleConnectedBotPaused} (constructor \code{#646e1097}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleConnectedBotPausedRequest <- R6::R6Class(
   "ToggleConnectedBotPausedRequest",
   inherit = TLRequest,
@@ -4991,12 +4894,11 @@ ToggleConnectedBotPausedRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ToggleNoPaidMessagesExceptionRequest
-#  @description R6 class representing a ToggleNoPaidMessagesExceptionRequest.
-#  @details This class handles toggling the no paid messages exception for a user.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleNoPaidMessagesExceptionRequest
+#' @description Telegram API request \code{account.toggleNoPaidMessagesException} (constructor \code{#fe2eda76}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleNoPaidMessagesExceptionRequest <- R6::R6Class(
   "ToggleNoPaidMessagesExceptionRequest",
   inherit = TLRequest,
@@ -5066,12 +4968,11 @@ ToggleNoPaidMessagesExceptionRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title ToggleSponsoredMessagesRequest
-#  @description R6 class representing a ToggleSponsoredMessagesRequest.
-#  @details This class handles toggling sponsored messages.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleSponsoredMessagesRequest
+#' @description Telegram API request \code{account.toggleSponsoredMessages} (constructor \code{#b9d9a38d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleSponsoredMessagesRequest <- R6::R6Class(
   "ToggleSponsoredMessagesRequest",
   inherit = TLRequest,
@@ -5114,12 +5015,11 @@ ToggleSponsoredMessagesRequest <- R6::R6Class(
 )
 
 
-#  @title ToggleUsernameRequest
-#  @description R6 class representing a ToggleUsernameRequest.
-#  @details This class handles toggling the active status of a username.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleUsernameRequest
+#' @description Telegram API request \code{account.toggleUsername} (constructor \code{#58d6b376}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleUsernameRequest <- R6::R6Class(
   "ToggleUsernameRequest",
   inherit = TLRequest,
@@ -5166,12 +5066,11 @@ ToggleUsernameRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UnregisterDeviceRequest
-#  @description R6 class representing an UnregisterDeviceRequest.
-#  @details This class handles unregistering a device with token details and other UIDs.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UnregisterDeviceRequest
+#' @description Telegram API request \code{account.unregisterDevice} (constructor \code{#6a0d3206}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UnregisterDeviceRequest <- R6::R6Class(
   "UnregisterDeviceRequest",
   inherit = TLRequest,
@@ -5206,7 +5105,7 @@ UnregisterDeviceRequest <- R6::R6Class(
         self$serialize_bytes(self$token),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
         writeBin(as.integer(length(self$otherUids)), raw(), size = 4, endian = "little"),
-        do.call(c, lapply(self$otherUids, function(x) writeBin(as.numeric(x), raw(), size = 8, endian = "little")))
+        do.call(c, lapply(self$otherUids, function(x) packInt64(x)))
       )
     },
 
@@ -5230,12 +5129,11 @@ UnregisterDeviceRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateBirthdayRequest
-#  @description R6 class representing an UpdateBirthdayRequest.
-#  @details This class handles updating the user's birthday.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBirthdayRequest
+#' @description Telegram API request \code{account.updateBirthday} (constructor \code{#cc6e0c11}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBirthdayRequest <- R6::R6Class(
   "UpdateBirthdayRequest",
   inherit = TLRequest,
@@ -5281,12 +5179,11 @@ UpdateBirthdayRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateBusinessAwayMessageRequest
-#  @description R6 class representing an UpdateBusinessAwayMessageRequest.
-#  @details This class handles updating the business away message with an optional input business away message.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBusinessAwayMessageRequest
+#' @description Telegram API request \code{account.updateBusinessAwayMessage} (constructor \code{#a26a7fa5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBusinessAwayMessageRequest <- R6::R6Class(
   "UpdateBusinessAwayMessageRequest",
   inherit = TLRequest,
@@ -5331,12 +5228,11 @@ UpdateBusinessAwayMessageRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateBusinessGreetingMessageRequest
-#  @description R6 class representing an UpdateBusinessGreetingMessageRequest.
-#  @details This class handles updating the business greeting message with an optional input business greeting message.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBusinessGreetingMessageRequest
+#' @description Telegram API request \code{account.updateBusinessGreetingMessage} (constructor \code{#66cdafc4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBusinessGreetingMessageRequest <- R6::R6Class(
   "UpdateBusinessGreetingMessageRequest",
   inherit = TLRequest,
@@ -5381,12 +5277,11 @@ UpdateBusinessGreetingMessageRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateBusinessIntroRequest
-#  @description R6 class representing an UpdateBusinessIntroRequest.
-#  @details This class handles updating the business intro with an optional input business intro.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBusinessIntroRequest
+#' @description Telegram API request \code{account.updateBusinessIntro} (constructor \code{#a614d034}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBusinessIntroRequest <- R6::R6Class(
   "UpdateBusinessIntroRequest",
   inherit = TLRequest,
@@ -5432,12 +5327,11 @@ UpdateBusinessIntroRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateBusinessLocationRequest
-#  @description R6 class representing an UpdateBusinessLocationRequest.
-#  @details This class handles updating the business location with optional geo point and address.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBusinessLocationRequest
+#' @description Telegram API request \code{account.updateBusinessLocation} (constructor \code{#9e6b131a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBusinessLocationRequest <- R6::R6Class(
   "UpdateBusinessLocationRequest",
   inherit = TLRequest,
@@ -5487,12 +5381,11 @@ UpdateBusinessLocationRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateBusinessWorkHoursRequest
-#  @description R6 class representing an UpdateBusinessWorkHoursRequest.
-#  @details This class handles updating the business work hours.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateBusinessWorkHoursRequest
+#' @description Telegram API request \code{account.updateBusinessWorkHours} (constructor \code{#4b00e066}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateBusinessWorkHoursRequest <- R6::R6Class(
   "UpdateBusinessWorkHoursRequest",
   inherit = TLRequest,
@@ -5537,12 +5430,11 @@ UpdateBusinessWorkHoursRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateColorRequest
-#  @description R6 class representing an UpdateColorRequest.
-#  @details This class handles updating the color settings with optional profile flag, color, and background emoji ID.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateColorRequest
+#' @description Telegram API request \code{account.updateColor} (constructor \code{#684d214e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateColorRequest <- R6::R6Class(
   "UpdateColorRequest",
   inherit = TLRequest,
@@ -5576,7 +5468,7 @@ UpdateColorRequest <- R6::R6Class(
         as.raw(c(0x5d, 0xa1, 0xef, 0x7c)),
         writeBin(as.integer(flags), raw(), size = 4, endian = "little"),
         if (!is.null(self$color)) writeBin(as.integer(self$color), raw(), size = 4, endian = "little") else raw(),
-        if (!is.null(self$backgroundEmojiId)) writeBin(as.integer(self$backgroundEmojiId), raw(), size = 8, endian = "little") else raw()
+        if (!is.null(self$backgroundEmojiId)) packInt64(self$backgroundEmojiId) else raw()
       )
     },
 
@@ -5597,12 +5489,11 @@ UpdateColorRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateConnectedBotRequest
-#  @description R6 class representing an UpdateConnectedBotRequest.
-#  @details This class handles updating a connected bot with recipients, deletion status, and rights.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateConnectedBotRequest
+#' @description Telegram API request \code{account.updateConnectedBot} (constructor \code{#66a08c7e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateConnectedBotRequest <- R6::R6Class(
   "UpdateConnectedBotRequest",
   inherit = TLRequest,
@@ -5669,12 +5560,11 @@ UpdateConnectedBotRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateDeviceLockedRequest
-#  @description R6 class representing an UpdateDeviceLockedRequest.
-#  @details This class handles updating the device locked period.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateDeviceLockedRequest
+#' @description Telegram API request \code{account.updateDeviceLocked} (constructor \code{#38df3532}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateDeviceLockedRequest <- R6::R6Class(
   "UpdateDeviceLockedRequest",
   inherit = TLRequest,
@@ -5716,12 +5606,11 @@ UpdateDeviceLockedRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateEmojiStatusRequest
-#  @description R6 class representing an UpdateEmojiStatusRequest.
-#  @details This class handles updating the emoji status.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateEmojiStatusRequest
+#' @description Telegram API request \code{account.updateEmojiStatus} (constructor \code{#fbd3de6b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateEmojiStatusRequest <- R6::R6Class(
   "UpdateEmojiStatusRequest",
   inherit = TLRequest,
@@ -5764,12 +5653,11 @@ UpdateEmojiStatusRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateNotifySettingsRequest
-#  @description R6 class representing an UpdateNotifySettingsRequest.
-#  @details This class handles updating notification settings for a peer.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateNotifySettingsRequest
+#' @description Telegram API request \code{account.updateNotifySettings} (constructor \code{#84be5b93}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateNotifySettingsRequest <- R6::R6Class(
   "UpdateNotifySettingsRequest",
   inherit = TLRequest,
@@ -5823,12 +5711,11 @@ UpdateNotifySettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdatePasswordSettingsRequest
-#  @description R6 class representing an UpdatePasswordSettingsRequest.
-#  @details This class handles updating password settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdatePasswordSettingsRequest
+#' @description Telegram API request \code{account.updatePasswordSettings} (constructor \code{#a59b102f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdatePasswordSettingsRequest <- R6::R6Class(
   "UpdatePasswordSettingsRequest",
   inherit = TLRequest,
@@ -5875,12 +5762,11 @@ UpdatePasswordSettingsRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdatePersonalChannelRequest
-#  @description R6 class representing an UpdatePersonalChannelRequest.
-#  @details This class handles updating the personal channel.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdatePersonalChannelRequest
+#' @description Telegram API request \code{account.updatePersonalChannel} (constructor \code{#d94305e0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdatePersonalChannelRequest <- R6::R6Class(
   "UpdatePersonalChannelRequest",
   inherit = TLRequest,
@@ -5930,12 +5816,11 @@ UpdatePersonalChannelRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateProfileRequest
-#  @description R6 class representing an UpdateProfileRequest.
-#  @details This class handles updating the user profile information.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateProfileRequest
+#' @description Telegram API request \code{account.updateProfile} (constructor \code{#78515775}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateProfileRequest <- R6::R6Class(
   "UpdateProfileRequest",
   inherit = TLRequest,
@@ -5992,12 +5877,11 @@ UpdateProfileRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateStatusRequest
-#  @description R6 class representing an UpdateStatusRequest.
-#  @details This class handles updating the user status (online/offline).
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateStatusRequest
+#' @description Telegram API request \code{account.updateStatus} (constructor \code{#6628562c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateStatusRequest <- R6::R6Class(
   "UpdateStatusRequest",
   inherit = TLRequest,
@@ -6039,12 +5923,11 @@ UpdateStatusRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UpdateThemeRequest
-#  @description R6 class representing an UpdateThemeRequest.
-#  @details This class handles updating a theme.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateThemeRequest
+#' @description Telegram API request \code{account.updateTheme} (constructor \code{#2bf40ccc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateThemeRequest <- R6::R6Class(
   "UpdateThemeRequest",
   inherit = TLRequest,
@@ -6137,12 +6020,11 @@ UpdateThemeRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateUsernameRequest
-#  @description R6 class representing an UpdateUsernameRequest.
-#  @details This class handles updating the username.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateUsernameRequest
+#' @description Telegram API request \code{account.updateUsername} (constructor \code{#3e0bdd7c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateUsernameRequest <- R6::R6Class(
   "UpdateUsernameRequest",
   inherit = TLRequest,
@@ -6184,12 +6066,11 @@ UpdateUsernameRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UploadRingtoneRequest
-#  @description R6 class representing an UploadRingtoneRequest.
-#  @details This class handles uploading a ringtone.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadRingtoneRequest
+#' @description Telegram API request \code{account.uploadRingtone} (constructor \code{#831a83a2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadRingtoneRequest <- R6::R6Class(
   "UploadRingtoneRequest",
   inherit = TLRequest,
@@ -6241,12 +6122,11 @@ UploadRingtoneRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title UploadThemeRequest
-#  @description R6 class representing an UploadThemeRequest.
-#  @details This class handles uploading a theme.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadThemeRequest
+#' @description Telegram API request \code{account.uploadTheme} (constructor \code{#1c3db333}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadThemeRequest <- R6::R6Class(
   "UploadThemeRequest",
   inherit = TLRequest,
@@ -6307,12 +6187,11 @@ UploadThemeRequest <- R6::R6Class(
 )
 
 
-#  @title UploadWallPaperRequest
-#  @description R6 class representing an UploadWallPaperRequest.
-#  @details This class handles uploading a wallpaper with specified settings.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadWallPaperRequest
+#' @description Telegram API request \code{account.uploadWallPaper} (constructor \code{#e39a8f03}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadWallPaperRequest <- R6::R6Class(
   "UploadWallPaperRequest",
   inherit = TLRequest,
@@ -6358,12 +6237,11 @@ UploadWallPaperRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title VerifyEmailRequest
-#  @description R6 class representing a VerifyEmailRequest.
-#  @details This class handles email verification requests.
-#  @export
-#  @noRd
-#  @noRd
+#' @title VerifyEmailRequest
+#' @description Telegram API request \code{account.verifyEmail} (constructor \code{#032da4cf}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 VerifyEmailRequest <- R6::R6Class(
   "VerifyEmailRequest",
   inherit = TLRequest,
@@ -6401,12 +6279,11 @@ VerifyEmailRequest <- R6::R6Class(
   lock_objects = FALSE
 )
 
-#  @title VerifyPhoneRequest
-#  @description R6 class representing a VerifyPhoneRequest.
-#  @details This class handles phone verification requests.
-#  @export
-#  @noRd
-#  @noRd
+#' @title VerifyPhoneRequest
+#' @description Telegram API request \code{account.verifyPhone} (constructor \code{#4dd3a7f6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 VerifyPhoneRequest <- R6::R6Class(
   "VerifyPhoneRequest",
   inherit = TLRequest,

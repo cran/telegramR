@@ -8,8 +8,7 @@
 #  It provides methods to initialize the container, convert it to a dictionary representation,
 #  and read messages from a binary reader.
 
-#  @noRd
-#  @noRd
+#' @noRd
 MessageContainer <- R6::R6Class(
   "MessageContainer",
   inherit = TLObject,

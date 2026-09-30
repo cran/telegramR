@@ -1,16 +1,8 @@
-#  GetFullUserRequest
-# 
-#  An R6 class representing a request to get full information about a user.
-#  This class inherits from TLRequest and is used to construct and serialize
-#  Telegram API requests for retrieving detailed user data.
-# 
-#    representation accepted by get_input_user. This field is resolved
-#    during the request preparation.
-#  @title GetFullUserRequest
-#  @description Telegram API type GetFullUserRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFullUserRequest
+#' @description Telegram API request \code{users.getFullUser} (constructor \code{#b60f5918}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFullUserRequest <- R6::R6Class(
   "GetFullUserRequest",
   inherit = TLRequest,
@@ -76,11 +68,11 @@ GetFullUserRequest <- R6::R6Class(
 )
 
 
-#  @title GetRequirementsToContactRequest
-#  @description R6 request class to obtain a vector of RequirementToContact objects for multiple users. It serializes the request to Telegram TL bytes and can deserialize from a TL reader. The request resolves plain user references into TLInputUser objects before serialization.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRequirementsToContactRequest
+#' @description Telegram API request \code{users.getRequirementsToContact} (constructor \code{#d89a83a3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRequirementsToContactRequest <- R6::R6Class(
   "GetRequirementsToContactRequest",
   inherit = TLRequest,
@@ -171,15 +163,11 @@ GetRequirementsToContactRequest <- R6::R6Class(
 )
 
 
-#  GetSavedMusicRequest
-# 
-#  Request to get saved music for a user.
-# 
-#  @title GetSavedMusicRequest
-#  @description Telegram API type GetSavedMusicRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedMusicRequest
+#' @description Telegram API request \code{users.getSavedMusic} (constructor \code{#788d7fe3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedMusicRequest <- R6::R6Class(
   "GetSavedMusicRequest",
   inherit = TLRequest,
@@ -254,7 +242,7 @@ GetSavedMusicRequest <- R6::R6Class(
       writeBin(as.integer(self$limit), con, size = 4, endian = "little")
 
       # hash (int64 little-endian). Represented as numeric in R; may lose precision for very large values.
-      writeBin(as.numeric(self$hash), con, size = 8, endian = "little")
+      writeBin(packInt64(self$hash), con)
 
       rawConnectionValue(con)
     },
@@ -273,15 +261,11 @@ GetSavedMusicRequest <- R6::R6Class(
 )
 
 
-#  GetSavedMusicByIDRequest
-# 
-#  Request to get saved music by document IDs for a user.
-# 
-#  @title GetSavedMusicByIDRequest
-#  @description Telegram API type GetSavedMusicByIDRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedMusicByIDRequest
+#' @description Telegram API request \code{users.getSavedMusicByID} (constructor \code{#7573a4e9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedMusicByIDRequest <- R6::R6Class(
   "GetSavedMusicByIDRequest",
   inherit = TLRequest,
@@ -387,11 +371,11 @@ GetSavedMusicByIDRequest <- R6::R6Class(
 )
 
 
-#  @title GetUsersRequest
-#  @description Request to get a vector of users by input user references.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUsersRequest
+#' @description Telegram API request \code{users.getUsers} (constructor \code{#0d91a548}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUsersRequest <- R6::R6Class(
   "GetUsersRequest",
   inherit = TLRequest,
@@ -485,11 +469,11 @@ GetUsersRequest <- R6::R6Class(
 )
 
 
-#  @title SetSecureValueErrorsRequest
-#  @description Represents a request to set secure value errors for a Telegram user.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetSecureValueErrorsRequest
+#' @description Telegram API request \code{users.setSecureValueErrors} (constructor \code{#90c894b5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetSecureValueErrorsRequest <- R6::R6Class(
   "SetSecureValueErrorsRequest",
   inherit = TLRequest,

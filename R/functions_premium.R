@@ -1,11 +1,8 @@
-#  ApplyBoostRequest R6 class
-# 
-#  Representation of the TL request "ApplyBoostRequest".
-#  @title ApplyBoostRequest
-#  @description Telegram API type ApplyBoostRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ApplyBoostRequest
+#' @description Telegram API request \code{premium.applyBoost} (constructor \code{#6b7da746}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ApplyBoostRequest <- R6::R6Class(
   "ApplyBoostRequest",
   public = list(
@@ -102,14 +99,11 @@ ApplyBoostRequest <- R6::R6Class(
 )
 
 
-#  GetBoostsListRequest R6 class
-# 
-#  Representation of the TL request "GetBoostsListRequest"
-#  @title GetBoostsListRequest
-#  @description Telegram API type GetBoostsListRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBoostsListRequest
+#' @description Telegram API request \code{premium.getBoostsList} (constructor \code{#60f67660}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBoostsListRequest <- R6::R6Class(
   "GetBoostsListRequest",
   public = list(
@@ -195,19 +189,16 @@ GetBoostsListRequest <- R6::R6Class(
 )
 
 
-#  GetBoostsStatusRequest R6 class
-# 
-#  Representation of the TL request "GetBoostsStatusRequest".
-#  @title GetBoostsStatusRequest
-#  @description Telegram API type GetBoostsStatusRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBoostsStatusRequest
+#' @description Telegram API request \code{premium.getBoostsStatus} (constructor \code{#042f1f61}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBoostsStatusRequest <- R6::R6Class(
   "GetBoostsStatusRequest",
   public = list(
     #  @field CONSTRUCTOR_ID Constructor ID for the request
-    CONSTRUCTOR_ID = 0x061f2f04, # note: bytes b'a\x1f/\x04' -> 0x61 0x1f 0x2f 0x04, but integer shown here for reference
+    CONSTRUCTOR_ID = 0x042f1f61,
 
     #  @field SUBCLASS_OF_ID Subclass ID for the request
     SUBCLASS_OF_ID = 0xc31b1ab9,
@@ -261,14 +252,11 @@ GetBoostsStatusRequest <- R6::R6Class(
   )
 )
 
-#  GetMyBoostsRequest R6 class
-# 
-#  Representation of the TL request "GetMyBoostsRequest".
-#  @title GetMyBoostsRequest
-#  @description Telegram API type GetMyBoostsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMyBoostsRequest
+#' @description Telegram API request \code{premium.getMyBoosts} (constructor \code{#0be77b4a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMyBoostsRequest <- R6::R6Class(
   "GetMyBoostsRequest",
   public = list(
@@ -308,14 +296,11 @@ GetMyBoostsRequest <- R6::R6Class(
 )
 
 
-#  GetUserBoostsRequest R6 class
-# 
-#  Representation of the TL request "GetUserBoostsRequest".
-#  @title GetUserBoostsRequest
-#  @description Telegram API type GetUserBoostsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUserBoostsRequest
+#' @description Telegram API request \code{premium.getUserBoosts} (constructor \code{#39854d1f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUserBoostsRequest <- R6::R6Class(
   "GetUserBoostsRequest",
   public = list(

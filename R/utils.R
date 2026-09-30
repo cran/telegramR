@@ -48,14 +48,12 @@ TG_JOIN_RE <- "tg://(join)\\?invite="
 #  Regular expression pattern for validating Telegram usernames.
 VALID_USERNAME_RE <- "^[a-z](?:(?!__)\\w){1,30}[a-z\\d]$"
 
-#  FileInfo Class
-# 
-#  An R6 class representing file information with dc_id, location, and size.
-#  @title FileInfo
-#  @description Telegram API type FileInfo
-#  @export
-#  @noRd
-#  @noRd
+#' FileInfo Class
+#'
+#' An R6 class representing file information with dc_id, location, and size.
+#' @title FileInfo
+#' @description Telegram API type FileInfo
+#' @noRd
 FileInfo <- R6::R6Class(
   "FileInfo",
   public = list(
@@ -80,18 +78,19 @@ FileInfo <- R6::R6Class(
   )
 )
 
-#  Chunks
-# 
-#  Turns the given iterable into chunks of the specified size,
-#  which is 100 by default since that's what Telegram uses the most.
-# 
-#  @param iterable A vector or list to be chunked.
-#  @param size An integer specifying the size of each chunk. Default is 100L.
-#  @return A list of vectors, each representing a chunk of the original iterable.
-#  @examples
-#  \donttest{
-#  chunks(1:10, 3) # Returns list(c(1,2,3), c(4,5,6), c(7,8,9), c(10))
-#  }
+#' Chunks
+#'
+#' Turns the given iterable into chunks of the specified size,
+#' which is 100 by default since that's what Telegram uses the most.
+#'
+#' @param iterable A vector or list to be chunked.
+#' @param size An integer specifying the size of each chunk. Default is 100L.
+#' @return A list of vectors, each representing a chunk of the original iterable.
+#' @examples
+#' \donttest{
+#' chunks(1:10, 3) # Returns list(c(1,2,3), c(4,5,6), c(7,8,9), c(10))
+#' }
+#' @noRd
 chunks <- function(iterable, size = 100L) {
   result <- list()
   i <- 1L
@@ -103,14 +102,14 @@ chunks <- function(iterable, size = 100L) {
   return(result)
 }
 
-#  Pack data into binary format
-# 
-#  Mimics Python's struct.pack for common types used in Telegram.
-# 
-#  @param format A character string specifying the format (e.g., "i", "I", "q", "Q", "f", "d").
-#  @param ... Values to be packed.
-#  @return A raw vector of the packed data with class 'raw_bytes'.
-#  @export
+#' Pack data into binary format
+#'
+#' Mimics Python's struct.pack for common types used in Telegram.
+#'
+#' @param format A character string specifying the format (e.g., "i", "I", "q", "Q", "f", "d").
+#' @param ... Values to be packed.
+#' @return A raw vector of the packed data with class 'raw_bytes'.
+#' @noRd
 pack <- function(format, ...) {
   values <- list(...)
   con <- rawConnection(raw(0), "wb")
@@ -137,34 +136,22 @@ pack <- function(format, ...) {
       writeBin(as.integer(v), con, size = 4, endian = "little")
     } else if (fmt == "I") { # 4-byte unsigned int
       writeBin(as.integer(v), con, size = 4, endian = "little")
-    } else if (fmt == "q") { # 8-byte signed long
-      # Use gmp for 64-bit if it's large, but writeBin works for numerics too
-      if (inherits(v, "bigz")) {
-        # Normalize to unsigned representation for packing
-        if (v < 0) v <- v + gmp::as.bigz("18446744073709551616") # 2^64
-        hex <- as.character(v, b = 16)
-        hex <- sub("^0x", "", hex)
-        if (nchar(hex) %% 2 != 0) hex <- paste0("0", hex)
-        bytes <- as.raw(as.hexmode(substring(hex, seq(1, nchar(hex), 2), seq(2, nchar(hex), 2))))
-        bytes <- rev(bytes) # little endian
-        if (length(bytes) < 8) bytes <- c(bytes, rep(as.raw(0), 8 - length(bytes)))
-        writeBin(bytes[1:8], con)
-      } else {
-        writeBin(as.numeric(v), con, size = 8, endian = "little")
+    } else if (fmt == "q" || fmt == "Q") { # 8-byte long (signed/unsigned)
+      # writeBin(<double>, size = 8) emits an IEEE-754 double, not an integer,
+      # which corrupts 64-bit ids. Encode every value as a true int64: bigz
+      # keeps full precision; plain numerics are coerced without scientific
+      # notation.
+      if (!inherits(v, "bigz")) {
+        v <- gmp::as.bigz(if (is.character(v)) v else sprintf("%.0f", as.numeric(v)))
       }
-    } else if (fmt == "Q") { # 8-byte unsigned long
-      if (inherits(v, "bigz")) {
-        if (v < 0) v <- v + gmp::as.bigz("18446744073709551616") # 2^64
-        hex <- as.character(v, b = 16)
-        hex <- sub("^0x", "", hex)
-        if (nchar(hex) %% 2 != 0) hex <- paste0("0", hex)
-        bytes <- as.raw(as.hexmode(substring(hex, seq(1, nchar(hex), 2), seq(2, nchar(hex), 2))))
-        bytes <- rev(bytes) # little endian
-        if (length(bytes) < 8) bytes <- c(bytes, rep(as.raw(0), 8 - length(bytes)))
-        writeBin(bytes[1:8], con)
-      } else {
-        writeBin(as.numeric(v), con, size = 8, endian = "little")
-      }
+      if (v < 0) v <- v + gmp::as.bigz("18446744073709551616") # 2^64
+      hex <- as.character(v, b = 16)
+      hex <- sub("^0x", "", hex)
+      if (nchar(hex) %% 2 != 0) hex <- paste0("0", hex)
+      bytes <- as.raw(as.hexmode(substring(hex, seq(1, nchar(hex), 2), seq(2, nchar(hex), 2))))
+      bytes <- rev(bytes) # little endian
+      if (length(bytes) < 8) bytes <- c(bytes, rep(as.raw(0), 8 - length(bytes)))
+      writeBin(bytes[1:8], con)
     } else if (fmt == "f") { # 4-byte float
       writeBin(as.numeric(v), con, size = 4, endian = "little")
     } else if (fmt == "d") { # 8-byte double
@@ -179,14 +166,14 @@ pack <- function(format, ...) {
   return(res)
 }
 
-#  Unpack data from binary format
-# 
-#  Mimics Python's struct.unpack.
-# 
-#  @param format A character string specifying the format.
-#  @param data A raw vector of data to unpack.
-#  @return A list of unpacked values.
-#  @export
+#' Unpack data from binary format
+#'
+#' Mimics Python's struct.unpack.
+#'
+#' @param format A character string specifying the format.
+#' @param data A raw vector of data to unpack.
+#' @return A list of unpacked values.
+#' @noRd
 unpack <- function(format, data) {
   con <- rawConnection(data, "rb")
   on.exit(close(con))
@@ -252,17 +239,18 @@ unpack <- function(format, data) {
   return(res)
 }
 
-#  Get Display Name
-# 
-#  Gets the display name for the given User, Chat or Channel. Returns an empty string otherwise.
-# 
-#  @param entity The entity object (User, Chat, or Channel).
-#  @return A character string representing the display name.
-#  @examples
-#  \donttest{
-#  # Assuming entity is a User object
-#  name <- get_display_name(entity)
-#  }
+#' Get Display Name
+#'
+#' Gets the display name for the given User, Chat or Channel. Returns an empty string otherwise.
+#'
+#' @param entity The entity object (User, Chat, or Channel).
+#' @return A character string representing the display name.
+#' @examples
+#' \donttest{
+#' # Assuming entity is a User object
+#' name <- get_display_name(entity)
+#' }
+#' @noRd
 get_display_name <- function(entity) {
   if (inherits(entity, "User")) {
     if (!is.null(entity$last_name) && !is.null(entity$first_name)) {
@@ -280,17 +268,19 @@ get_display_name <- function(entity) {
   return("")
 }
 
-#  Entity Type
-# 
-#  Returns EntityType$USER, $CHAT, or $CHANNEL for known entity/peer/input types.
-# 
-#  @param entity Telegram entity or peer/input peer object.
-#  @return One of EntityType$USER, EntityType$CHAT, EntityType$CHANNEL.
-#  @keywords internal
+#' Entity Type
+#'
+#' Returns EntityType$USER, $CHAT, or $CHANNEL for known entity/peer/input types.
+#'
+#' @param entity Telegram entity or peer/input peer object.
+#' @return One of EntityType$USER, EntityType$CHAT, EntityType$CHANNEL.
+#' @keywords internal
+#' @noRd
 entity_type <- function(entity) {
   if (inherits(entity, c(
     "User", "UserEmpty", "InputUser", "InputPeerUser", "PeerUser",
-    "InputPeerUserFromMessage", "InputUserFromMessage"
+    "InputPeerUserFromMessage", "InputUserFromMessage",
+    "InputPeerSelf", "InputUserSelf", "UserFull"
   ))) {
     return(EntityType$USER)
   }
@@ -309,13 +299,14 @@ entity_type <- function(entity) {
   stop("Unknown entity type: ", class(entity)[1])
 }
 
-#  Get Input Photo
-# 
-#  Converts a photo-like object to an InputPhoto for API calls.
-# 
-#  @param photo The photo object to convert.
-#  @return An InputPhoto object.
-#  @keywords internal
+#' Get Input Photo
+#'
+#' Converts a photo-like object to an InputPhoto for API calls.
+#'
+#' @param photo The photo object to convert.
+#' @return An InputPhoto object.
+#' @keywords internal
+#' @noRd
 get_input_photo <- function(photo) {
   if (inherits(photo, "InputPhoto")) {
     return(photo)
@@ -339,13 +330,14 @@ get_input_photo <- function(photo) {
   stop("Cannot convert ", class(photo)[1], " to InputPhoto")
 }
 
-#  Get Input Chat Photo
-# 
-#  Converts a photo-like object to an InputChatPhoto for API calls.
-# 
-#  @param photo The chat photo object to convert.
-#  @return An InputChatPhoto object.
-#  @keywords internal
+#' Get Input Chat Photo
+#'
+#' Converts a photo-like object to an InputChatPhoto for API calls.
+#'
+#' @param photo The chat photo object to convert.
+#' @return An InputChatPhoto object.
+#' @keywords internal
+#' @noRd
 get_input_chat_photo <- function(photo) {
   if (inherits(photo, c("InputChatPhoto", "InputChatPhotoEmpty", "InputChatUploadedPhoto"))) {
     return(photo)
@@ -359,13 +351,14 @@ get_input_chat_photo <- function(photo) {
   stop("Cannot convert ", class(photo)[1], " to InputChatPhoto")
 }
 
-#  Get Input Geo
-# 
-#  Converts a geo-like object to an InputGeoPoint for API calls.
-# 
-#  @param geo The geo object to convert.
-#  @return An InputGeoPoint object.
-#  @keywords internal
+#' Get Input Geo
+#'
+#' Converts a geo-like object to an InputGeoPoint for API calls.
+#'
+#' @param geo The geo object to convert.
+#' @return An InputGeoPoint object.
+#' @keywords internal
+#' @noRd
 get_input_geo <- function(geo) {
   if (inherits(geo, "InputGeoPoint")) {
     return(geo)
@@ -388,13 +381,14 @@ get_input_geo <- function(geo) {
   stop("Cannot convert ", class(geo)[1], " to InputGeoPoint")
 }
 
-#  Guess Extension
-# 
-#  Guesses a file extension from a MIME type.
-# 
-#  @param mime_type Character string of the MIME type.
-#  @return A character string with the file extension (including dot), or NULL.
-#  @keywords internal
+#' Guess Extension
+#'
+#' Guesses a file extension from a MIME type.
+#'
+#' @param mime_type Character string of the MIME type.
+#' @return A character string with the file extension (including dot), or NULL.
+#' @keywords internal
+#' @noRd
 guess_extension <- function(mime_type) {
   idx <- which(names(mimetypes) == mime_type)
   if (length(idx) > 0) {
@@ -408,18 +402,18 @@ guess_extension <- function(mime_type) {
   NULL
 }
 
-#  Get Extension
-# 
-#  Gets the corresponding extension for any Telegram media.
-# 
-#  @param media The media object to analyze.
-#  @return A character string representing the file extension.
-#  @examples
-#  \donttest{
-#  # Assuming media is a Document object
-#  ext <- get_extension(media)
-#  }
-#  @export
+#' Get Extension
+#'
+#' Gets the corresponding extension for any Telegram media.
+#'
+#' @param media The media object to analyze.
+#' @return A character string representing the file extension.
+#' @examples
+#' \donttest{
+#' # Assuming media is a Document object
+#' ext <- get_extension(media)
+#' }
+#' @noRd
 get_extension <- function(media) {
   if (inherits(media, c(
     "Photo", "PhotoEmpty", "MessageMediaPhoto",
@@ -444,45 +438,46 @@ get_extension <- function(media) {
   return("")
 }
 
-#  Raise Cast Fail
-# 
-#  Raises an error indicating that the entity cannot be cast to the target type.
-# 
-#  @param entity The entity object that failed to cast.
-#  @param target A character string representing the target type.
-#  @examples
-#  \donttest{
-#  raise_cast_fail(some_entity, "InputPeer")
-#  }
-#  @export
+#' Raise Cast Fail
+#'
+#' Raises an error indicating that the entity cannot be cast to the target type.
+#'
+#' @param entity The entity object that failed to cast.
+#' @param target A character string representing the target type.
+#' @examples
+#' \donttest{
+#' raise_cast_fail(some_entity, "InputPeer")
+#' }
+#' @noRd
 raise_cast_fail <- function(entity, target) {
   stop(sprintf("Cannot cast %s to any kind of %s.", class(entity)[1], target))
 }
 
 
-#  Get Input Peer
-# 
-#  Gets the input peer for the given "entity" (user, chat or channel).
-# 
-#  A `TypeError` is raised if the given entity isn't a supported type
-#  or if `check_hash` is `TRUE` but the entity's `access_hash` is `NULL`
-#  *or* the entity contains `min` information. In this case, the hash
-#  cannot be used for general purposes, and thus is not returned to avoid
-#  any issues which can derive from invalid access hashes.
-# 
-#  Note that `check_hash` **is ignored** if an input peer is already
-#  passed since in that case we assume the user knows what they're doing.
-#  This is key to getting entities by explicitly passing `hash = 0`.
-# 
-#  @param entity The entity object to convert.
-#  @param allow_self Logical, whether to allow self as input. Default is `TRUE`.
-#  @param check_hash Logical, whether to check for valid access hashes. Default is `TRUE`.
-#  @return An InputPeer object.
-#  @examples
-#  \donttest{
-#  # Assuming entity is a User object
-#  input_peer <- get_input_peer(entity)
-#  }
+#' Get Input Peer
+#'
+#' Gets the input peer for the given "entity" (user, chat or channel).
+#'
+#' A `TypeError` is raised if the given entity isn't a supported type
+#' or if `check_hash` is `TRUE` but the entity's `access_hash` is `NULL`
+#' *or* the entity contains `min` information. In this case, the hash
+#' cannot be used for general purposes, and thus is not returned to avoid
+#' any issues which can derive from invalid access hashes.
+#'
+#' Note that `check_hash` **is ignored** if an input peer is already
+#' passed since in that case we assume the user knows what they're doing.
+#' This is key to getting entities by explicitly passing `hash = 0`.
+#'
+#' @param entity The entity object to convert.
+#' @param allow_self Logical, whether to allow self as input. Default is `TRUE`.
+#' @param check_hash Logical, whether to check for valid access hashes. Default is `TRUE`.
+#' @return An InputPeer object.
+#' @examples
+#' \donttest{
+#' # Assuming entity is a User object
+#' input_peer <- get_input_peer(entity)
+#' }
+#' @noRd
 get_input_peer <- function(entity, allow_self = TRUE, check_hash = TRUE) {
   # NOTE: It is important that this method validates the access hashes,
   #       because it is used when we *require* a valid general-purpose
@@ -588,11 +583,11 @@ get_input_peer <- function(entity, allow_self = TRUE, check_hash = TRUE) {
   raise_cast_fail(entity, "InputPeer")
 }
 
-#  Helper to convert integer to little-endian raw vector of given width (bytes)
-#  @param x integer or numeric
-#  @param width number of bytes (default 4)
-#  @return raw vector
-#  @export
+#' Helper to convert integer to little-endian raw vector of given width (bytes)
+#' @param x integer or numeric
+#' @param width number of bytes (default 4)
+#' @return raw vector
+#' @noRd
 int_to_raw_le <- function(x, width = 4L) {
   stopifnot(is.numeric(x), length(x) == 1L, width >= 1L)
   if (!is.na(x) && x > 2147483647 && width == 4L) {
@@ -601,34 +596,35 @@ int_to_raw_le <- function(x, width = 4L) {
   writeBin(as.integer(x), con = raw(), size = width, endian = "little")
 }
 
-#  Serialize an integer to 4 bytes little-endian.
-#  @param x integer
-#  @return raw vector
-#  @export
+#' Serialize an integer to 4 bytes little-endian.
+#' @param x integer
+#' @return raw vector
+#' @noRd
 serialize_int <- function(x) {
   int_to_raw_le(x, 4L)
 }
 
-#  Serialize a string to Telegram bytes format.
-#  @param s string
-#  @return raw vector
-#  @export
+#' Serialize a string to Telegram bytes format.
+#' @param s string
+#' @return raw vector
+#' @noRd
 serialize_string <- function(s) {
   if (is.null(s)) s <- ""
   serialize_bytes_cpp(charToRaw(enc2utf8(as.character(s))))
 }
 
-#  Get Input Channel
-# 
-#  Similar to `get_input_peer`, but for `InputChannel`'s alone.
-# 
-#  @param entity The entity object to convert.
-#  @return An InputChannel object.
-#  @examples
-#  \donttest{
-#  # Assuming entity is a Channel object
-#  input_channel <- get_input_channel(entity)
-#  }
+#' Get Input Channel
+#'
+#' Similar to `get_input_peer`, but for `InputChannel`'s alone.
+#'
+#' @param entity The entity object to convert.
+#' @return An InputChannel object.
+#' @examples
+#' \donttest{
+#' # Assuming entity is a Channel object
+#' input_channel <- get_input_channel(entity)
+#' }
+#' @noRd
 get_input_channel <- function(entity) {
   if (!is.null(entity$SUBCLASS_OF_ID) && isTRUE(entity$SUBCLASS_OF_ID == 0x40f202fd)) { # crc32(b'InputChannel')
     return(entity)
@@ -650,17 +646,18 @@ get_input_channel <- function(entity) {
 }
 
 
-#  Get Input User
-# 
-#  Similar to \code{get_input_peer}, but for \code{InputUser}'s alone.
-# 
-#  @param entity The entity object to convert.
-#  @return An InputUser object.
-#  @examples
-#  \donttest{
-#  # Assuming entity is a User object
-#  input_user <- get_input_user(entity)
-#  }
+#' Get Input User
+#'
+#' Similar to \code{get_input_peer}, but for \code{InputUser}'s alone.
+#'
+#' @param entity The entity object to convert.
+#' @return An InputUser object.
+#' @examples
+#' \donttest{
+#' # Assuming entity is a User object
+#' input_user <- get_input_user(entity)
+#' }
+#' @noRd
 get_input_user <- function(entity) {
   tryCatch(
     {
@@ -704,17 +701,18 @@ get_input_user <- function(entity) {
   raise_cast_fail(entity, "InputUser")
 }
 
-#  Get Input Dialog
-# 
-#  Similar to \code{get_input_peer}, but for dialogs.
-# 
-#  @param dialog The dialog object to convert.
-#  @return An InputDialogPeer object.
-#  @examples
-#  \donttest{
-#  # Assuming dialog is a dialog object
-#  input_dialog <- get_input_dialog(dialog)
-#  }
+#' Get Input Dialog
+#'
+#' Similar to \code{get_input_peer}, but for dialogs.
+#'
+#' @param dialog The dialog object to convert.
+#' @return An InputDialogPeer object.
+#' @examples
+#' \donttest{
+#' # Assuming dialog is a dialog object
+#' input_dialog <- get_input_dialog(dialog)
+#' }
+#' @noRd
 get_input_dialog <- function(dialog) {
   tryCatch(
     {
@@ -742,17 +740,18 @@ get_input_dialog <- function(dialog) {
   raise_cast_fail(dialog, "InputDialogPeer")
 }
 
-#  Get Input Document
-# 
-#  Similar to \code{get_input_peer}, but for documents.
-# 
-#  @param document The document object to convert.
-#  @return An InputDocument object.
-#  @examples
-#  \donttest{
-#  # Assuming document is a Document object
-#  input_doc <- get_input_document(document)
-#  }
+#' Get Input Document
+#'
+#' Similar to \code{get_input_peer}, but for documents.
+#'
+#' @param document The document object to convert.
+#' @return An InputDocument object.
+#' @examples
+#' \donttest{
+#' # Assuming document is a Document object
+#' input_doc <- get_input_document(document)
+#' }
+#' @noRd
 get_input_document <- function(document) {
   tryCatch(
     {
@@ -788,11 +787,12 @@ get_input_document <- function(document) {
   raise_cast_fail(document, "InputDocument")
 }
 
-#  Bitwise Length
-# 
-#  Calculates the bitwise length of an integer.
-#  @param x An integer value.
-#  @return The bitwise length of the integer.
+#' Bitwise Length
+#'
+#' Calculates the bitwise length of an integer.
+#' @param x An integer value.
+#' @return The bitwise length of the integer.
+#' @noRd
 bitwLength <- function(x) {
   if (x == 0) {
     return(1)
@@ -800,13 +800,14 @@ bitwLength <- function(x) {
   floor(log2(abs(x))) + 1
 }
 
-#  Check Prime and Good Check
-# 
-#  Validates the prime number and generator g for cryptographic purposes.
-# 
-#  @param prime An integer representing the prime number.
-#  @param g An integer representing the generator.
-#  @return Raises an error if validation fails, otherwise returns nothing.
+#' Check Prime and Good Check
+#'
+#' Validates the prime number and generator g for cryptographic purposes.
+#'
+#' @param prime An integer representing the prime number.
+#' @param g An integer representing the generator.
+#' @return Raises an error if validation fails, otherwise returns nothing.
+#' @noRd
 check_prime_and_good_check <- function(prime, g) {
   good_prime_bits_count <- 2048
   prime_big <- gmp::as.bigz(prime)
@@ -858,13 +859,14 @@ check_prime_and_good_check <- function(prime, g) {
   }
 }
 
-#  Check Prime and Good
-# 
-#  Checks if the prime bytes and generator are good.
-# 
-#  @param prime_bytes A raw vector representing the prime bytes.
-#  @param g An integer representing the generator.
-#  @return Raises an error if validation fails, otherwise returns nothing.
+#' Check Prime and Good
+#'
+#' Checks if the prime bytes and generator are good.
+#'
+#' @param prime_bytes A raw vector representing the prime bytes.
+#' @param g An integer representing the generator.
+#' @return Raises an error if validation fails, otherwise returns nothing.
+#' @noRd
 check_prime_and_good <- function(prime_bytes, g) {
   if (identical(good_prime, prime_bytes)) {
     if (g %in% c(3, 4, 5, 7)) {
@@ -875,24 +877,25 @@ check_prime_and_good <- function(prime_bytes, g) {
   check_prime_and_good_check(openssl::bignum(prime_bytes, hex = FALSE), g)
 }
 
-#  Is Good Large
-# 
-#  Checks if a number is good and large relative to p.
-# 
-#  @param number An integer.
-#  @param p An integer.
-#  @return A logical value.
+#' Is Good Large
+#'
+#' Checks if a number is good and large relative to p.
+#'
+#' @param number An integer.
+#' @param p An integer.
+#' @return A logical value.
+#' @noRd
 is_good_large <- function(number, p) {
   return(number > 0 && p - number > 0)
 }
 
 SIZE_FOR_HASH <- 256
 
-#  @title Convert Bytes to Bigz Integer
-#  @param data A raw vector.
-#  @param endian Either "big" or "little".
-#  @return A bigz integer.
-#  @export
+#' @title Convert Bytes to Bigz Integer
+#' @param data A raw vector.
+#' @param endian Either "big" or "little".
+#' @return A bigz integer.
+#' @noRd
 int_from_bytes <- function(data, endian = "big") {
   if (base::length(data) == 0) {
     return(gmp::as.bigz(0))
@@ -902,92 +905,92 @@ int_from_bytes <- function(data, endian = "big") {
   return(gmp::as.bigz(paste0("0x", hex)))
 }
 
-#  @title Convert Bigz Integer/Numeric to Bytes
-#  @param val A bigz integer or numeric.
-#  @param length The length of the resulting raw vector.
-#  @param endian Either "big" or "little".
-#  @return A raw vector.
-#  @export
+#' @title Convert Bigz Integer/Numeric to Bytes
+#' @param val A bigz integer or numeric.
+#' @param length The length of the resulting raw vector.
+#' @param endian Either "big" or "little".
+#' @return A raw vector.
+#' @noRd
 int_to_bytes <- function(val, length, endian = "big") {
   val <- gmp::as.bigz(val)
   hex <- as.character(val, b = 16)
   hex_to_bytes_cpp(hex, length, endian == "little")
 }
 
-#  @title XOR two raw vectors
-#  @param a A raw vector.
-#  @param b A raw vector.
-#  @return A raw vector.
-#  @export
+#' @title XOR two raw vectors
+#' @param a A raw vector.
+#' @param b A raw vector.
+#' @return A raw vector.
+#' @noRd
 xor_bytes <- function(a, b) {
   xor_bytes_cpp(a, b)
 }
 
-#  @title SHA1 Hash
-#  @param ... Raw vectors to hash.
-#  @return A raw vector.
-#  @export
+#' @title SHA1 Hash
+#' @param ... Raw vectors to hash.
+#' @return A raw vector.
+#' @noRd
 sha1 <- function(...) {
   args <- list(...)
   return(digest::digest(do.call(c, args), algo = "sha1", serialize = FALSE, raw = TRUE))
 }
 
-#  @title SHA256 Hash
-#  @param ... Raw vectors to hash.
-#  @return A raw vector.
-#  @export
+#' @title SHA256 Hash
+#' @param ... Raw vectors to hash.
+#' @return A raw vector.
+#' @noRd
 sha256 <- function(...) {
   args <- list(...)
   return(digest::digest(do.call(c, args), algo = "sha256", serialize = FALSE, raw = TRUE))
 }
 
-#  @title Modular Exponentiation
-#  @param base The base.
-#  @param exp The exponent.
-#  @param mod The modulus.
-#  @return The result of (base^exp) %% mod as bigz.
-#  @export
+#' @title Modular Exponentiation
+#' @param base The base.
+#' @param exp The exponent.
+#' @param mod The modulus.
+#' @return The result of (base^exp) %% mod as bigz.
+#' @noRd
 powmod <- function(base, exp, mod) {
   return(gmp::powm(gmp::as.bigz(base), gmp::as.bigz(exp), gmp::as.bigz(mod)))
 }
 
-#  @title Modular Exponentiation (Alias)
-#  @param base The base.
-#  @param exp The exponent.
-#  @param mod The modulus.
-#  @return The result of (base^exp) %% mod as bigz.
-#  @export
+#' @title Modular Exponentiation (Alias)
+#' @param base The base.
+#' @param exp The exponent.
+#' @param mod The modulus.
+#' @return The result of (base^exp) %% mod as bigz.
+#' @noRd
 pow <- powmod
 
-#  @title Num Bytes for Hash
-#  @param number A raw vector.
-#  @return A raw vector.
-#  @export
+#' @title Num Bytes for Hash
+#' @param number A raw vector.
+#' @return A raw vector.
+#' @noRd
 num_bytes_for_hash <- function(number) {
   return(c(raw(256 - base::length(number)), number))
 }
 
-#  @title Big Num for Hash
-#  @param g A bigz integer or numeric.
-#  @return A raw vector.
-#  @export
+#' @title Big Num for Hash
+#' @param g A bigz integer or numeric.
+#' @return A raw vector.
+#' @noRd
 big_num_for_hash <- function(g) {
   return(int_to_bytes(g, 256, "big"))
 }
 
-#  Is Good Mod Exp First
-# 
-#  Checks if modexp is good for modular exponentiation.
-# 
-#  @param modexp An integer.
-#  @param prime An integer.
-#  @return A logical value.
-#  @title Is Good Mod Exp First
-#  @description Checks if a modular exponentiation result is good for the first check.
-#  @param modexp A bigz integer.
-#  @param prime A bigz integer.
-#  @return A logical value.
-#  @export
+#' Is Good Mod Exp First
+#'
+#' Checks if modexp is good for modular exponentiation.
+#'
+#' @param modexp An integer.
+#' @param prime An integer.
+#' @return A logical value.
+#' @title Is Good Mod Exp First
+#' @description Checks if a modular exponentiation result is good for the first check.
+#' @param modexp A bigz integer.
+#' @param prime A bigz integer.
+#' @return A logical value.
+#' @noRd
 is_good_mod_exp_first <- function(modexp, prime) {
   modexp <- gmp::as.bigz(modexp)
   prime <- gmp::as.bigz(prime)
@@ -1008,25 +1011,26 @@ is_good_mod_exp_first <- function(modexp, prime) {
 }
 
 
-#  Get Input Media
-# 
-#  Similar to \code{get_input_peer}, but for media.
-# 
-#  If the media is \code{InputFile} and \code{is_photo} is known to be \code{TRUE},
-#  it will be treated as an \code{InputMediaUploadedPhoto}. Else, the rest
-#  of parameters will indicate how to treat it.
-# 
-#  @param media The media object to convert.
-#  @param is_photo Logical, whether the media is a photo. Default is \code{FALSE}.
-#  @param attributes A list of attributes for the media. Default is \code{NULL}.
-#  @param force_document Logical, whether to force the media as a document. Default is \code{FALSE}.
-#  @param voice_note Logical, whether the media is a voice note. Default is \code{FALSE}.
-#  @param video_note Logical, whether the media is a video note. Default is \code{FALSE}.
-#  @param supports_streaming Logical, whether the video supports streaming. Default is \code{FALSE}.
-#  @param ttl The time-to-live in seconds. Default is \code{NULL}.
-#  @param file_size Optional file size hint (unused, for compatibility).
-#  @param progress_callback Optional progress callback (unused, for compatibility).
-#  @return An InputMedia object.
+#' Get Input Media
+#'
+#' Similar to \code{get_input_peer}, but for media.
+#'
+#' If the media is \code{InputFile} and \code{is_photo} is known to be \code{TRUE},
+#' it will be treated as an \code{InputMediaUploadedPhoto}. Else, the rest
+#' of parameters will indicate how to treat it.
+#'
+#' @param media The media object to convert.
+#' @param is_photo Logical, whether the media is a photo. Default is \code{FALSE}.
+#' @param attributes A list of attributes for the media. Default is \code{NULL}.
+#' @param force_document Logical, whether to force the media as a document. Default is \code{FALSE}.
+#' @param voice_note Logical, whether the media is a voice note. Default is \code{FALSE}.
+#' @param video_note Logical, whether the media is a video note. Default is \code{FALSE}.
+#' @param supports_streaming Logical, whether the video supports streaming. Default is \code{FALSE}.
+#' @param ttl The time-to-live in seconds. Default is \code{NULL}.
+#' @param file_size Optional file size hint (unused, for compatibility).
+#' @param progress_callback Optional progress callback (unused, for compatibility).
+#' @return An InputMedia object.
+#' @noRd
 get_input_media <- function(media, is_photo = FALSE, attributes = NULL, force_document = FALSE,
                             voice_note = FALSE, video_note = FALSE, supports_streaming = FALSE,
                             ttl = NULL, file_size = NULL, progress_callback = NULL) {
@@ -1178,12 +1182,13 @@ get_input_media <- function(media, is_photo = FALSE, attributes = NULL, force_do
   raise_cast_fail(media, "InputMedia")
 }
 
-#  Get Input Message
-# 
-#  Similar to \code{get_input_peer}, but for input messages.
-# 
-#  @param message The message object or ID to convert.
-#  @return An InputMessage object.
+#' Get Input Message
+#'
+#' Similar to \code{get_input_peer}, but for input messages.
+#'
+#' @param message The message object or ID to convert.
+#' @return An InputMessage object.
+#' @noRd
 get_input_message <- function(message) {
   tryCatch(
     {
@@ -1204,12 +1209,13 @@ get_input_message <- function(message) {
 }
 
 
-#  Get Input Group Call
-# 
-#  Similar to \code{get_input_peer}, but for input calls.
-# 
-#  @param call The call object to convert.
-#  @return An InputGroupCall object.
+#' Get Input Group Call
+#'
+#' Similar to \code{get_input_peer}, but for input calls.
+#'
+#' @param call The call object to convert.
+#' @return An InputGroupCall object.
+#' @noRd
 get_input_group_call <- function(call) {
   tryCatch(
     {
@@ -1225,15 +1231,16 @@ get_input_group_call <- function(call) {
   )
 }
 
-#  Get Entity Pair
-# 
-#  Returns a list of \code{(entity, input_entity)} for the given entity ID.
-# 
-#  @param entity_id The entity ID.
-#  @param entities A list or environment of entities.
-#  @param cache A cache object.
-#  @param get_input_peer A function to get input peer, defaults to \code{get_input_peer}.
-#  @return A list containing entity and input_entity, or NULLs if not found.
+#' Get Entity Pair
+#'
+#' Returns a list of \code{(entity, input_entity)} for the given entity ID.
+#'
+#' @param entity_id The entity ID.
+#' @param entities A list or environment of entities.
+#' @param cache A cache object.
+#' @param get_input_peer A function to get input peer, defaults to \code{get_input_peer}.
+#' @return A list containing entity and input_entity, or NULLs if not found.
+#' @noRd
 get_entity_pair <- function(entity_id, entities, cache, get_input_peer = get_input_peer) {
   if (is.null(entity_id)) {
     return(list(NULL, NULL))
@@ -1263,12 +1270,13 @@ get_entity_pair <- function(entity_id, entities, cache, get_input_peer = get_inp
   return(list(entity, input_entity))
 }
 
-#  Get Message ID
-# 
-#  Similar to \code{get_input_peer}, but for message IDs.
-# 
-#  @param message The message object or ID.
-#  @return The message ID as an integer, or NULL if invalid.
+#' Get Message ID
+#'
+#' Similar to \code{get_input_peer}, but for message IDs.
+#'
+#' @param message The message object or ID.
+#' @return The message ID as an integer, or NULL if invalid.
+#' @noRd
 get_message_id <- function(message) {
   if (is.null(message)) {
     return(NULL)
@@ -1297,25 +1305,26 @@ get_message_id <- function(message) {
 }
 
 
-#  Get Metadata from File
-# 
-#  This function attempts to extract metadata from a file using available libraries.
-#  It supports file paths (strings), raw bytes, or file-like objects. If the file is not
-#  seekable or if metadata extraction fails, it returns NULL. This is a port from the
-#  Python hachoir-based implementation, adapted to R using the exiftoolr package for
-#  metadata extraction where possible.
-# 
-#  @param file The file to analyze. Can be a character string (file path), a raw vector
-#    (bytes), or a file connection object.
-#  @return A list containing metadata if extraction succeeds, otherwise NULL.
-#  @examples
-#  \donttest{
-#  # Assuming exiftoolr is installed and file exists
-#  metadata <- get_metadata("example.mp3")
-#  if (!is.null(metadata)) {
-#    print(metadata)
-#  }
-#  }
+#' Get Metadata from File
+#'
+#' This function attempts to extract metadata from a file using available libraries.
+#' It supports file paths (strings), raw bytes, or file-like objects. If the file is not
+#' seekable or if metadata extraction fails, it returns NULL. This is a port from the
+#' Python hachoir-based implementation, adapted to R using the exiftoolr package for
+#' metadata extraction where possible.
+#'
+#' @param file The file to analyze. Can be a character string (file path), a raw vector
+#'   (bytes), or a file connection object.
+#' @return A list containing metadata if extraction succeeds, otherwise NULL.
+#' @examples
+#' \donttest{
+#' # Assuming exiftoolr is installed and file exists
+#' metadata <- get_metadata("example.mp3")
+#' if (!is.null(metadata)) {
+#'   print(metadata)
+#' }
+#' }
+#' @noRd
 get_metadata <- function(file) {
   # Check if required package is available (equivalent to checking hachoir in Python)
   if (!requireNamespace("exiftoolr", quietly = TRUE)) {
@@ -1375,25 +1384,26 @@ get_metadata <- function(file) {
   })
 }
 
-#  Get Attributes for File
-# 
-#  This function retrieves a list of attributes for the given file and the MIME type as a list.
-#  It determines attributes such as filename, audio, and video based on the file's metadata and parameters.
-# 
-#  @param file The file object or path. Can be a string or an object with a 'name' attribute.
-#  @param attributes A list of user-provided attributes to override defaults. Default is NULL.
-#  @param mime_type The MIME type of the file. If NULL, it will be guessed. Default is NULL.
-#  @param force_document Logical, whether to force the file as a document. Default is FALSE.
-#  @param voice_note Logical, whether the file is a voice note. Default is FALSE.
-#  @param video_note Logical, whether the file is a video note. Default is FALSE.
-#  @param supports_streaming Logical, whether the video supports streaming. Default is FALSE.
-#  @param thumb The thumbnail file for video attributes. Default is NULL.
-#  @return A list containing the attributes list and the MIME type.
-#  @examples
-#  \donttest{
-#  # Assuming types and helper functions are defined
-#  attrs <- get_attributes("example.mp3", voice_note = TRUE)
-#  }
+#' Get Attributes for File
+#'
+#' This function retrieves a list of attributes for the given file and the MIME type as a list.
+#' It determines attributes such as filename, audio, and video based on the file's metadata and parameters.
+#'
+#' @param file The file object or path. Can be a string or an object with a 'name' attribute.
+#' @param attributes A list of user-provided attributes to override defaults. Default is NULL.
+#' @param mime_type The MIME type of the file. If NULL, it will be guessed. Default is NULL.
+#' @param force_document Logical, whether to force the file as a document. Default is FALSE.
+#' @param voice_note Logical, whether the file is a voice note. Default is FALSE.
+#' @param video_note Logical, whether the file is a video note. Default is FALSE.
+#' @param supports_streaming Logical, whether the video supports streaming. Default is FALSE.
+#' @param thumb The thumbnail file for video attributes. Default is NULL.
+#' @return A list containing the attributes list and the MIME type.
+#' @examples
+#' \donttest{
+#' # Assuming types and helper functions are defined
+#' attrs <- get_attributes("example.mp3", voice_note = TRUE)
+#' }
+#' @noRd
 get_attributes <- function(file, attributes = NULL, mime_type = NULL,
                            force_document = FALSE, voice_note = FALSE, video_note = FALSE,
                            supports_streaming = FALSE, thumb = NULL) {
@@ -1402,7 +1412,7 @@ get_attributes <- function(file, attributes = NULL, mime_type = NULL,
 
   # Guess MIME type if not provided
   if (is.null(mime_type)) {
-    mime_type <- mimetypes$guess_type(name)[[1]]
+    mime_type <- tryCatch(unname(mime::guess_type(name)), error = function(e) "application/octet-stream")
   }
 
   # Initialize attributes list
@@ -1483,24 +1493,25 @@ get_attributes <- function(file, attributes = NULL, mime_type = NULL,
     mime_type <- "application/octet-stream"
   }
 
-  return(list(attributes_list, mime_type))
+  return(list(attributes = attributes_list, mime_type = mime_type))
 }
 
 
-#  Sanitize Parse Mode
-# 
-#  Converts the given parse mode into an object with
-#  \code{parse} and \code{unparse} callable properties.
-# 
-#  @param mode The parse mode to sanitize. Can be NULL, an object with parse and unparse methods,
-#    a callable function, or a string ('md', 'markdown', 'htm', 'html').
-#  @return An object with parse and unparse methods, or NULL if mode is NULL.
-#  @examples
-#  \donttest{
-#  # Assuming markdown and html are defined elsewhere
-#  mode <- sanitize_parse_mode("markdown")
-#  parsed <- mode$parse("**bold**")
-#  }
+#' Sanitize Parse Mode
+#'
+#' Converts the given parse mode into an object with
+#' \code{parse} and \code{unparse} callable properties.
+#'
+#' @param mode The parse mode to sanitize. Can be NULL, an object with parse and unparse methods,
+#'   a callable function, or a string ('md', 'markdown', 'htm', 'html').
+#' @return An object with parse and unparse methods, or NULL if mode is NULL.
+#' @examples
+#' \donttest{
+#' # Assuming markdown and html are defined elsewhere
+#' mode <- sanitize_parse_mode("markdown")
+#' parsed <- mode$parse("**bold**")
+#' }
+#' @noRd
 sanitize_parse_mode <- function(mode) {
   if (is.null(mode)) {
     return(NULL)
@@ -1529,12 +1540,10 @@ sanitize_parse_mode <- function(mode) {
   }
 }
 
-#  @title CustomMode
-#  @description An R6 class representing a custom parse mode with parse and unparse methods.
-#  This class is used when a callable function is provided as the parse mode.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CustomMode
+#' @description An R6 class representing a custom parse mode with parse and unparse methods.
+#' This class is used when a callable function is provided as the parse mode.
+#' @noRd
 CustomMode <- R6::R6Class(
   "CustomMode",
   public = list(
@@ -1557,26 +1566,28 @@ CustomMode <- R6::R6Class(
 )
 
 
-#  Get Input Location
-# 
-#  Similar to \code{get_input_peer}, but for input messages.
-# 
-#  Note that this returns a list \code{(dc_id, location)}, the
-#  \code{dc_id} being present if known.
-# 
-#  @param location The location object.
-#  @return A list with elements \code{dc_id} and \code{location}.
+#' Get Input Location
+#'
+#' Similar to \code{get_input_peer}, but for input messages.
+#'
+#' Note that this returns a list \code{(dc_id, location)}, the
+#' \code{dc_id} being present if known.
+#'
+#' @param location The location object.
+#' @return A list with elements \code{dc_id} and \code{location}.
+#' @noRd
 get_input_location <- function(location) {
   info <- get_file_info(location)
   return(list(dc_id = info$dc_id, location = info$location))
 }
 
-#  Get File Info
-# 
-#  Internal function to get file info.
-# 
-#  @param location The location object.
-#  @return A list with elements \code{dc_id}, \code{location}, and \code{size}.
+#' Get File Info
+#'
+#' Internal function to get file info.
+#'
+#' @param location The location object.
+#' @return A list with elements \code{dc_id}, \code{location}, and \code{size}.
+#' @noRd
 get_file_info <- function(location) {
   tryCatch(
     {
@@ -1631,13 +1642,14 @@ get_file_info <- function(location) {
   raise_cast_fail(location, "InputFileLocation")
 }
 
-#  Get File Extension
-# 
-#  Gets the extension for the given file, which can be either a
-#  string or an open file (which has a \code{name} attribute).
-# 
-#  @param file The file path or object.
-#  @return The file extension as a string.
+#' Get File Extension
+#'
+#' Gets the extension for the given file, which can be either a
+#' string or an open file (which has a \code{name} attribute).
+#'
+#' @param file The file path or object.
+#' @return The file extension as a string.
+#' @noRd
 get_file_extension <- function(file) {
   if (is.character(file)) {
     return(tools::file_ext(file))
@@ -1651,14 +1663,15 @@ get_file_extension <- function(file) {
 }
 
 
-#  Check if File is an Image
-# 
-#  Returns `TRUE` if the file extension looks like an image file to Telegram.
-#  If the extension does not match common image formats (png, jpg, jpeg),
-#  it checks if resolving the file as a bot file ID returns a Photo object.
-# 
-#  @param file The file path or object to check.
-#  @return A logical value indicating whether the file is an image.
+#' Check if File is an Image
+#'
+#' Returns `TRUE` if the file extension looks like an image file to Telegram.
+#' If the extension does not match common image formats (png, jpg, jpeg),
+#' it checks if resolving the file as a bot file ID returns a Photo object.
+#'
+#' @param file The file path or object to check.
+#' @return A logical value indicating whether the file is an image.
+#' @noRd
 is_image <- function(file) {
   ext <- get_extension(file)
   if (grepl("^\\.(png|jpe?g)$", ext, ignore.case = TRUE)) {
@@ -1669,27 +1682,29 @@ is_image <- function(file) {
   }
 }
 
-#  Check if File is a GIF
-# 
-#  Returns `TRUE` if the file extension looks like a GIF file to Telegram.
-# 
-#  @param file The file path or object to check.
-#  @return A logical value indicating whether the file is a GIF.
+#' Check if File is a GIF
+#'
+#' Returns `TRUE` if the file extension looks like a GIF file to Telegram.
+#'
+#' @param file The file path or object to check.
+#' @return A logical value indicating whether the file is a GIF.
+#' @noRd
 is_gif <- function(file) {
   ext <- get_extension(file)
   return(grepl("^\\.gif$", ext, ignore.case = TRUE))
 }
 
-#  Check if File is Audio
-# 
-#  Returns `TRUE` if the file has an audio mime type, either from metadata
-#  or guessed from the file extension.
-# 
-#  @param file The file path or object to check.
-#  @return A logical value indicating whether the file is audio.
+#' Check if File is Audio
+#'
+#' Returns `TRUE` if the file has an audio mime type, either from metadata
+#' or guessed from the file extension.
+#'
+#' @param file The file path or object to check.
+#' @return A logical value indicating whether the file is audio.
+#' @noRd
 is_audio <- function(file) {
   ext <- get_extension(file)
-  if (!ext) {
+  if (!nzchar(ext)) {
     metadata <- get_metadata(file)
     if (!is.null(metadata) && metadata$has("mime_type")) {
       return(startsWith(metadata$get("mime_type"), "audio/"))
@@ -1698,21 +1713,22 @@ is_audio <- function(file) {
     }
   } else {
     dummy_file <- paste0("a", ext)
-    mime_type <- mimetypes$guess_type(dummy_file)[[1]]
+    mime_type <- tryCatch(unname(mime::guess_type(dummy_file)), error = function(e) "")
     return(startsWith(mime_type %||% "", "audio/"))
   }
 }
 
-#  Check if File is Video
-# 
-#  Returns `TRUE` if the file has a video mime type, either from metadata
-#  or guessed from the file extension.
-# 
-#  @param file The file path or object to check.
-#  @return A logical value indicating whether the file is video.
+#' Check if File is Video
+#'
+#' Returns `TRUE` if the file has a video mime type, either from metadata
+#' or guessed from the file extension.
+#'
+#' @param file The file path or object to check.
+#' @return A logical value indicating whether the file is video.
+#' @noRd
 is_video <- function(file) {
   ext <- get_extension(file)
-  if (!ext) {
+  if (!nzchar(ext)) {
     metadata <- get_metadata(file)
     if (!is.null(metadata) && metadata$has("mime_type")) {
       return(startsWith(metadata$get("mime_type"), "video/"))
@@ -1721,7 +1737,7 @@ is_video <- function(file) {
     }
   } else {
     dummy_file <- paste0("a", ext)
-    mime_type <- mimetypes$guess_type(dummy_file)[[1]]
+    mime_type <- tryCatch(unname(mime::guess_type(dummy_file)), error = function(e) "")
     return(startsWith(mime_type %||% "", "video/"))
   }
 }
@@ -1730,19 +1746,20 @@ is_video <- function(file) {
 #  Check if Object is List-Like
 # 
 
-#  Parse Phone Number
-# 
-#  Parses the given phone number, removing non-digit characters, and returns it as a string
-#  if it consists only of digits. Returns `NULL` if invalid.
-# 
-#  @param phone The phone number to parse, as an integer or string.
-#  @return A character string of the parsed phone number, or `NULL` if invalid.
-#  @examples
-#  \donttest{
-#  parse_phone(1234567890) # "1234567890"
-#  parse_phone("+1 (234) 567-890") # "1234567890"
-#  parse_phone("invalid") # NULL
-#  }
+#' Parse Phone Number
+#'
+#' Parses the given phone number, removing non-digit characters, and returns it as a string
+#' if it consists only of digits. Returns `NULL` if invalid.
+#'
+#' @param phone The phone number to parse, as an integer or string.
+#' @return A character string of the parsed phone number, or `NULL` if invalid.
+#' @examples
+#' \donttest{
+#' parse_phone(1234567890) # "1234567890"
+#' parse_phone("+1 (234) 567-890") # "1234567890"
+#' parse_phone("invalid") # NULL
+#' }
+#' @noRd
 parse_phone <- function(phone) {
   if (is.integer(phone)) {
     return(as.character(phone))
@@ -1755,21 +1772,22 @@ parse_phone <- function(phone) {
   return(NULL)
 }
 
-#  Parse Username
-# 
-#  Parses the given username or channel access hash from a string, username, or URL.
-#  Returns a list consisting of the stripped, lowercase username and a logical indicating
-#  whether it is a joinchat/hash (in which case it is not lowercased).
-#  Returns `list(NULL, FALSE)` if the username or link is not valid.
-# 
-#  @param username The username string to parse.
-#  @return A list with two elements: the parsed username (or `NULL`) and a logical for invite status.
-#  @examples
-#  \donttest{
-#  parse_username("@username") # list("username", FALSE)
-#  parse_username("https://t.me/joinchat/abc123") # list("abc123", TRUE)
-#  parse_username("invalid") # list(NULL, FALSE)
-#  }
+#' Parse Username
+#'
+#' Parses the given username or channel access hash from a string, username, or URL.
+#' Returns a list consisting of the stripped, lowercase username and a logical indicating
+#' whether it is a joinchat/hash (in which case it is not lowercased).
+#' Returns `list(NULL, FALSE)` if the username or link is not valid.
+#'
+#' @param username The username string to parse.
+#' @return A list with two elements: the parsed username (or `NULL`) and a logical for invite status.
+#' @examples
+#' \donttest{
+#' parse_username("@username") # list("username", FALSE)
+#' parse_username("https://t.me/joinchat/abc123") # list("abc123", TRUE)
+#' parse_username("invalid") # list(NULL, FALSE)
+#' }
+#' @noRd
 parse_username <- function(username) {
   username <- trimws(username)
   # Allow plain usernames (without @ or URL) if they match the valid pattern.
@@ -1816,15 +1834,16 @@ parse_username <- function(username) {
 }
 
 
-#  Get Inner Text Surrounded by Entities
-# 
-#  Extracts the inner text that is surrounded by the given entities.
-#  For example, if text = 'hey!' and entity has offset=2, length=2,
-#  it returns 'y!'.
-# 
-#  @param text A character string representing the original text.
-#  @param entities A list of entity objects, each with 'offset' and 'length' fields.
-#  @return A list of character strings, each being the text surrounded by the corresponding entity.
+#' Get Inner Text Surrounded by Entities
+#'
+#' Extracts the inner text that is surrounded by the given entities.
+#' For example, if text = 'hey!' and entity has offset=2, length=2,
+#' it returns 'y!'.
+#'
+#' @param text A character string representing the original text.
+#' @param entities A list of entity objects, each with 'offset' and 'length' fields.
+#' @return A list of character strings, each being the text surrounded by the corresponding entity.
+#' @noRd
 get_inner_text <- function(text, entities) {
   text <- add_surrogate(text)
   result <- list()
@@ -1836,13 +1855,14 @@ get_inner_text <- function(text, entities) {
   return(result)
 }
 
-#  Get Peer Object
-# 
-#  Converts the given peer representation into a Peer object (PeerUser, PeerChat, or PeerChannel).
-#  Handles various input types such as integers, resolved peers, dialogs, etc.
-# 
-#  @param peer The peer object or integer to convert.
-#  @return A Peer object (PeerUser, PeerChat, or PeerChannel).
+#' Get Peer Object
+#'
+#' Converts the given peer representation into a Peer object (PeerUser, PeerChat, or PeerChannel).
+#' Handles various input types such as integers, resolved peers, dialogs, etc.
+#'
+#' @param peer The peer object or integer to convert.
+#' @return A Peer object (PeerUser, PeerChat, or PeerChannel).
+#' @noRd
 get_peer <- function(peer) {
   tryCatch(
     {
@@ -1883,29 +1903,30 @@ get_peer <- function(peer) {
 }
 
 
-#  Get Peer ID
-# 
-#  Convert the given peer into its marked ID by default.
-# 
-#  This "mark" comes from the "bot api" format, and with it the peer type
-#  can be identified back. User ID is left unmodified, chat ID is negated,
-#  and channel ID is "prefixed" with -100:
-# 
-#  * \code{user_id}
-#  * \code{-chat_id}
-#  * \code{-100channel_id}
-# 
-#  The original ID and the peer type class can be returned with
-#  a call to \code{resolve_id(marked_id)}.
-# 
-#  @param peer The peer object or integer to convert.
-#  @param add_mark Logical, whether to add the mark (default TRUE).
-#  @return The marked or unmarked peer ID as an integer.
-#  @examples
-#  \donttest{
-#  # Assuming peer is a PeerUser object
-#  id <- get_peer_id(peer)
-#  }
+#' Get Peer ID
+#'
+#' Convert the given peer into its marked ID by default.
+#'
+#' This "mark" comes from the "bot api" format, and with it the peer type
+#' can be identified back. User ID is left unmodified, chat ID is negated,
+#' and channel ID is "prefixed" with -100:
+#'
+#' * \code{user_id}
+#' * \code{-chat_id}
+#' * \code{-100channel_id}
+#'
+#' The original ID and the peer type class can be returned with
+#' a call to \code{resolve_id(marked_id)}.
+#'
+#' @param peer The peer object or integer to convert.
+#' @param add_mark Logical, whether to add the mark (default TRUE).
+#' @return The marked or unmarked peer ID as an integer.
+#' @examples
+#' \donttest{
+#' # Assuming peer is a PeerUser object
+#' id <- get_peer_id(peer)
+#' }
+#' @noRd
 get_peer_id <- function(peer, add_mark = TRUE) {
   # First we assert it's a Peer TLObject, or early return for integers
   if (is.integer(peer)) {
@@ -1948,12 +1969,13 @@ get_peer_id <- function(peer, add_mark = TRUE) {
 }
 
 
-#  Resolve Marked ID
-# 
-#  Given a marked ID, returns the original ID and its Peer type.
-# 
-#  @param marked_id An integer representing the marked ID.
-#  @return A list containing the original ID and the Peer type (e.g., PeerUser, PeerChat, or PeerChannel).
+#' Resolve Marked ID
+#'
+#' Given a marked ID, returns the original ID and its Peer type.
+#'
+#' @param marked_id An integer representing the marked ID.
+#' @return A list containing the original ID and the Peer type (e.g., PeerUser, PeerChat, or PeerChannel).
+#' @noRd
 resolve_id <- function(marked_id) {
   if (marked_id >= 0) {
     return(list(marked_id, PeerUser))
@@ -1968,12 +1990,13 @@ resolve_id <- function(marked_id) {
   }
 }
 
-#  Decode Run-Length-Encoded Data
-# 
-#  Decodes run-length-encoded data.
-# 
-#  @param data A raw vector representing the encoded data.
-#  @return A raw vector of the decoded data.
+#' Decode Run-Length-Encoded Data
+#'
+#' Decodes run-length-encoded data.
+#'
+#' @param data A raw vector representing the encoded data.
+#' @return A raw vector of the decoded data.
+#' @noRd
 rle_decode <- function(data) {
   if (length(data) == 0) {
     return(data)
@@ -1994,12 +2017,13 @@ rle_decode <- function(data) {
   return(c(new_data, last))
 }
 
-#  Encode Data with Run-Length Encoding
-# 
-#  Encodes a raw vector using run-length encoding.
-# 
-#  @param string A raw vector to encode.
-#  @return A raw vector of the encoded data.
+#' Encode Data with Run-Length Encoding
+#'
+#' Encodes a raw vector using run-length encoding.
+#'
+#' @param string A raw vector to encode.
+#' @return A raw vector of the encoded data.
+#' @noRd
 rle_encode <- function(string) {
   new_data <- raw(0)
   count <- 0
@@ -2022,16 +2046,17 @@ rle_encode <- function(string) {
 }
 
 
-#  Decode Telegram Base64
-# 
-#  Decodes a url-safe base64-encoded string into its bytes
-#  by first adding the stripped necessary padding characters.
-# 
-#  This is the way Telegram shares binary data as strings,
-#  such as Bot API-style file IDs or invite links.
-# 
-#  @param string A character string representing the url-safe base64-encoded data.
-#  @return A raw vector of bytes if decoding succeeds, otherwise NULL.
+#' Decode Telegram Base64
+#'
+#' Decodes a url-safe base64-encoded string into its bytes
+#' by first adding the stripped necessary padding characters.
+#'
+#' This is the way Telegram shares binary data as strings,
+#' such as Bot API-style file IDs or invite links.
+#'
+#' @param string A character string representing the url-safe base64-encoded data.
+#' @return A raw vector of bytes if decoding succeeds, otherwise NULL.
+#' @noRd
 decode_telegram_base64 <- function(string) {
   tryCatch(
     {
@@ -2048,13 +2073,14 @@ decode_telegram_base64 <- function(string) {
   )
 }
 
-#  Encode Telegram Base64
-# 
-#  Inverse operation for `decode_telegram_base64`.
-#  Encodes bytes into a url-safe base64 string, stripping padding.
-# 
-#  @param bytes A raw vector of bytes to encode.
-#  @return A character string representing the url-safe base64-encoded data if encoding succeeds, otherwise NULL.
+#' Encode Telegram Base64
+#'
+#' Inverse operation for `decode_telegram_base64`.
+#' Encodes bytes into a url-safe base64 string, stripping padding.
+#'
+#' @param bytes A raw vector of bytes to encode.
+#' @return A character string representing the url-safe base64-encoded data if encoding succeeds, otherwise NULL.
+#' @noRd
 encode_telegram_base64 <- function(bytes) {
   tryCatch(
     {
@@ -2071,18 +2097,19 @@ encode_telegram_base64 <- function(bytes) {
 }
 
 
-#  Resolve Bot File ID
-# 
-#  Given a Bot API-style `file_id`, returns the media it represents.
-#  If the `file_id` is not valid, `NULL` is returned instead.
-# 
-#  Note that the `file_id` does not have information such as image dimensions
-#  or file size, so these will be zero if present.
-# 
-#  For thumbnails, the photo ID and hash will always be zero.
-# 
-#  @param file_id A character string representing the Bot API-style file ID.
-#  @return A `Document` or `Photo` object if valid, otherwise `NULL`.
+#' Resolve Bot File ID
+#'
+#' Given a Bot API-style `file_id`, returns the media it represents.
+#' If the `file_id` is not valid, `NULL` is returned instead.
+#'
+#' Note that the `file_id` does not have information such as image dimensions
+#' or file size, so these will be zero if present.
+#'
+#' For thumbnails, the photo ID and hash will always be zero.
+#'
+#' @param file_id A character string representing the Bot API-style file ID.
+#' @return A `Document` or `Photo` object if valid, otherwise `NULL`.
+#' @noRd
 resolve_bot_file_id <- function(file_id) {
   data <- rle_decode(decode_telegram_base64(file_id))
   if (is.null(data) || length(data) == 0) {
@@ -2209,14 +2236,15 @@ resolve_bot_file_id <- function(file_id) {
 }
 
 
-#  Pack Bot File ID
-# 
-#  Inverse operation for `resolve_bot_file_id`. This function takes a Document or Photo
-#  object and returns a variable-length base64-encoded `file_id` string. If an invalid
-#  parameter is given, it returns NULL.
-# 
-#  @param file A Document or Photo object (or MessageMediaDocument/MessageMediaPhoto wrapper).
-#  @return A base64-encoded string representing the file ID, or NULL if invalid.
+#' Pack Bot File ID
+#'
+#' Inverse operation for `resolve_bot_file_id`. This function takes a Document or Photo
+#' object and returns a variable-length base64-encoded `file_id` string. If an invalid
+#' parameter is given, it returns NULL.
+#'
+#' @param file A Document or Photo object (or MessageMediaDocument/MessageMediaPhoto wrapper).
+#' @return A base64-encoded string representing the file ID, or NULL if invalid.
+#' @noRd
 pack_bot_file_id <- function(file) {
   if (inherits(file, "MessageMediaDocument")) {
     file <- file$document
@@ -2243,8 +2271,8 @@ pack_bot_file_id <- function(file) {
     con <- rawConnection(raw(0), "wb")
     writeBin(as.integer(file_type), con, size = 4, endian = "little")
     writeBin(as.integer(file$dc_id), con, size = 4, endian = "little")
-    writeBin(as.integer(file$id), con, size = 8, endian = "little")
-    writeBin(as.integer(file$access_hash), con, size = 8, endian = "little")
+    writeBin(packInt64(file$id), con)
+    writeBin(packInt64(file$access_hash), con)
     writeBin(as.integer(2), con, size = 1, endian = "little")
     data <- rawConnectionValue(con)
     close(con)
@@ -2269,10 +2297,10 @@ pack_bot_file_id <- function(file) {
     con <- rawConnection(raw(0), "wb")
     writeBin(as.integer(2), con, size = 4, endian = "little")
     writeBin(as.integer(file$dc_id), con, size = 4, endian = "little")
-    writeBin(as.integer(file$id), con, size = 8, endian = "little")
-    writeBin(as.integer(file$access_hash), con, size = 8, endian = "little")
-    writeBin(as.integer(size$volume_id), con, size = 8, endian = "little")
-    writeBin(as.integer(0), con, size = 8, endian = "little")
+    writeBin(packInt64(file$id), con)
+    writeBin(packInt64(file$access_hash), con)
+    writeBin(packInt64(size$volume_id), con)
+    writeBin(packInt64(0), con)
     writeBin(as.integer(size$local_id), con, size = 4, endian = "little")
     writeBin(as.integer(2), con, size = 1, endian = "little")
     data <- rawConnectionValue(con)
@@ -2285,22 +2313,23 @@ pack_bot_file_id <- function(file) {
 }
 
 
-#  Resolve Invite Link
-# 
-#  Resolves the given invite link. Returns a list of
-#  \code{(link creator user id, global chat id, random int)}.
-# 
-#  Note that for broadcast channels or with the newest link format, the link
-#  creator user ID will be zero to protect their identity. Normal chats and
-#  megagroup channels will have such ID.
-# 
-#  Note that the chat ID may not be accurate for chats with a link that were
-#  upgraded to megagroup, since the link can remain the same, but the chat
-#  ID will be correct once a new link is generated.
-# 
-#  @param link A character string representing the invite link.
-#  @return A list containing link creator user id, global chat id, random int,
-#    or a list of three NULLs if invalid.
+#' Resolve Invite Link
+#'
+#' Resolves the given invite link. Returns a list of
+#' \code{(link creator user id, global chat id, random int)}.
+#'
+#' Note that for broadcast channels or with the newest link format, the link
+#' creator user ID will be zero to protect their identity. Normal chats and
+#' megagroup channels will have such ID.
+#'
+#' Note that the chat ID may not be accurate for chats with a link that were
+#' upgraded to megagroup, since the link can remain the same, but the chat
+#' ID will be correct once a new link is generated.
+#'
+#' @param link A character string representing the invite link.
+#' @return A list containing link creator user id, global chat id, random int,
+#'   or a list of three NULLs if invalid.
+#' @noRd
 resolve_invite_link <- function(link) {
   link_hash_is_link <- parse_username(link)
   link_hash <- link_hash_is_link[[1]]
@@ -2347,20 +2376,21 @@ resolve_invite_link <- function(link) {
 }
 
 
-#  Resolve Inline Message ID
-# 
-#  Resolves an inline message ID. Returns a list of
-#  \code{(message_id, peer, dc_id, access_hash)}.
-# 
-#  The \code{peer} may either be a \code{PeerUser} referencing
-#  the user who sent the message via the bot in a private
-#  conversation or small group chat, or a \code{PeerChannel}
-#  if the message was sent in a channel.
-# 
-#  The \code{access_hash} does not have any use yet.
-# 
-#  @param inline_msg_id A character string representing the inline message ID.
-#  @return A list containing message_id, peer, dc_id, access_hash, or NULLs if invalid.
+#' Resolve Inline Message ID
+#'
+#' Resolves an inline message ID. Returns a list of
+#' \code{(message_id, peer, dc_id, access_hash)}.
+#'
+#' The \code{peer} may either be a \code{PeerUser} referencing
+#' the user who sent the message via the bot in a private
+#' conversation or small group chat, or a \code{PeerChannel}
+#' if the message was sent in a channel.
+#'
+#' The \code{access_hash} does not have any use yet.
+#'
+#' @param inline_msg_id A character string representing the inline message ID.
+#' @return A list containing message_id, peer, dc_id, access_hash, or NULLs if invalid.
+#' @noRd
 resolve_inline_message_id <- function(inline_msg_id) {
   tryCatch(
     {
@@ -2385,13 +2415,14 @@ resolve_inline_message_id <- function(inline_msg_id) {
   )
 }
 
-#  Get Appropriated Part Size
-# 
-#  Gets the appropriated part size when uploading or downloading files,
-#  given an initial file size.
-# 
-#  @param file_size An integer representing the file size in bytes.
-#  @return An integer representing the part size.
+#' Get Appropriated Part Size
+#'
+#' Gets the appropriated part size when uploading or downloading files,
+#' given an initial file size.
+#'
+#' @param file_size An integer representing the file size in bytes.
+#' @return An integer representing the part size.
+#' @noRd
 get_appropriated_part_size <- function(file_size) {
   if (file_size <= 104857600) { # 100MB
     return(128)
@@ -2403,77 +2434,80 @@ get_appropriated_part_size <- function(file_size) {
 }
 
 
-#  Encode Waveform
-# 
-#  Encodes the input raw vector into a 5-bit byte-string
-#  to be used as a voice note's waveform. See `decode_waveform`
-#  for the reverse operation.
-# 
-#  @param waveform A raw vector representing the waveform bytes.
-#  @return A raw vector containing the encoded waveform.
-#  @examples
-#  \donttest{
-#  # Send 'my.ogg' with an ascending-triangle waveform
-#  waveform <- as.raw(0:31) # 2^5 values for 5-bit
-#  encoded <- encode_waveform(waveform)
-#  # Use encoded in attributes
-# 
-#  # Send 'my.ogg' with a square waveform
-#  waveform <- rep(as.raw(c(31, 31, 15, 15, 15, 15, 31, 31)), 4)
-#  encoded <- encode_waveform(waveform)
-#  }
+#' Encode Waveform
+#'
+#' Encodes the input raw vector into a 5-bit byte-string
+#' to be used as a voice note's waveform. See `decode_waveform`
+#' for the reverse operation.
+#'
+#' @param waveform A raw vector representing the waveform bytes.
+#' @return A raw vector containing the encoded waveform.
+#' @examples
+#' \donttest{
+#' # Send 'my.ogg' with an ascending-triangle waveform
+#' waveform <- as.raw(0:31) # 2^5 values for 5-bit
+#' encoded <- encode_waveform(waveform)
+#' # Use encoded in attributes
+#'
+#' # Send 'my.ogg' with a square waveform
+#' waveform <- rep(as.raw(c(31, 31, 15, 15, 15, 15, 31, 31)), 4)
+#' encoded <- encode_waveform(waveform)
+#' }
+#' @noRd
 encode_waveform <- function(waveform) {
   encode_waveform_cpp(waveform)
 }
 
 
-#  Decode Waveform
-# 
-#  Inverse operation of `encode_waveform`. Decodes a byte array into a 5-bit byte-string
-#  representing a voice note's waveform.
-# 
-#  @param waveform A raw vector representing the encoded waveform bytes.
-#  @return A raw vector containing the decoded 5-bit values.
-#  @examples
-#  \donttest{
-#  # Example usage (assuming encoded waveform)
-#  encoded <- as.raw(c(0x00, 0x00)) # Placeholder
-#  decoded <- decode_waveform(encoded)
-#  }
+#' Decode Waveform
+#'
+#' Inverse operation of `encode_waveform`. Decodes a byte array into a 5-bit byte-string
+#' representing a voice note's waveform.
+#'
+#' @param waveform A raw vector representing the encoded waveform bytes.
+#' @return A raw vector containing the decoded 5-bit values.
+#' @examples
+#' \donttest{
+#' # Example usage (assuming encoded waveform)
+#' encoded <- as.raw(c(0x00, 0x00)) # Placeholder
+#' decoded <- decode_waveform(encoded)
+#' }
+#' @noRd
 decode_waveform <- function(waveform) {
   decode_waveform_cpp(waveform)
 }
 
 
-#  Split Text and Entities into Multiple Messages
-# 
-#  This function splits a message text and its associated entities into multiple
-#  messages, each respecting the specified length and entity limits while preserving
-#  formatting. It is useful for sending large messages as multiple parts without
-#  breaking entity formatting.
-# 
-#  @param text A character string representing the message text.
-#  @param entities A list of entity objects (e.g., lists with 'offset' and 'length' fields)
-#    representing the formatting entities in the text.
-#  @param limit An integer specifying the maximum length of each individual message.
-#    Default is 4096.
-#  @param max_entities An integer specifying the maximum number of entities allowed
-#    in each individual message. Default is 100.
-#  @param split_at A character vector of regular expressions that determine where to
-#    split the text. By default, it splits at newlines, spaces, or any character.
-#    The last expression should match a character to ensure splitting.
-#  @return A list of lists, where each sublist contains a pair of (split_text, split_entities).
-#    Each pair represents a portion of the original text and its corresponding entities.
-#  @examples
-#  \donttest{
-#  # Assuming entities are lists like list(offset = 0, length = 5, ...)
-#  text <- "This is a very long message that needs to be split."
-#  entities <- list(list(offset = 0, length = 4)) # Example entity
-#  splits <- split_text(text, entities, limit = 20)
-#  for (split in splits) {
-#    # Send split[[1]] (text) with split[[2]] (entities)
-#  }
-#  }
+#' Split Text and Entities into Multiple Messages
+#'
+#' This function splits a message text and its associated entities into multiple
+#' messages, each respecting the specified length and entity limits while preserving
+#' formatting. It is useful for sending large messages as multiple parts without
+#' breaking entity formatting.
+#'
+#' @param text A character string representing the message text.
+#' @param entities A list of entity objects (e.g., lists with 'offset' and 'length' fields)
+#'   representing the formatting entities in the text.
+#' @param limit An integer specifying the maximum length of each individual message.
+#'   Default is 4096.
+#' @param max_entities An integer specifying the maximum number of entities allowed
+#'   in each individual message. Default is 100.
+#' @param split_at A character vector of regular expressions that determine where to
+#'   split the text. By default, it splits at newlines, spaces, or any character.
+#'   The last expression should match a character to ensure splitting.
+#' @return A list of lists, where each sublist contains a pair of (split_text, split_entities).
+#'   Each pair represents a portion of the original text and its corresponding entities.
+#' @examples
+#' \donttest{
+#' # Assuming entities are lists like list(offset = 0, length = 5, ...)
+#' text <- "This is a very long message that needs to be split."
+#' entities <- list(list(offset = 0, length = 4)) # Example entity
+#' splits <- split_text(text, entities, limit = 20)
+#' for (split in splits) {
+#'   # Send split[[1]] (text) with split[[2]] (entities)
+#' }
+#' }
+#' @noRd
 split_text <- function(text, entities, limit = 4096L, max_entities = 100L, split_at = c("\\n", "\\s", ".")) {
   # Helper function to update an entity with new values
   update_entity <- function(ent, ...) {
@@ -2554,12 +2588,10 @@ split_text <- function(text, entities, limit = 4096L, max_entities = 100L, split
 }
 
 
-#  @title AsyncClassWrapper
-#  @description An R6 class that wraps an object and provides asynchronous method wrapping.
-#  This class mimics the behavior of a Python class that wraps objects to handle asynchronous calls.
-#  @export
-#  @noRd
-#  @noRd
+#' @title AsyncClassWrapper
+#' @description An R6 class that wraps an object and provides asynchronous method wrapping.
+#' This class mimics the behavior of a Python class that wraps objects to handle asynchronous calls.
+#' @noRd
 AsyncClassWrapper <- R6::R6Class(
   "AsyncClassWrapper",
   public = list(
@@ -2597,20 +2629,21 @@ AsyncClassWrapper <- R6::R6Class(
 )
 
 
-#  Add JPG Header and Footer to Stripped Image
-# 
-#  This function adds the JPG header and footer to a stripped image byte array.
-#  It is ported from the Telegram Desktop source code.
-# 
-#  @param stripped A raw vector representing the stripped image bytes.
-#  @return A raw vector with the JPG header and footer added, or the original
-#    stripped bytes if the conditions are not met.
-#  @examples
-#  \donttest{
-#  # Assuming stripped is a raw vector from a stripped photo
-#  stripped <- as.raw(c(0x01, 0x80, 0x60, ...)) # example bytes
-#  jpg_bytes <- stripped_photo_to_jpg(stripped)
-#  }
+#' Add JPG Header and Footer to Stripped Image
+#'
+#' This function adds the JPG header and footer to a stripped image byte array.
+#' It is ported from the Telegram Desktop source code.
+#'
+#' @param stripped A raw vector representing the stripped image bytes.
+#' @return A raw vector with the JPG header and footer added, or the original
+#'   stripped bytes if the conditions are not met.
+#' @examples
+#' \donttest{
+#' # Assuming stripped is a raw vector from a stripped photo
+#' stripped <- as.raw(c(0x01, 0x80, 0x60, ...)) # example bytes
+#' jpg_bytes <- stripped_photo_to_jpg(stripped)
+#' }
+#' @noRd
 stripped_photo_to_jpg <- function(stripped) {
   # NOTE: Changes here should update photo_size_byte_count
   if (length(stripped) < 3 || stripped[1] != as.raw(0x01)) {
@@ -2668,22 +2701,23 @@ stripped_photo_to_jpg <- function(stripped) {
 }
 
 
-#  Calculate Byte Count for Photo Size
-# 
-#  This function calculates the byte count for different types of photo sizes
-#  in the Telegram API. It handles various photo size types and returns the
-#  appropriate byte count based on the type and its properties.
-# 
-#  @param size An object representing a photo size, which can be of types
-#    such as PhotoSize, PhotoStrippedSize, PhotoCachedSize, PhotoSizeEmpty,
-#    or PhotoSizeProgressive.
-#  @return The byte count as an integer, or NULL if the type is unrecognized.
-#  @examples
-#  \donttest{
-#  # Assuming types are defined elsewhere, e.g., PhotoSize
-#  size <- PhotoSize(size = 1024)
-#  photo_size_byte_count(size) # Returns 1024
-#  }
+#' Calculate Byte Count for Photo Size
+#'
+#' This function calculates the byte count for different types of photo sizes
+#' in the Telegram API. It handles various photo size types and returns the
+#' appropriate byte count based on the type and its properties.
+#'
+#' @param size An object representing a photo size, which can be of types
+#'   such as PhotoSize, PhotoStrippedSize, PhotoCachedSize, PhotoSizeEmpty,
+#'   or PhotoSizeProgressive.
+#' @return The byte count as an integer, or NULL if the type is unrecognized.
+#' @examples
+#' \donttest{
+#' # Assuming types are defined elsewhere, e.g., PhotoSize
+#' size <- PhotoSize(size = 1024)
+#' photo_size_byte_count(size) # Returns 1024
+#' }
+#' @noRd
 photo_size_byte_count <- function(size) {
   if (inherits(size, "PhotoSize")) {
     return(size$size)
@@ -2706,25 +2740,26 @@ photo_size_byte_count <- function(size) {
 }
 
 
-#  Maybe Async Utility Function
-# 
-#  This function checks if the provided coroutine or future is asynchronous.
-#  If it is a future, it warns about experimental async support and resolves it synchronously.
-#  Otherwise, it returns the input as-is. This is useful in contexts where asynchronous
-#  operations need to be handled in a synchronous manner.
-# 
-#  @param coro A value that may be a future (from the 'future' package).
-#  @return The resolved value if \code{coro} is a future, otherwise \code{coro} unchanged.
-#  @examples
-#  \donttest{
-#  # Assuming 'future' package is used for async operations
-#  library(future)
-#  f <- future({
-#    Sys.sleep(1)
-#    42
-#  })
-#  result <- maybe_async(f) # Will warn and resolve to 42
-#  }
+#' Maybe Async Utility Function
+#'
+#' This function checks if the provided coroutine or future is asynchronous.
+#' If it is a future, it warns about experimental async support and resolves it synchronously.
+#' Otherwise, it returns the input as-is. This is useful in contexts where asynchronous
+#' operations need to be handled in a synchronous manner.
+#'
+#' @param coro A value that may be a future (from the 'future' package).
+#' @return The resolved value if \code{coro} is a future, otherwise \code{coro} unchanged.
+#' @examples
+#' \donttest{
+#' # Assuming 'future' package is used for async operations
+#' library(future)
+#' f <- future({
+#'   Sys.sleep(1)
+#'   42
+#' })
+#' result <- maybe_async(f) # Will warn and resolve to 42
+#' }
+#' @noRd
 maybe_async <- function(coro) {
   result <- coro
   if (inherits(result, "Future")) {

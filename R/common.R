@@ -13,26 +13,23 @@ crc32 <- function(x) {
   as.integer(unsigned)
 }
 
-# 
-#  @details
-#  The classes defined in this file include:
-#  - `Exception`: A base class for all exceptions.
-#  - `ReadCancelledError`: Raised when a read operation is cancelled.
-#  - `TypeNotFoundError`: Raised when a type is not found.
-#  - `InvalidChecksumError`: Raised when a checksum is invalid.
-#  - `InvalidBufferError`: Raised when a buffer is invalid.
-#  - `AuthKeyNotFound`: Raised when an authorization key is not found.
-#  - `SecurityError`: Raised when a security check fails.
-#  - `CdnFileTamperedError`: Raised when a CDN file is tampered with.
-#  - `AlreadyInConversationError`: Raised when another exclusive conversation is opened in the same chat.
-#  - `BadMessageError`: Raised when handling a bad message notification.
-#  - `MultiError`: A container for multiple exceptions.
-# 
-#  @title Exception
-#  @description Telegram API type Exception
-#  @export
-#  @noRd
-#  @noRd
+#' @details
+#' The classes defined in this file include:
+#' - `Exception`: A base class for all exceptions.
+#' - `ReadCancelledError`: Raised when a read operation is cancelled.
+#' - `TypeNotFoundError`: Raised when a type is not found.
+#' - `InvalidChecksumError`: Raised when a checksum is invalid.
+#' - `InvalidBufferError`: Raised when a buffer is invalid.
+#' - `AuthKeyNotFound`: Raised when an authorization key is not found.
+#' - `SecurityError`: Raised when a security check fails.
+#' - `CdnFileTamperedError`: Raised when a CDN file is tampered with.
+#' - `AlreadyInConversationError`: Raised when another exclusive conversation is opened in the same chat.
+#' - `BadMessageError`: Raised when handling a bad message notification.
+#' - `MultiError`: A container for multiple exceptions.
+#'
+#' @title Exception
+#' @description Telegram API type Exception
+#' @noRd
 Exception <- R6::R6Class(
   "Exception",
   public = list(
@@ -49,13 +46,11 @@ Exception <- R6::R6Class(
   )
 )
 
-#  ReadCancelledError
-# 
-#  @title ReadCancelledError
-#  @description Telegram API type ReadCancelledError
-#  @export
-#  @noRd
-#  @noRd
+#' ReadCancelledError
+#'
+#' @title ReadCancelledError
+#' @description Telegram API type ReadCancelledError
+#' @noRd
 ReadCancelledError <- R6::R6Class(
   "ReadCancelledError",
   inherit = Exception,
@@ -70,13 +65,11 @@ ReadCancelledError <- R6::R6Class(
   )
 )
 
-#  TypeNotFoundError
-# 
-#  @title TypeNotFoundError
-#  @description Telegram API type TypeNotFoundError
-#  @export
-#  @noRd
-#  @noRd
+#' TypeNotFoundError
+#'
+#' @title TypeNotFoundError
+#' @description Telegram API type TypeNotFoundError
+#' @noRd
 TypeNotFoundError <- R6::R6Class(
   "TypeNotFoundError",
   inherit = Exception,
@@ -105,13 +98,11 @@ TypeNotFoundError <- R6::R6Class(
   )
 )
 
-#  InvalidChecksumError
-# 
-#  @title InvalidChecksumError
-#  @description Telegram API type InvalidChecksumError
-#  @export
-#  @noRd
-#  @noRd
+#' InvalidChecksumError
+#'
+#' @title InvalidChecksumError
+#' @description Telegram API type InvalidChecksumError
+#' @noRd
 InvalidChecksumError <- R6::R6Class(
   "InvalidChecksumError",
   inherit = Exception,
@@ -140,13 +131,11 @@ InvalidChecksumError <- R6::R6Class(
   )
 )
 
-#  InvalidBufferError
-# 
-#  @title InvalidBufferError
-#  @description Telegram API type InvalidBufferError
-#  @export
-#  @noRd
-#  @noRd
+#' InvalidBufferError
+#'
+#' @title InvalidBufferError
+#' @description Telegram API type InvalidBufferError
+#' @noRd
 InvalidBufferError <- R6::R6Class(
   "InvalidBufferError",
   inherit = Exception,
@@ -174,13 +163,11 @@ InvalidBufferError <- R6::R6Class(
   )
 )
 
-#  AuthKeyNotFound
-# 
-#  @title AuthKeyNotFound
-#  @description Telegram API type AuthKeyNotFound
-#  @export
-#  @noRd
-#  @noRd
+#' AuthKeyNotFound
+#'
+#' @title AuthKeyNotFound
+#' @description Telegram API type AuthKeyNotFound
+#' @noRd
 AuthKeyNotFound <- R6::R6Class(
   "AuthKeyNotFound",
   inherit = Exception,
@@ -197,13 +184,11 @@ AuthKeyNotFound <- R6::R6Class(
   )
 )
 
-#  SecurityError
-# 
-#  @title SecurityError
-#  @description Telegram API type SecurityError
-#  @export
-#  @noRd
-#  @noRd
+#' SecurityError
+#'
+#' @title SecurityError
+#' @description Telegram API type SecurityError
+#' @noRd
 SecurityError <- R6::R6Class(
   "SecurityError",
   inherit = Exception,
@@ -218,13 +203,11 @@ SecurityError <- R6::R6Class(
   )
 )
 
-#  CdnFileTamperedError
-# 
-#  @title CdnFileTamperedError
-#  @description Telegram API type CdnFileTamperedError
-#  @export
-#  @noRd
-#  @noRd
+#' CdnFileTamperedError
+#'
+#' @title CdnFileTamperedError
+#' @description Telegram API type CdnFileTamperedError
+#' @noRd
 CdnFileTamperedError <- R6::R6Class(
   "CdnFileTamperedError",
   inherit = SecurityError,
@@ -237,13 +220,11 @@ CdnFileTamperedError <- R6::R6Class(
   )
 )
 
-#  AlreadyInConversationError
-# 
-#  @title AlreadyInConversationError
-#  @description Telegram API type AlreadyInConversationError
-#  @export
-#  @noRd
-#  @noRd
+#' AlreadyInConversationError
+#'
+#' @title AlreadyInConversationError
+#' @description Telegram API type AlreadyInConversationError
+#' @noRd
 AlreadyInConversationError <- R6::R6Class(
   "AlreadyInConversationError",
   inherit = Exception,
@@ -260,13 +241,11 @@ AlreadyInConversationError <- R6::R6Class(
   )
 )
 
-#  BadMessageError
-# 
-#  @title BadMessageError
-#  @description Telegram API type BadMessageError
-#  @export
-#  @noRd
-#  @noRd
+#' BadMessageError
+#'
+#' @title BadMessageError
+#' @description Telegram API type BadMessageError
+#' @noRd
 BadMessageError <- R6::R6Class(
   "BadMessageError",
   inherit = Exception,
@@ -310,13 +289,11 @@ BadMessageError <- R6::R6Class(
   )
 )
 
-#  MultiError
-# 
-#  @title MultiError
-#  @description Telegram API type MultiError
-#  @export
-#  @noRd
-#  @noRd
+#' MultiError
+#'
+#' @title MultiError
+#' @description Telegram API type MultiError
+#' @noRd
 MultiError <- R6::R6Class(
   "MultiError",
   inherit = Exception,
@@ -357,11 +334,12 @@ MultiError <- R6::R6Class(
   )
 )
 
-#  Convert an RPC error to an R condition
-#  @param rpc_error A list or R6 object with error_code and error_message fields
-#  @param request The request that caused the error
-#  @return A condition object
-#  @keywords internal
+#' Convert an RPC error to an R condition
+#' @param rpc_error A list or R6 object with error_code and error_message fields
+#' @param request The request that caused the error
+#' @return A condition object
+#' @keywords internal
+#' @noRd
 rpc_message_to_error <- function(rpc_error, request) {
   code <- rpc_error$error_code
   msg <- rpc_error$error_message

@@ -1,27 +1,8 @@
-#  DeletePhotosRequest
-# 
-#  R6 translation of the TLRequest DeletePhotosRequest.
-# 
-# 
-#  @format A R6 object inheriting from TLRequest.
-#  @section Methods:
-#  - new(id = NULL):
-#    Create a new DeletePhotosRequest object.
-#  - resolve(client, utils):
-#    Resolve references (convert each provided id to input photo via utils).
-#  - to_list():
-#    Return a list representation suitable for JSON / introspection.
-#  - to_bytes():
-#    Serialize the object to a raw vector (little-endian packing). Writes vector constructor and elements.
-#  - from_reader(reader):
-#    Class method: read fields from a reader and construct an instance.
-# 
-#  @name DeletePhotosRequest
-#  @title DeletePhotosRequest
-#  @description Telegram API type DeletePhotosRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeletePhotosRequest
+#' @description Telegram API request \code{photos.deletePhotos} (constructor \code{#87cf7f2f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeletePhotosRequest <- R6::R6Class(
   "DeletePhotosRequest",
   inherit = TLRequest,
@@ -146,30 +127,11 @@ DeletePhotosRequest$read_result <- function(reader) {
 }
 
 
-#  GetUserPhotosRequest
-# 
-#  R6 translation of the TLRequest GetUserPhotosRequest.
-# 
-# 
-#  @format A R6 object inheriting from TLRequest.
-#  @section Methods:
-#  - new(user_id = NULL, offset = 0L, max_id = 0, limit = 0L):
-#    Create a new GetUserPhotosRequest object.
-#  - resolve(client, utils):
-#    Resolve references (convert user identifier to input user via client + utils).
-#  - to_list():
-#    Return a list representation suitable for JSON / introspection.
-#  - to_bytes():
-#    Serialize the object to a raw vector (little-endian packing).
-#  - from_reader(reader):
-#    Class method: read fields from a reader and construct an instance.
-# 
-#  @name GetUserPhotosRequest
-#  @title GetUserPhotosRequest
-#  @description Telegram API type GetUserPhotosRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUserPhotosRequest
+#' @description Telegram API request \code{photos.getUserPhotos} (constructor \code{#91cd32a8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUserPhotosRequest <- R6::R6Class(
   "GetUserPhotosRequest",
   inherit = TLRequest,
@@ -248,7 +210,7 @@ GetUserPhotosRequest <- R6::R6Class(
 
       writeBin(as.integer(self$offset), con, size = 4, endian = "little")
       # write max_id as 8-byte little-endian. Represented as numeric (double) in R.
-      writeBin(as.double(self$max_id), con, size = 8, endian = "little")
+      writeBin(packInt64(self$max_id), con)
       writeBin(as.integer(self$limit), con, size = 4, endian = "little")
 
       rawConnectionValue(con)
@@ -288,30 +250,11 @@ GetUserPhotosRequest$from_reader <- function(reader) {
 }
 
 
-#  UpdateProfilePhotoRequest
-# 
-#  R6 translation of the TLRequest UpdateProfilePhotoRequest.
-# 
-# 
-#  @format A R6 object inheriting from TLRequest.
-#  @section Methods:
-#  - new(id = NULL, fallback = NULL, bot = NULL):
-#    Create a new UpdateProfilePhotoRequest object.
-#  - resolve(client, utils):
-#    Resolve references (convert provided id to input photo and bot to input user).
-#  - to_list():
-#    Return a list representation suitable for JSON / introspection.
-#  - to_bytes():
-#    Serialize the object to a raw vector (little-endian packing).
-#  - from_reader(reader):
-#    Class method: read fields from a reader and construct an instance.
-# 
-#  @name UpdateProfilePhotoRequest
-#  @title UpdateProfilePhotoRequest
-#  @description Telegram API type UpdateProfilePhotoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateProfilePhotoRequest
+#' @description Telegram API request \code{photos.updateProfilePhoto} (constructor \code{#09e82039}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateProfilePhotoRequest <- R6::R6Class(
   "UpdateProfilePhotoRequest",
   inherit = TLRequest,
@@ -448,30 +391,11 @@ UpdateProfilePhotoRequest$from_reader <- function(reader) {
 }
 
 
-#  UploadContactProfilePhotoRequest
-# 
-#  R6 translation of the TLRequest UploadContactProfilePhotoRequest.
-# 
-# 
-#  @format A R6 object inheriting from TLRequest.
-#  @section Methods:
-#  - new(user_id = NULL, suggest = NULL, save = NULL, file = NULL, video = NULL, video_start_ts = NULL, video_emoji_markup = NULL):
-#    Create a new UploadContactProfilePhotoRequest object.
-#  - resolve(client, utils):
-#    Resolve references (convert a user identifier to input user via utils).
-#  - to_list():
-#    Return a list representation suitable for JSON / introspection.
-#  - to_bytes():
-#    Serialize the object to a raw vector (little-endian packing).
-#  - from_reader(reader):
-#    Class method: read fields from a reader and construct an instance.
-# 
-#  @name UploadContactProfilePhotoRequest
-#  @title UploadContactProfilePhotoRequest
-#  @description Telegram API type UploadContactProfilePhotoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadContactProfilePhotoRequest
+#' @description Telegram API request \code{photos.uploadContactProfilePhoto} (constructor \code{#e14c4a71}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadContactProfilePhotoRequest <- R6::R6Class(
   "UploadContactProfilePhotoRequest",
   inherit = TLRequest,
@@ -652,30 +576,11 @@ UploadContactProfilePhotoRequest$from_reader <- function(reader) {
 }
 
 
-#  UploadProfilePhotoRequest
-# 
-#  R6 translation of the TLRequest UploadProfilePhotoRequest.
-# 
-# 
-#  @format A R6 object inheriting from TLRequest.
-#  @section Methods:
-#  - new(fallback = NULL, bot = NULL, file = NULL, video = NULL, video_start_ts = NULL, video_emoji_markup = NULL):
-#    Create a new UploadProfilePhotoRequest object.
-#  - resolve(client, utils):
-#    Resolve references (e.g. convert a bot entity to input user via utils).
-#  - to_list():
-#    Return a list representation suitable for JSON / introspection.
-#  - to_bytes():
-#    Serialize the object to a raw vector (little-endian packing).
-#  - from_reader(reader):
-#    Class method: read fields from a reader and construct an instance.
-# 
-#  @name UploadProfilePhotoRequest
-#  @title UploadProfilePhotoRequest
-#  @description Telegram API type UploadProfilePhotoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadProfilePhotoRequest
+#' @description Telegram API request \code{photos.uploadProfilePhoto} (constructor \code{#0388a3b5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadProfilePhotoRequest <- R6::R6Class(
   "UploadProfilePhotoRequest",
   inherit = TLRequest,

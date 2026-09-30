@@ -1,12 +1,8 @@
-#  GetChannelDifferenceRequest R6 class
-# 
-#  Representation of updates.GetChannelDifference request.
-# 
-#  @title GetChannelDifferenceRequest
-#  @description Telegram API type GetChannelDifferenceRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChannelDifferenceRequest
+#' @description Telegram API request \code{updates.getChannelDifference} (constructor \code{#03173d78}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChannelDifferenceRequest <- R6::R6Class(
   "GetChannelDifferenceRequest",
   public = list(
@@ -114,15 +110,11 @@ GetChannelDifferenceRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetDifferenceRequest R6 class
-# 
-#  Representation of updates.GetDifference request.
-# 
-#  @title GetDifferenceRequest
-#  @description Telegram API type GetDifferenceRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDifferenceRequest
+#' @description Telegram API request \code{updates.getDifference} (constructor \code{#19c2f763}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDifferenceRequest <- R6::R6Class(
   "GetDifferenceRequest",
   public = list(
@@ -226,15 +218,11 @@ GetDifferenceRequest$set("public", "from_reader", function(reader) {
   )
 })
 
-#  GetStateRequest R6 class
-# 
-#  Representation of updates.GetState request.
-# 
-#  @title GetStateRequest
-#  @description Telegram API type GetStateRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStateRequest
+#' @description Telegram API request \code{updates.getState} (constructor \code{#edd4882a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStateRequest <- R6::R6Class(
   "GetStateRequest",
   public = list(

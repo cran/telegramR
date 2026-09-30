@@ -1,5 +1,5 @@
 #' @useDynLib telegramR, .registration = TRUE
-#' @importFrom Rcpp sourceRcpp
+#' @importFrom Rcpp evalCpp
 NULL
 
 .onLoad <- function(libname, pkgname) {

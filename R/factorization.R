@@ -1,11 +1,9 @@
-#  @details
-#  This class implements the Pollard's Rho-Brent Integer Factorization algorithm
-#  to efficiently factorize large integers into their prime components.
-#  @title Factorization
-#  @description Telegram API type Factorization
-#  @export
-#  @noRd
-#  @noRd
+#' @details
+#' This class implements the Pollard's Rho-Brent Integer Factorization algorithm
+#' to efficiently factorize large integers into their prime components.
+#' @title Factorization
+#' @description Telegram API type Factorization
+#' @noRd
 Factorization <- R6::R6Class(
   "Factorization",
   public = list(

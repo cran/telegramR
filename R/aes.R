@@ -1,13 +1,11 @@
-#  R6 Class Representing AES Encryption and Decryption
-# 
-# 
-#  @details
-#  A pure R implementation of AES IGE mode encryption and decryption.
-#  @title AES
-#  @description Telegram API type AES
-#  @export
-#  @noRd
-#  @noRd
+#' R6 Class Representing AES Encryption and Decryption
+#'
+#'
+#' @details
+#' A pure R implementation of AES IGE mode encryption and decryption.
+#' @title AES
+#' @description Telegram API type AES
+#' @noRd
 AES <- R6::R6Class(
   "AES",
   public = list(

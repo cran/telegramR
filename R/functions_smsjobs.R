@@ -1,11 +1,8 @@
-#  FinishJobRequest R6 class
-# 
-#  Representation of the FinishJobRequest TLRequest.
-#  @title FinishJobRequest
-#  @description Telegram API type FinishJobRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title FinishJobRequest
+#' @description Telegram API request \code{smsjobs.finishJob} (constructor \code{#4f1ebf24}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 FinishJobRequest <- R6::R6Class(
   "FinishJobRequest",
   public = list(
@@ -73,14 +70,11 @@ FinishJobRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetSmsJobRequest R6 class
-# 
-#  Representation of the GetSmsJobRequest TLRequest.
-#  @title GetSmsJobRequest
-#  @description Telegram API type GetSmsJobRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSmsJobRequest
+#' @description Telegram API request \code{smsjobs.getSmsJob} (constructor \code{#778d902f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSmsJobRequest <- R6::R6Class(
   "GetSmsJobRequest",
   public = list(
@@ -128,14 +122,11 @@ GetSmsJobRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetStatusRequest R6 class
-# 
-#  Representation of the GetStatusRequest TLRequest.
-#  @title GetStatusRequest
-#  @description Telegram API type GetStatusRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStatusRequest
+#' @description Telegram API request \code{smsjobs.getStatus} (constructor \code{#10a698e8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStatusRequest <- R6::R6Class(
   "GetStatusRequest",
   public = list(
@@ -168,14 +159,11 @@ GetStatusRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  IsEligibleToJoinRequest R6 class
-# 
-#  Representation of the IsEligibleToJoinRequest TLRequest.
-#  @title IsEligibleToJoinRequest
-#  @description Telegram API type IsEligibleToJoinRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title IsEligibleToJoinRequest
+#' @description Telegram API request \code{smsjobs.isEligibleToJoin} (constructor \code{#0edc39d0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 IsEligibleToJoinRequest <- R6::R6Class(
   "IsEligibleToJoinRequest",
   public = list(
@@ -217,14 +205,11 @@ write_uint32_le <- function(x) {
   rawConnectionValue(con)
 }
 
-#  JoinRequest R6 class
-# 
-#  Representation of the JoinRequest TLRequest.
-#  @title JoinRequest
-#  @description Telegram API type JoinRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title JoinRequest
+#' @description Telegram API request \code{smsjobs.join} (constructor \code{#a74ece2d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 JoinRequest <- R6::R6Class(
   "JoinRequest",
   public = list(
@@ -257,14 +242,11 @@ JoinRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  LeaveRequest R6 class
-# 
-#  Representation of the LeaveRequest TLRequest.
-#  @title LeaveRequest
-#  @description Telegram API type LeaveRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title LeaveRequest
+#' @description Telegram API request \code{smsjobs.leave} (constructor \code{#9898ad73}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 LeaveRequest <- R6::R6Class(
   "LeaveRequest",
   public = list(
@@ -296,14 +278,11 @@ LeaveRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  UpdateSettingsRequest R6 class
-# 
-#  Representation of the UpdateSettingsRequest TLRequest.
-#  @title UpdateSettingsRequest
-#  @description Telegram API type UpdateSettingsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateSettingsRequest
+#' @description Telegram API request \code{smsjobs.updateSettings} (constructor \code{#093fa0bf}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateSettingsRequest <- R6::R6Class(
   "UpdateSettingsRequest",
   public = list(

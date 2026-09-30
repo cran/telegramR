@@ -1,9 +1,7 @@
-#  @title TLMessage
-#  @description A class representing a Telegram Layer (TL) message.
-#  This class extends the TLObject class and provides functionality to store and manipulate TL message data.
-#  @export
-#  @noRd
-#  @noRd
+#' @title TLMessage
+#' @description A class representing a Telegram Layer (TL) message.
+#' This class extends the TLObject class and provides functionality to store and manipulate TL message data.
+#' @noRd
 TLMessage <- R6::R6Class(
   "TLMessage",
   inherit = TLObject,

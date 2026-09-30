@@ -1,13 +1,8 @@
-#  GetCollectibleInfoRequest R6 class
-# 
-#  Request to retrieve collectible information (fragment.CollectibleInfo).
-# 
-#  @return R6 object of class GetCollectibleInfoRequest
-#  @title GetCollectibleInfoRequest
-#  @description Telegram API type GetCollectibleInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCollectibleInfoRequest
+#' @description Telegram API request \code{fragment.getCollectibleInfo} (constructor \code{#be1e85ba}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCollectibleInfoRequest <- R6::R6Class(
   "GetCollectibleInfoRequest",
   inherit = TLRequest,
@@ -52,9 +47,9 @@ GetCollectibleInfoRequest <- R6::R6Class(
       constructor_raw <- as.raw(c(0xba, 0x85, 0x1e, 0xbe)) # little-endian bytes for 0xbe1e85ba
 
       collectible_bytes <- if (inherits(self$collectible, "TLObject")) {
-        if (!is.null(self$collectible$to_bytes)) {
+        if (.telegramR_defines(self$collectible, "to_bytes")) {
           self$collectible$to_bytes()
-        } else if (!is.null(self$collectible$bytes)) {
+        } else if (.telegramR_defines(self$collectible, "bytes")) {
           self$collectible$bytes()
         } else {
           stop("collectible does not provide a to_bytes / bytes method")
@@ -70,9 +65,9 @@ GetCollectibleInfoRequest <- R6::R6Class(
   )
 )
 
-#  from_reader for GetCollectibleInfoRequest
-#  @param reader reader
-#  @export
+#' from_reader for GetCollectibleInfoRequest
+#' @param reader reader
+#' @noRd
 GetCollectibleInfoRequest$from_reader <- function(reader) {
   collectible_obj <- reader$tgread_object()
   GetCollectibleInfoRequest$new(collectible = collectible_obj)

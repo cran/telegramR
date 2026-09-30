@@ -1,14 +1,12 @@
-#  BinaryReader Class
-# 
-# 
-#  @details
-#  Provides methods to read various data types and handle stream positions.
-# 
-#  @title BinaryReader
-#  @description Telegram API type BinaryReader
-#  @export
-#  @noRd
-#  @noRd
+#' BinaryReader Class
+#'
+#'
+#' @details
+#' Provides methods to read various data types and handle stream positions.
+#'
+#' @title BinaryReader
+#' @description Telegram API type BinaryReader
+#' @noRd
 BinaryReader <- R6::R6Class(
   "BinaryReader",
   public = list(
@@ -205,6 +203,31 @@ BinaryReader <- R6::R6Class(
     #  @description
     #  Reads a 32-bit Unix timestamp and returns it as a POSIXct datetime.
     #  @return A POSIXct datetime or NULL if the timestamp is 0.
+    #  @description
+    #  Read a TL Bool (boolTrue#997275b5 / boolFalse#bc799737).
+    #  @return TRUE or FALSE.
+    tgread_bool = function() {
+      value <- self$read_int(signed = FALSE)
+      key <- sprintf("%.0f", as.numeric(value))
+      if (identical(key, "2574415285")) return(TRUE)   # 0x997275b5
+      if (identical(key, "3162085175")) return(FALSE)  # 0xbc799737
+      stop(sprintf("Invalid boolean code %s", key))
+    },
+
+    #  @description
+    #  Read a TL Vector of objects.
+    #  @return A list of parsed objects.
+    tgread_vector = function() {
+      ctor <- self$read_int(signed = FALSE)
+      if (!identical(sprintf("%.0f", as.numeric(ctor)), "481674261")) { # 0x1cb5c415
+        stop(sprintf("Invalid constructor code %s, expected Vector", sprintf("%.0f", as.numeric(ctor))))
+      }
+      n <- self$read_int()
+      out <- vector("list", n)
+      if (n > 0) for (i in seq_len(n)) out[[i]] <- self$tgread_object()
+      out
+    },
+
     tgread_date = function() {
       value <- self$read_int(signed = FALSE)
       if (is.null(value) || value == 0) {
@@ -313,6 +336,10 @@ BinaryReader <- R6::R6Class(
         return(.telegramR_read_messages_chat_full(self))
       }
       ctor_key <- .telegramR_norm_ctor_id(constructor_id)
+      hand <- .telegramR_hand_readers[[ctor_key]]
+      if (is.function(hand)) {
+        return(hand(self))
+      }
       ctor_map <- .telegramR_get_ctor_map()
       cls <- ctor_map[[ctor_key]]
       if (isTRUE(getOption("telegramR.trace_parse", FALSE))) {
@@ -368,25 +395,32 @@ BinaryReader <- R6::R6Class(
       # Prefer class-level from_reader to avoid relying on instance methods
       # (some classes lack a working self$new on instances).
       from_reader_fn <- NULL
+      self_proxy <- NULL
+      captured <- new.env(parent = emptyenv())   # holds the instance built via self$initialize()/self$new()
       if (!is.null(cls$private_methods) && is.function(cls$private_methods$from_reader)) {
         from_reader_fn <- cls$private_methods$from_reader
         # Fix the function's environment so it can find the class it needs
         # to construct (e.g. BadServerSalt$new inside from_reader).
-        # The extracted function's enclosing env may not have the class in scope.
         fn_env <- new.env(parent = environment(from_reader_fn))
         fn_env[[cls$classname]] <- cls
         # Provide a `self` proxy so from_reader methods that call
-        # self$initialize(...) or self$new(...) work correctly outside R6 context.
-        # The proxy delegates these calls to cls$new(...).
+        # self$initialize(...) / self$new(...) work outside R6 context. The
+        # created instance is captured so the common `self$initialize(...); self`
+        # idiom returns a populated object rather than the empty proxy.
         self_proxy <- new.env(parent = emptyenv())
-        self_proxy$initialize <- function(...) cls$new(...)
-        self_proxy$new <- function(...) cls$new(...)
+        self_proxy$initialize <- function(...) { captured$obj <- cls$new(...); invisible(captured$obj) }
+        self_proxy$new <- function(...) { captured$obj <- cls$new(...); captured$obj }
         fn_env$self <- self_proxy
         environment(from_reader_fn) <- fn_env
       } else if (!is.null(obj)) {
         private_env <- obj$.__enclos_env__$private
         if (is.environment(private_env) && is.function(private_env$from_reader)) {
           from_reader_fn <- private_env$from_reader
+        } else if (is.function(obj$from_reader) &&
+                   !identical(body(obj$from_reader), body(TLObject$public_methods$from_reader))) {
+          # Generated classes with a *public* from_reader(reader) that fills
+          # the instance in place and returns self.
+          from_reader_fn <- function(reader) obj$from_reader(reader)
         }
       }
 
@@ -441,6 +475,24 @@ BinaryReader <- R6::R6Class(
         if (inherits(parsed, "R6")) {
           return(parsed)
         }
+        # The from_reader used the `self` proxy. Prefer the instance it built
+        # via self$initialize()/self$new(); otherwise rebuild from any direct
+        # field writes it made on the proxy (the `self$field <- x; self` idiom).
+        if (!is.null(self_proxy) && is.environment(parsed) && identical(parsed, self_proxy)) {
+          extra <- setdiff(ls(self_proxy), c("initialize", "new"))
+          if (!is.null(captured$obj)) {
+            for (nm in extra) try(captured$obj[[nm]] <- get(nm, envir = self_proxy), silent = TRUE)
+            return(captured$obj)
+          }
+          fields <- mget(extra, envir = self_proxy)
+          built <- tryCatch(do.call(cls$new, fields), error = function(e) NULL)
+          if (!is.null(built)) return(built)
+          return(structure(c(list(CONSTRUCTOR_ID = constructor_id), fields),
+                           class = c(cls$classname, "TLObject", "list")))
+        }
+        if (!is.null(captured$obj)) {
+          return(captured$obj)
+        }
         if (inherits(parsed, class(cls$classname)[1]) || inherits(parsed, cls$classname)) {
           return(parsed)
         }
@@ -477,6 +529,208 @@ BinaryReader <- R6::R6Class(
     .pos = 0L
   )
 )
+
+# ---- Hand-written readers for responses whose generated classes lack parsers ----
+
+.telegramR_read_vector <- function(reader) {
+  vec_ctor <- reader$read_int(signed = FALSE)
+  if (!identical(.telegramR_norm_ctor_id(vec_ctor), .telegramR_norm_ctor_id(0x1cb5c415))) {
+    stop(sprintf("Expected Vector constructor, got %s", as.character(vec_ctor)))
+  }
+  n <- reader$read_int()
+  out <- vector("list", n)
+  if (n > 0) for (i in seq_len(n)) out[[i]] <- reader$tgread_object()
+  out
+}
+
+# dialog#d58a08c6 / dialogFolder#71bd134c
+.telegramR_read_dialog <- function(reader) {
+  flags <- reader$read_int()
+  peer <- reader$tgread_object()
+  top_message <- reader$read_int()
+  read_inbox_max_id <- reader$read_int()
+  read_outbox_max_id <- reader$read_int()
+  unread_count <- reader$read_int()
+  unread_mentions_count <- reader$read_int()
+  unread_reactions_count <- reader$read_int()
+  notify_settings <- reader$tgread_object()
+  pts <- if (bitwAnd(flags, 1) != 0) reader$read_int() else NULL
+  draft <- if (bitwAnd(flags, 2) != 0) reader$tgread_object() else NULL
+  folder_id <- if (bitwAnd(flags, 16) != 0) reader$read_int() else NULL
+  ttl_period <- if (bitwAnd(flags, 32) != 0) reader$read_int() else NULL
+  Dialog$new(
+    peer = peer, top_message = top_message,
+    read_inbox_max_id = read_inbox_max_id, read_outbox_max_id = read_outbox_max_id,
+    unread_count = unread_count, unread_mentions_count = unread_mentions_count,
+    unread_reactions_count = unread_reactions_count, notify_settings = notify_settings,
+    pinned = bitwAnd(flags, 4) != 0, unread_mark = bitwAnd(flags, 8) != 0,
+    view_forum_as_messages = bitwAnd(flags, 64) != 0,
+    pts = pts, draft = draft, folder_id = folder_id, ttl_period = ttl_period
+  )
+}
+
+.telegramR_read_dialog_folder <- function(reader) {
+  flags <- reader$read_int()
+  folder <- reader$tgread_object()
+  peer <- reader$tgread_object()
+  top_message <- reader$read_int()
+  DialogFolder$new(
+    folder = folder, peer = peer, top_message = top_message,
+    unread_muted_peers_count = reader$read_int(),
+    unread_unmuted_peers_count = reader$read_int(),
+    unread_muted_messages_count = reader$read_int(),
+    unread_unmuted_messages_count = reader$read_int(),
+    pinned = bitwAnd(flags, 4) != 0
+  )
+}
+
+# messages.dialogs#15ba6c40 / messages.dialogsSlice#71e094f3 / messages.dialogsNotModified#f0e3e596
+.telegramR_read_dialogs <- function(reader, sliced = FALSE, not_modified = FALSE) {
+  if (not_modified) {
+    return(structure(list(count = reader$read_int(), dialogs = list(), messages = list(),
+                          chats = list(), users = list()), class = c("messages.DialogsNotModified", "list")))
+  }
+  count <- if (sliced) reader$read_int() else NULL
+  dialogs <- .telegramR_read_vector(reader)
+  messages <- .telegramR_read_vector(reader)
+  chats <- .telegramR_read_vector(reader)
+  users <- .telegramR_read_vector(reader)
+  structure(
+    list(count = count %||% length(dialogs), dialogs = dialogs, messages = messages, chats = chats, users = users),
+    class = c(if (sliced) "messages.DialogsSlice" else "messages.Dialogs", "list")
+  )
+}
+
+# messages.chats#64ff9fd5 / messages.chatsSlice#9cd81144
+.telegramR_read_chats <- function(reader, sliced = FALSE) {
+  count <- if (sliced) reader$read_int() else NULL
+  chats <- .telegramR_read_vector(reader)
+  structure(list(count = count %||% length(chats), chats = chats),
+            class = c(if (sliced) "messages.ChatsSlice" else "messages.Chats", "list"))
+}
+
+# chat#41cbf256 (basic group), chatEmpty#29562865, chatForbidden#6592a1a7
+.telegramR_read_chat <- function(reader) {
+  flags <- reader$read_int()
+  id <- reader$read_long()
+  title <- reader$tgread_string()
+  photo <- reader$tgread_object()
+  participants_count <- reader$read_int()
+  date <- reader$read_int()
+  version <- reader$read_int()
+  migrated_to <- if (bitwAnd(flags, 64) != 0) reader$tgread_object() else NULL
+  admin_rights <- if (bitwAnd(flags, 16384) != 0) reader$tgread_object() else NULL
+  default_banned_rights <- if (bitwAnd(flags, 262144) != 0) reader$tgread_object() else NULL
+  structure(list(
+    CONSTRUCTOR_ID = 0x41cbf256, id = id, title = title, photo = photo,
+    participants_count = participants_count, date = date, version = version,
+    creator = bitwAnd(flags, 1) != 0, left = bitwAnd(flags, 4) != 0,
+    deactivated = bitwAnd(flags, 32) != 0, call_active = bitwAnd(flags, 8388608) != 0,
+    call_not_empty = bitwAnd(flags, 16777216) != 0, noforwards = bitwAnd(flags, 33554432) != 0,
+    migrated_to = migrated_to, admin_rights = admin_rights, default_banned_rights = default_banned_rights
+  ), class = c("Chat", "TLObject", "list"))
+}
+
+.telegramR_read_chat_empty <- function(reader) {
+  structure(list(CONSTRUCTOR_ID = 0x29562865, id = reader$read_long()), class = c("ChatEmpty", "TLObject", "list"))
+}
+
+.telegramR_read_chat_forbidden <- function(reader) {
+  structure(list(CONSTRUCTOR_ID = 0x6592a1a7, id = reader$read_long(), title = reader$tgread_string()),
+            class = c("ChatForbidden", "TLObject", "list"))
+}
+
+# emojiStatus#e7ff068a / emojiStatusCollectible#7184603b / emojiStatusEmpty#2de11aae
+.telegramR_read_emoji_status <- function(reader) {
+  flags <- reader$read_int()
+  document_id <- reader$read_long()
+  until <- if (bitwAnd(flags, 1) != 0) reader$read_int() else NULL
+  EmojiStatus$new(document_id = document_id, until = until)
+}
+
+.telegramR_read_emoji_status_collectible <- function(reader) {
+  flags <- reader$read_int()
+  EmojiStatusCollectible$new(
+    collectible_id = reader$read_long(), document_id = reader$read_long(),
+    title = reader$tgread_string(), slug = reader$tgread_string(),
+    pattern_document_id = reader$read_long(),
+    center_color = reader$read_int(), edge_color = reader$read_int(),
+    pattern_color = reader$read_int(), text_color = reader$read_int(),
+    until = if (bitwAnd(flags, 1) != 0) reader$read_int() else NULL
+  )
+}
+
+# updates#74ae4240 / updatesCombined#725b04c3
+# Tolerant parse: the updates vector may contain an Update subtype this
+# (partly layer-201) build cannot decode. An unknown constructor makes
+# tgread_object() swallow the rest of the stream, so we collect the updates
+# that parsed cleanly and stop at the first raw-fallback element. That is
+# enough for get_response_message(), which only needs the new-message update.
+.telegramR_read_updates <- function(reader, combined = FALSE) {
+  is_raw_fallback <- function(x) {
+    is.list(x) && !is.null(x$CONSTRUCTOR_ID) && !is.null(x$data) && is.raw(x$data) &&
+      !inherits(x, "TLObject")
+  }
+  reader$read_int(signed = FALSE)      # Vector<Update> constructor (0x1cb5c415)
+  n <- reader$read_int()
+  updates <- list(); truncated <- FALSE
+  if (!is.null(n) && n > 0) {
+    for (i in seq_len(n)) {
+      u <- tryCatch(reader$tgread_object(), error = function(e) NULL)
+      if (is.null(u) || is_raw_fallback(u)) { truncated <- TRUE; break }
+      updates <- c(updates, list(u))
+    }
+  }
+  users <- list(); chats <- list(); date <- NULL; seq <- NULL
+  if (!truncated) {
+    users <- tryCatch(.telegramR_read_vector(reader), error = function(e) list())
+    chats <- tryCatch(.telegramR_read_vector(reader), error = function(e) list())
+    date  <- tryCatch(reader$read_int(), error = function(e) NULL)
+    if (combined) tryCatch(reader$read_int(), error = function(e) NULL) # seq_start
+    seq   <- tryCatch(reader$read_int(), error = function(e) NULL)
+  }
+  structure(
+    list(updates = updates, users = users, chats = chats, date = date, seq = seq,
+         truncated = truncated),
+    class = c(if (combined) "UpdatesCombined" else "Updates", "TLObject", "list")
+  )
+}
+
+.telegramR_hand_readers <- local({
+  ctors <- c(
+    updates = 0x74ae4240, updatesCombined = 0x725b04c3,
+    notificationSoundDefault = 0x97e8bebe, notificationSoundNone = 0x6f0c34df,
+    notificationSoundLocal = 0x830b9ae4, notificationSoundRingtone = 0xff6c8049,
+    dialog = 0xd58a08c6, dialogFolder = 0x71bd134c,
+    dialogs = 0x15ba6c40, dialogsSlice = 0x71e094f3, dialogsNotModified = 0xf0e3e596,
+    chats = 0x64ff9fd5, chatsSlice = 0x9cd81144,
+    chat = 0x41cbf256, chatEmpty = 0x29562865, chatForbidden = 0x6592a1a7,
+    emojiStatus = 0xe7ff068a, emojiStatusCollectible = 0x7184603b, emojiStatusEmpty = 0x2de11aae
+  )
+  fns <- list(
+    updates = function(r) .telegramR_read_updates(r),
+    updatesCombined = function(r) .telegramR_read_updates(r, combined = TRUE),
+    notificationSoundDefault = function(r) NotificationSoundDefault$new(),
+    notificationSoundNone = function(r) NotificationSoundNone$new(),
+    notificationSoundLocal = function(r) NotificationSoundLocal$new(title = r$tgread_string(), data = r$tgread_string()),
+    notificationSoundRingtone = function(r) NotificationSoundRingtone$new(id = r$read_long()),
+    dialog = function(r) .telegramR_read_dialog(r),
+    dialogFolder = function(r) .telegramR_read_dialog_folder(r),
+    dialogs = function(r) .telegramR_read_dialogs(r),
+    dialogsSlice = function(r) .telegramR_read_dialogs(r, sliced = TRUE),
+    dialogsNotModified = function(r) .telegramR_read_dialogs(r, not_modified = TRUE),
+    chats = function(r) .telegramR_read_chats(r),
+    chatsSlice = function(r) .telegramR_read_chats(r, sliced = TRUE),
+    chat = function(r) .telegramR_read_chat(r),
+    chatEmpty = function(r) .telegramR_read_chat_empty(r),
+    chatForbidden = function(r) .telegramR_read_chat_forbidden(r),
+    emojiStatus = function(r) .telegramR_read_emoji_status(r),
+    emojiStatusCollectible = function(r) .telegramR_read_emoji_status_collectible(r),
+    emojiStatusEmpty = function(r) EmojiStatusEmpty$new()
+  )
+  # keys match .telegramR_norm_ctor_id(): unsigned constructor id as a string
+  stats::setNames(fns[names(ctors)], sprintf("%.0f", ctors))
+})
 
 .telegramR_norm_ctor_id <- function(x) {
   v <- as.numeric(x)[1]

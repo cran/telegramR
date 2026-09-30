@@ -4,9 +4,9 @@ MIN_CHUNK_SIZE <- 4096
 MAX_CHUNK_SIZE <- 512 * 1024
 TIMED_OUT_SLEEP <- 1
 
-#  @title upload.File class
-#  @description Minimal implementation of the upload.File TL type.
-#  @noRd
+#' @title upload.File class
+#' @description Minimal implementation of the upload.File TL type.
+#' @noRd
 upload.File <- R6::R6Class(
   "upload.File",
   public = list(
@@ -43,10 +43,9 @@ upload.File <- R6::R6Class(
   )
 )
 
-#  @title CdnRedirect class
-#  @description Class for handling CDN redirects.
-#  @noRd
-#  @noRd
+#' @title CdnRedirect class
+#' @description Class for handling CDN redirects.
+#' @noRd
 CdnRedirect <- R6::R6Class(
   "CdnRedirect",
   public = list(
@@ -61,10 +60,9 @@ CdnRedirect <- R6::R6Class(
   )
 )
 
-#  @title DirectDownloadIter class
-#  @description Class for direct file downloading iteration.
-#  @noRd
-#  @noRd
+#' @title DirectDownloadIter class
+#' @description Class for direct file downloading iteration.
+#' @noRd
 DirectDownloadIter <- R6::R6Class(
   "DirectDownloadIter",
   inherit = RequestIter,
@@ -334,10 +332,9 @@ DirectDownloadIter <- R6::R6Class(
   )
 )
 
-#  @title GenericDownloadIter class
-#  @description Class for generic file downloading iteration.
-#  @noRd
-#  @noRd
+#' @title GenericDownloadIter class
+#' @description Class for generic file downloading iteration.
+#' @noRd
 GenericDownloadIter <- R6::R6Class(
   "GenericDownloadIter",
   inherit = DirectDownloadIter,

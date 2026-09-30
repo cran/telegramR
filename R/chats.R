@@ -5,16 +5,13 @@ NULL
 .MAX_ADMIN_LOG_CHUNK_SIZE <- 100
 .MAX_PROFILE_PHOTO_CHUNK_SIZE <- 100
 
-#  _ChatAction R6 Class
-# 
-#  A context manager-like class for representing a "chat action" in Telegram,
-#  such as "user is typing" or uploading a file with progress.
-#  This class handles sending the appropriate action to the chat and optionally
-#  cancelling it when done. It is designed to be used synchronously in R.
-# 
-#  @export
-#  @noRd
-#  @noRd
+#' _ChatAction R6 Class
+#'
+#' A context manager-like class for representing a "chat action" in Telegram,
+#' such as "user is typing" or uploading a file with progress.
+#' This class handles sending the appropriate action to the chat and optionally
+#' cancelling it when done. It is designed to be used synchronously in R.
+#' @noRd
 .ChatAction <- R6::R6Class(
   "_ChatAction",
   public = list(
@@ -112,29 +109,22 @@ NULL
 )
 
 
-#  _ParticipantsIter R6 Class
-# 
-#  An iterator over the participants belonging to the specified chat.
-#  The order is unspecified.
-#  Inherits from RequestIter.
-# 
-#  @export
-#  @noRd
-#  @noRd
+#' _ParticipantsIter R6 Class
+#'
+#' An iterator over the participants belonging to the specified chat.
+#' The order is unspecified.
+#' Inherits from RequestIter.
+#' @noRd
 .ParticipantsIter <- R6::R6Class(
   "_ParticipantsIter",
   inherit = RequestIter,
   public = list(
-    #  @field filter_entity Optional local filter function.
     filter_entity = NULL,
-    #  @field requests Internal requests holder.
     requests = NULL,
-    #  @field seen Internal seen cache.
     seen = NULL,
-    #  @description Initialize the iterator.
-    #  @param entity The entity from which to retrieve the participants list.
-    #  @param filter The filter to be used, if you want e.g. only admins. Default is NULL.
-    #  @param search Look for participants with this string in name/username. Default is ''.
+    entity = NULL,
+    filter = NULL,
+    search = "",
     initialize = function(client, limit = Inf, entity, filter = NULL, search = "") {
       super$initialize(client = client, limit = limit)
       if (!is.null(filter) && is.function(filter)) {
@@ -142,117 +132,109 @@ NULL
           inherits(filter, "ChannelParticipantsKicked") ||
           inherits(filter, "ChannelParticipantsSearch") ||
           inherits(filter, "ChannelParticipantsContacts")) {
-          # These require a `q` parameter (support types for convenience)
           filter <- filter("")
         } else {
           filter <- filter()
         }
       }
+      self$filter <- filter
+      self$search <- search %||% ""
+      self$seen <- character(0)
+      self$buffer <- list()
+      self$filter_entity <- function(ent) TRUE
 
-      get_input_entity <- NULL
-      if (is.list(self$client) && is.function(self$client$get_input_entity)) {
-        get_input_entity <- self$client$get_input_entity
-      } else {
-        get_input_entity <- tryCatch(get_input_entity, error = function(e) NULL)
+      # Resolve the entity to an input entity; support both an R6 client
+      # and a plain callable client (used by tests).
+      resolver <- NULL
+      if (is.function(client)) {
+        resolver <- attr(client, "get_input_entity")
+      } else if (is.function(client$get_input_entity)) {
+        resolver <- client$get_input_entity
       }
-      if (is.function(get_input_entity)) {
-        entity <- get_input_entity(entity)
+      if (is.function(resolver)) {
+        entity <- await(resolver(entity))
       }
-      ty <- helpers$`_entity_type`(entity)
-      if (nchar(search) > 0 && (!is.null(filter) || ty != helpers$`_EntityType`$CHANNEL)) {
-        # We need to 'search' ourselves unless we have a PeerChannel
+      self$entity <- entity
+
+      ty <- entity_type(entity)
+      search <- self$search
+      if (nchar(search) > 0 && (!is.null(filter) || ty != EntityType$CHANNEL)) {
         search <- tolower(search)
         self$filter_entity <- function(ent) {
           display_name <- tolower(utils$get_display_name(ent))
           username <- tolower(getattr(ent, "username", "") %||% "")
-          return(grepl(search, display_name) || grepl(search, username))
+          grepl(search, display_name, fixed = TRUE) || grepl(search, username, fixed = TRUE)
         }
-      } else {
-        self$filter_entity <- function(ent) TRUE
       }
 
-      # Only used for channels, but we should always set the attribute
-      # Called `requests` even though it's just one for legacy purposes.
-      self$requests <- NULL
-
-      if (ty == helpers$`_EntityType`$CHANNEL) {
-        if (self$limit <= 0) {
-          # May not have access to the channel, but getFull can get the .total.
-          full_channel <- self$client(GetFullChannelRequest(entity))
-          self$total <- full_channel$full_chat$participants_count
-          stop("StopIteration")
-        }
-
-        self$seen <- list()
-        req_cls <- get0("GetParticipantsRequest", envir = asNamespace("telegramR"))
-        if (is.null(req_cls) || !is.function(req_cls$new)) {
-          stop("GetParticipantsRequest not available in namespace")
-        }
-        cps_cls <- get0("ChannelParticipantsSearch", envir = asNamespace("telegramR"))
-        if (is.null(cps_cls) || !is.function(cps_cls$new)) {
-          stop("ChannelParticipantsSearch not available in namespace")
-        }
-        self$requests <- req_cls$new(
-          channel = entity,
-          filter = filter %||% cps_cls$new(search),
-          #  @field offset Field.
-          offset = 0,
+      # Channels are paged through channels.getParticipants; building the
+      # request needs no network access so it is done here.
+      if (ty == EntityType$CHANNEL && self$limit > 0) {
+        input_channel <- tryCatch(utils$get_input_channel(entity), error = function(e) entity)
+        self$requests <- GetParticipantsRequest$new(
+          channel = input_channel,
+          filter = filter %||% ChannelParticipantsSearch$new(q = search),
+          offset = 0L,
           limit = .MAX_PARTICIPANTS_CHUNK_SIZE,
-          #  @field hash Field.
           hash = 0
         )
-      } else if (ty == helpers$`_EntityType`$CHAT) {
-        full <- self$client(GetFullChatRequest(entity$chat_id))
-        if (!inherits(full$full_chat$participants, "ChatParticipants")) {
-          # ChatParticipantsForbidden won't have ``.participants``
-          self$total <- 0
-          stop("StopIteration")
-        }
-
-        self$total <- length(full$full_chat$participants$participants)
-
-        users <- setNames(full$users, sapply(full$users, function(u) u$id))
-        for (participant in full$full_chat$participants$participants) {
-          if (inherits(participant, "ChannelParticipantLeft")) {
-            # See issue #3231 to learn why this is ignored.
-            next
-          } else if (inherits(participant, "ChannelParticipantBanned")) {
-            user_id <- participant$peer$user_id
-          } else {
-            user_id <- participant$user_id
-          }
-          user <- users[[as.character(user_id)]]
-          if (!self$filter_entity(user)) {
-            next
-          }
-
-          user$participant <- participant
-          self$buffer <- c(self$buffer, user)
-        }
-
-        return(TRUE)
-      } else {
-        self$total <- 1
-        if (self$limit != 0) {
-          user <- self$client$get_entity(entity)
-          if (self$filter_entity(user)) {
-            user$participant <- NULL
-            self$buffer <- c(self$buffer, user)
-          }
-        }
-
-        return(TRUE)
       }
     },
 
-    #  @description Load the next chunk of participants.
-    .load_next_chunk = function() {
+    # Called once by RequestIter$.next() before the first chunk. Returns TRUE
+    # when the buffer is already complete (no further chunks needed).
+    async_init = function(...) {
+      entity <- self$entity
+      ty <- entity_type(entity)
+
+      if (ty == EntityType$CHANNEL) {
+        if (self$limit <= 0) {
+          input_channel <- tryCatch(utils$get_input_channel(entity), error = function(e) entity)
+          full_channel <- private$invoke(GetFullChannelRequest$new(channel = input_channel))
+          self$total <- full_channel$full_chat$participants_count
+          return(TRUE)
+        }
+        return(FALSE)
+      }
+
+      if (ty == EntityType$CHAT) {
+        full <- private$invoke(GetFullChatRequest$new(chat_id = entity$chat_id))
+        parts <- full$full_chat$participants
+        if (!inherits(parts, "ChatParticipants")) {
+          self$total <- 0
+          return(TRUE)
+        }
+        self$total <- length(parts$participants)
+        users <- private$index_users(full$users)
+        for (participant in parts$participants) {
+          if (inherits(participant, "ChannelParticipantLeft")) next
+          user_id <- if (inherits(participant, "ChannelParticipantBanned")) participant$peer$user_id else participant$user_id
+          user <- users[[as.character(user_id)]]
+          if (is.null(user) || !self$filter_entity(user)) next
+          self$buffer <- c(self$buffer, list(private$with_participant(user, participant)))
+        }
+        return(TRUE)
+      }
+
+      # A single user
+      self$total <- 1
+      if (self$limit != 0) {
+        user <- if (is.function(self$client)) entity else await(self$client$get_entity(entity))
+        if (self$filter_entity(user)) {
+          self$buffer <- c(self$buffer, list(private$with_participant(user, NULL)))
+        }
+      }
+      TRUE
+    },
+
+    # Loads the next page into self$buffer. Returns TRUE when this was the
+    # last page (RequestIter semantics), NULL otherwise.
+    load_next_chunk = function() {
       if (is.null(self$requests)) {
         return(TRUE)
       }
 
-      self$requests$limit <- min(self$left, .MAX_PARTICIPANTS_CHUNK_SIZE)
-
+      self$requests$limit <- as.integer(min(self$left, .MAX_PARTICIPANTS_CHUNK_SIZE))
       if (self$requests$offset > self$limit) {
         return(TRUE)
       }
@@ -260,26 +242,20 @@ NULL
       if (is.null(self$total)) {
         f <- self$requests$filter
         if (!inherits(f, "ChannelParticipantsRecent") &&
-          (!inherits(f, "ChannelParticipantsSearch") || nchar(f$q) > 0)) {
-          # Only do an additional getParticipants here to get the total
-          # if there's a filter which would reduce the real total number.
-          # getParticipants is cheaper than getFull.
-          self$total <- self$client(GetParticipantsRequest(
+          (!inherits(f, "ChannelParticipantsSearch") || nchar(f$q %||% "") > 0)) {
+          count_res <- tryCatch(private$invoke(GetParticipantsRequest$new(
             channel = self$requests$channel,
-            filter = ChannelParticipantsRecent(),
-            #  @field offset Field.
-            offset = 0,
-            #  @field limit Field.
-            limit = 1,
-            #  @field hash Field.
+            filter = ChannelParticipantsRecent$new(),
+            offset = 0L,
+            limit = 1L,
             hash = 0
-          ))$count
+          )), error = function(e) NULL)
+          self$total <- count_res$count
         }
       }
 
-      participants <- self$client(self$requests)
+      participants <- private$invoke(self$requests)
       if (is.null(self$total)) {
-        # Will only get here if there was one request with a filter that matched all users.
         self$total <- participants$count
       }
       if (length(participants$users) == 0) {
@@ -288,252 +264,192 @@ NULL
       }
 
       self$requests$offset <- self$requests$offset + length(participants$participants)
-      users <- setNames(participants$users, sapply(participants$users, function(u) u$id))
+      users <- private$index_users(participants$users)
       for (participant in participants$participants) {
-        if (inherits(participant, "ChannelParticipantLeft")) {
-          # See issue #3231 to learn why this is ignored.
-          next
-        } else if (inherits(participant, "ChannelParticipantBanned")) {
-          if (!inherits(participant$peer, "PeerUser")) {
-            # May have the entire channel banned. See #3105.
-            next
-          }
+        if (inherits(participant, "ChannelParticipantLeft")) next
+        if (inherits(participant, "ChannelParticipantBanned")) {
+          if (!inherits(participant$peer, "PeerUser")) next
           user_id <- participant$peer$user_id
         } else {
           user_id <- participant$user_id
         }
-
-        user <- users[[as.character(user_id)]]
-        if (!self$filter_entity(user) || user$id %in% self$seen) {
-          next
-        }
-        self$seen <- c(self$seen, user_id)
-        user$participant <- participant
-        self$buffer <- c(self$buffer, user)
+        key <- as.character(user_id)
+        user <- users[[key]]
+        if (is.null(user) || !self$filter_entity(user) || key %in% self$seen) next
+        self$seen <- c(self$seen, key)
+        self$buffer <- c(self$buffer, list(private$with_participant(user, participant)))
       }
+      NULL
+    }
+  ),
+  private = list(
+    # Invoke a request through either an R6 client or a callable client.
+    invoke = function(req) {
+      if (is.function(self$client)) {
+        return(self$client(req))
+      }
+      res <- if (is.function(self$client$invoke)) self$client$invoke(req) else self$client$call(req)
+      await(res)
+    },
+    index_users = function(users) {
+      out <- list()
+      for (u in users) {
+        uid <- tryCatch(u$id, error = function(e) NULL)
+        if (!is.null(uid)) out[[as.character(uid)]] <- u
+      }
+      out
+    },
+    # Attach the participant info to the user; generated TL classes are
+    # locked so fall back to a plain list carrying the user's fields.
+    with_participant = function(user, participant) {
+      ok <- tryCatch({ user$participant <- participant; TRUE }, error = function(e) FALSE)
+      if (ok) return(user)
+      fields <- tryCatch(user$to_dict(), error = function(e) NULL)
+      if (is.null(fields)) fields <- as.list(user)
+      fields$participant <- participant
+      fields
     }
   )
 )
 
-
-#  _AdminLogIter R6 Class
-# 
-#  An iterator over the admin log for the specified channel.
-#  The default order is from the most recent event to the oldest.
-#  Inherits from RequestIter.
-# 
-#  @export
-#  @noRd
-#  @noRd
+#' _AdminLogIter R6 Class
+#'
+#' An iterator over the admin log for the specified channel.
+#' The default order is from the most recent event to the oldest.
+#' Inherits from RequestIter.
+#' @noRd
 .AdminLogIter <- R6::R6Class(
   "_AdminLogIter",
   inherit = RequestIter,
   public = list(
-    #  @description Initialize the iterator.
-    #  @param entity The channel entity from which to get its admin log.
-    #  @param admins If present, filter by these admins. Default is NULL.
-    #  @param search The string to be used as a search query. Default is NULL.
-    #  @param min_id All events with a lower (older) ID or equal to this will be excluded. Default is 0.
-    #  @param max_id All events with a higher (newer) ID or equal to this will be excluded. Default is 0.
-    #  @param join If TRUE, events for when a user joined will be returned. Default is NULL.
-    #  @param leave If TRUE, events for when a user leaves will be returned. Default is NULL.
-    #  @param invite If TRUE, events for when a user joins through an invite link will be returned. Default is NULL.
-    #  @param restrict If TRUE, events with partial restrictions will be returned. Default is NULL.
-    #  @param unrestrict If TRUE, events removing restrictions will be returned. Default is NULL.
-    #  @param ban If TRUE, events applying or removing all restrictions will be returned. Default is NULL.
-    #  @param unban If TRUE, events removing all restrictions will be returned. Default is NULL.
-    #  @param promote If TRUE, events with admin promotions will be returned. Default is NULL.
-    #  @param demote If TRUE, events with admin demotions will be returned. Default is NULL.
-    #  @param info If TRUE, events changing the group info will be returned. Default is NULL.
-    #  @param settings If TRUE, events changing the group settings will be returned. Default is NULL.
-    #  @param pinned If TRUE, events of new pinned messages will be returned. Default is NULL.
-    #  @param edit If TRUE, events of message edits will be returned. Default is NULL.
-    #  @param delete If TRUE, events of message deletions will be returned. Default is NULL.
-    #  @param group_call If TRUE, events related to group calls will be returned. Default is NULL.
-    .init = function(entity, admins = NULL, search = NULL, min_id = 0, max_id = 0,
-                     join = NULL, leave = NULL, invite = NULL, restrict = NULL, unrestrict = NULL,
-                     ban = NULL, unban = NULL, promote = NULL, demote = NULL, info = NULL,
-                     settings = NULL, pinned = NULL, edit = NULL, delete = NULL, group_call = NULL) {
-      if (any(c(
-        join, leave, invite, restrict, unrestrict, ban, unban,
-        promote, demote, info, settings, pinned, edit, delete,
-        group_call
-      ))) {
-        events_filter <- ChannelAdminLogEventsFilter(
-          join = join, leave = leave, invite = invite, ban = restrict,
-          unban = unrestrict, kick = ban, unkick = unban, promote = promote,
-          demote = demote, info = info, settings = settings, pinned = pinned,
-          edit = edit, delete = delete, group_call = group_call
+    request = NULL,
+    entity = NULL,
+    initialize = function(client, limit = Inf, entity, admins = NULL, search = NULL,
+                          min_id = 0, max_id = 0, join = NULL, leave = NULL, invite = NULL,
+                          restrict = NULL, unrestrict = NULL, ban = NULL, unban = NULL,
+                          promote = NULL, demote = NULL, info = NULL, settings = NULL,
+                          pinned = NULL, edit = NULL, delete = NULL, group_call = NULL) {
+      super$initialize(client = client, limit = limit)
+      flag <- function(x) isTRUE(x)
+      any_filter <- any(vapply(list(join, leave, invite, restrict, unrestrict, ban, unban,
+        promote, demote, info, settings, pinned, edit, delete, group_call), flag, logical(1)))
+      events_filter <- if (any_filter) {
+        ChannelAdminLogEventsFilter$new(
+          join = flag(join), leave = flag(leave), invite = flag(invite),
+          ban = flag(restrict), unban = flag(unrestrict), kick = flag(ban),
+          unkick = flag(unban), promote = flag(promote), demote = flag(demote),
+          info = flag(info), settings = flag(settings), pinned = flag(pinned),
+          edit = flag(edit), delete = flag(delete), group_call = flag(group_call)
         )
-      } else {
-        events_filter <- NULL
-      }
+      } else NULL
 
-      self$entity <- self$client$get_input_entity(entity)
-
+      self$entity <- private$resolve_input(entity)
       admin_list <- list()
       if (!is.null(admins)) {
-        if (!utils$is_list_like(admins)) {
-          admins <- list(admins)
-        }
-        for (admin in admins) {
-          admin_list <- c(admin_list, self$client$get_input_entity(admin))
-        }
+        if (!is_list_like(admins)) admins <- list(admins)
+        for (admin in admins) admin_list <- c(admin_list, list(private$resolve_input(admin)))
       }
-
-      self$request <- GetAdminLogRequest(
-        self$entity,
-        q = search %||% "", min_id = min_id, max_id = max_id,
-        limit = 0, events_filter = events_filter, admins = if (length(admin_list) > 0) admin_list else NULL
+      self$request <- GetAdminLogRequest$new(
+        channel = self$entity, q = search %||% "", min_id = as.integer(min_id),
+        max_id = as.integer(max_id), limit = 0L, events_filter = events_filter,
+        admins = if (length(admin_list) > 0) admin_list else NULL
       )
     },
 
-    #  @description Load the next chunk of admin log events.
-    .load_next_chunk = function() {
-      self$request$limit <- min(self$left, .MAX_ADMIN_LOG_CHUNK_SIZE)
-      r <- self$client(self$request)
-      entities <- list()
-      for (x in c(r$users, r$chats)) {
-        entities[[utils$get_peer_id(x)]] <- x
-      }
+    async_init = function(...) FALSE,
 
-      self$request$max_id <- if (length(r$events) > 0) min(sapply(r$events, function(e) e$id)) else 0
-      for (ev in r$events) {
-        if (inherits(ev$action, "ChannelAdminLogEventActionEditMessage")) {
-          ev$action$prev_message$`_finish_init`(self$client, entities, self$entity)
-          ev$action$new_message$`_finish_init`(self$client, entities, self$entity)
-        } else if (inherits(ev$action, "ChannelAdminLogEventActionDeleteMessage")) {
-          ev$action$message$`_finish_init`(self$client, entities, self$entity)
-        }
-        self$buffer <- c(self$buffer, custom$AdminLogEvent(ev, entities))
-      }
-
-      if (length(r$events) < self$request$limit) {
-        return(TRUE)
-      }
+    load_next_chunk = function() {
+      self$request$limit <- as.integer(min(self$left, .MAX_ADMIN_LOG_CHUNK_SIZE))
+      r <- private$invoke(self$request)
+      events <- r$events %||% list()
+      if (length(events) == 0) return(TRUE)
+      self$request$max_id <- min(vapply(events, function(e) as.numeric(e$id), numeric(1)))
+      for (ev in events) self$buffer <- c(self$buffer, list(ev))
+      if (length(events) < self$request$limit) return(TRUE)
+      NULL
+    }
+  ),
+  private = list(
+    resolve_input = function(x) {
+      r <- if (is.function(self$client$get_input_entity)) self$client$get_input_entity(x) else x
+      if (inherits(r, c("Future", "promise"))) r <- await(r)
+      r
+    },
+    invoke = function(req) {
+      res <- if (is.function(self$client$invoke)) self$client$invoke(req) else self$client$call(req)
+      await(res)
     }
   )
 )
 
 
-#  _ProfilePhotoIter R6 Class
-# 
-#  An iterator over a user's profile photos or a chat's photos.
-#  The order is from the most recent photo to the oldest.
-#  Inherits from RequestIter.
-# 
-#  @export
-#  @noRd
-#  @noRd
 .ProfilePhotoIter <- R6::R6Class(
   "_ProfilePhotoIter",
   inherit = RequestIter,
   public = list(
-    #  @description Initialize the iterator.
-    #  @param entity The entity from which to get the profile or chat photos.
-    #  @param offset How many photos should be skipped before returning the first one.
-    #  @param max_id The maximum ID allowed when fetching photos.
-    .init = function(entity, offset, max_id) {
-      entity <- self$client$get_input_entity(entity)
-      ty <- helpers$`_entity_type`(entity)
-      if (ty == helpers$`_EntityType`$USER) {
-        self$request <- functions$photos$GetUserPhotosRequest(
-          entity,
-          offset = offset,
-          max_id = max_id,
-          #  @field limit Field.
-          limit = 1
+    request = NULL,
+    is_user = FALSE,
+    initialize = function(client, limit = Inf, entity, offset = 0, max_id = 0) {
+      super$initialize(client = client, limit = limit)
+      ent <- private$resolve_input(entity)
+      ty <- entity_type(ent)
+      if (ty == EntityType$USER) {
+        self$is_user <- TRUE
+        input_user <- tryCatch(utils$get_input_user(ent), error = function(e) ent)
+        self$request <- GetUserPhotosRequest$new(
+          user_id = input_user, offset = as.integer(offset),
+          max_id = max_id, limit = 1L
         )
       } else {
-        self$request <- SearchRequest(
-          peer = entity,
-          q = "",
-          filter = InputMessagesFilterChatPhotos(),
-          #  @field min_date Field.
-          min_date = NULL,
-          #  @field max_date Field.
-          max_date = NULL,
-          #  @field offset_id Field.
-          offset_id = 0,
-          add_offset = offset,
-          #  @field limit Field.
-          limit = 1,
-          max_id = max_id,
-          #  @field min_id Field.
-          min_id = 0,
-          #  @field hash Field.
-          hash = 0
+        self$request <- SearchRequest$new(
+          peer = ent, q = "", filter = InputMessagesFilterChatPhotos$new(),
+          min_date = NULL, max_date = NULL, offset_id = 0L, add_offset = as.integer(offset),
+          limit = 1L, max_id = max_id, min_id = 0L, hash = 0
         )
-      }
-      if (self$limit == 0) {
-        self$request$limit <- 1
-      }
-      result <- self$client(self$request)
-      if (inherits(result, "Photos")) {
-        self$total <- length(result$photos)
-      } else if (inherits(result, "Messages")) {
-        self$total <- length(result$messages)
-      } else {
-        # Luckily both PhotosSlice and Messages have a count for total
-        self$total <- result$count
       }
     },
 
-    #  @description Load the next chunk of photos.
-    .load_next_chunk = function() {
-      self$request$limit <- min(self$left, .MAX_PROFILE_PHOTO_CHUNK_SIZE)
-      result <- self$client(self$request)
-      if (inherits(result, "Photos")) {
-        self$buffer <- result$photos
-        self$left <- length(self$buffer)
-        self$total <- length(self$buffer)
-      } else if (inherits(result, "Messages")) {
-        self$buffer <- lapply(result$messages, function(x) {
-          if (inherits(x$action, "MessageActionChatEditPhoto")) x$action$photo else NULL
-        })
-        self$buffer <- self$buffer[!sapply(self$buffer, is.null)]
-        self$left <- length(self$buffer)
-        self$total <- length(self$buffer)
-      } else if (inherits(result, "PhotosSlice")) {
-        self$buffer <- result$photos
+    async_init = function(...) FALSE,
+
+    load_next_chunk = function() {
+      self$request$limit <- as.integer(min(self$left, .MAX_PROFILE_PHOTO_CHUNK_SIZE))
+      result <- private$invoke(self$request)
+      photos <- list(); last <- TRUE
+      if (inherits(result, c("Photos", "photos.Photos"))) {
+        photos <- result$photos %||% list()
+      } else if (inherits(result, c("PhotosSlice", "photos.PhotosSlice"))) {
+        photos <- result$photos %||% list()
         self$total <- result$count
-        if (length(self$buffer) < self$request$limit) {
-          self$left <- length(self$buffer)
-        } else {
-          self$request$offset <- self$request$offset + length(result$photos)
+        if (length(photos) >= self$request$limit) {
+          self$request$offset <- (self$request$offset %||% 0) + length(photos); last <- FALSE
         }
-      } else {
-        # Some broadcast channels have a photo that this request doesn't
-        # retrieve for whatever random reason the Telegram server feels.
-        #
-        # This means the `total` count may be wrong but there's not much
-        # that can be done around it (perhaps there are too many photos
-        # and this is only a partial result so it's not possible to just
-        # use the len of the result).
-        self$total <- result$count
-      }
-      # Unconditionally fetch the full channel to obtain this photo and
-      # yield it with the rest (unless it's a duplicate).
-      seen_id <- NULL
-      if (inherits(result, "ChannelMessages")) {
-        channel <- self$client(GetFullChannelRequest(self$request$peer))
-        photo <- channel$full_chat$chat_photo
-        if (inherits(photo, "Photo")) {
-          self$buffer <- c(self$buffer, photo)
-          seen_id <- photo$id
+      } else if (inherits(result, c("Messages", "ChannelMessages", "messages.Messages", "messages.ChannelMessages"))) {
+        msgs <- result$messages %||% list()
+        for (m in msgs) {
+          act <- tryCatch(m$action, error = function(e) NULL)
+          if (inherits(act, "MessageActionChatEditPhoto") && !is.null(act$photo)) {
+            photos <- c(photos, list(act$photo))
+          }
         }
-        additional <- lapply(result$messages, function(x) {
-          if (inherits(x$action, "MessageActionChatEditPhoto") && x$action$photo$id != seen_id) x$action$photo else NULL
-        })
-        additional <- additional[!sapply(additional, is.null)]
-        self$buffer <- c(self$buffer, additional)
-        if (length(result$messages) < self$request$limit) {
-          self$left <- length(self$buffer)
-        } else if (length(result$messages) > 0) {
-          self$request$add_offset <- 0
-          self$request$offset_id <- result$messages[[length(result$messages)]]$id
+        if (length(msgs) >= self$request$limit && length(msgs) > 0) {
+          self$request$add_offset <- 0L
+          self$request$offset_id <- msgs[[length(msgs)]]$id; last <- FALSE
         }
       }
+      for (ph in photos) self$buffer <- c(self$buffer, list(ph))
+      if (last) return(TRUE)
+      NULL
+    }
+  ),
+  private = list(
+    resolve_input = function(x) {
+      r <- if (is.function(self$client$get_input_entity)) self$client$get_input_entity(x) else x
+      if (inherits(r, c("Future", "promise"))) r <- await(r)
+      r
+    },
+    invoke = function(req) {
+      res <- if (is.function(self$client$invoke)) self$client$invoke(req) else self$client$call(req)
+      await(res)
     }
   )
 )

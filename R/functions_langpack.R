@@ -1,12 +1,8 @@
-#  GetDifferenceRequest R6 class
-# 
-#  TLRequest: GetDifferenceRequest
-# 
-#  @title GetDifferenceRequest
-#  @description Telegram API type GetDifferenceRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDifferenceRequest
+#' @description Telegram API request \code{updates.getDifference} (constructor \code{#19c2f763}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDifferenceRequest <- R6::R6Class(
   "GetDifferenceRequest",
   inherit = TLRequest,
@@ -64,15 +60,11 @@ GetDifferenceRequest <- R6::R6Class(
 )
 
 
-#  GetLangPackRequest R6 class
-# 
-#  TLRequest: GetLangPackRequest
-# 
-#  @title GetLangPackRequest
-#  @description Telegram API type GetLangPackRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetLangPackRequest
+#' @description Telegram API request \code{langpack.getLangPack} (constructor \code{#f2f2330a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetLangPackRequest <- R6::R6Class(
   "GetLangPackRequest",
   inherit = TLRequest,
@@ -117,15 +109,11 @@ GetLangPackRequest <- R6::R6Class(
   )
 )
 
-#  GetLanguageRequest R6 class
-# 
-#  TLRequest: GetLanguageRequest
-# 
-#  @title GetLanguageRequest
-#  @description Telegram API type GetLanguageRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetLanguageRequest
+#' @description Telegram API request \code{langpack.getLanguage} (constructor \code{#6a596502}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetLanguageRequest <- R6::R6Class(
   "GetLanguageRequest",
   inherit = TLRequest,
@@ -171,15 +159,11 @@ GetLanguageRequest <- R6::R6Class(
 )
 
 
-#  GetLanguagesRequest R6 class
-# 
-#  TLRequest: GetLanguagesRequest
-# 
-#  @title GetLanguagesRequest
-#  @description Telegram API type GetLanguagesRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetLanguagesRequest
+#' @description Telegram API request \code{langpack.getLanguages} (constructor \code{#42c6978f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetLanguagesRequest <- R6::R6Class(
   "GetLanguagesRequest",
   inherit = TLRequest,
@@ -218,15 +202,11 @@ GetLanguagesRequest <- R6::R6Class(
   )
 )
 
-#  GetStringsRequest R6 class
-# 
-#  TLRequest: GetStringsRequest
-# 
-#  @title GetStringsRequest
-#  @description Telegram API type GetStringsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStringsRequest
+#' @description Telegram API request \code{langpack.getStrings} (constructor \code{#efea3803}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStringsRequest <- R6::R6Class(
   "GetStringsRequest",
   inherit = TLRequest,

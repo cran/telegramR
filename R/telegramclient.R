@@ -1,15 +1,28 @@
 # Import methods from . (equivalent to importing in Python)
 # In R6, we'll integrate these methods directly into the class
 
-#  TelegramClient Class
-# 
-#  An R6 class that combines functionality from multiple method classes to interact with Telegram API
-# 
-#  @title TelegramClient
-#  @description Telegram API type TelegramClient
-#  @export
-#  @noRd
-#  @noRd
+#' TelegramClient
+#'
+#' High-level 'Telegram' 'MTProto' client. Create one with
+#' \code{TelegramClient$new(session, api_id, api_hash)}, then \code{$start()}
+#' (interactive login) or \code{$connect()} together with
+#' \code{$send_code_request()} and \code{$sign_in()} to authenticate. Once
+#' connected it exposes the messaging, channel, media and download methods used
+#' throughout the package documentation.
+#'
+#' @details
+#' This is an R6 class. Typical usage:
+#' \preformatted{
+#' client <- TelegramClient$new("my_session", api_id = 123, api_hash = "...")
+#' client$connect()
+#' }
+#' @return An R6 generator object of class \code{TelegramClient}.
+#' @examples
+#' \dontrun{
+#' client <- TelegramClient$new("my_session", api_id = 123, api_hash = "...")
+#' client$start()
+#' }
+#' @export
 TelegramClient <- R6::R6Class(
   "TelegramClient",
   inherit = TelegramBaseClient,
@@ -331,6 +344,10 @@ TelegramClient <- R6::R6Class(
       }
 
       result <- NULL
+      # Set by the error handlers below when the request is re-issued on
+      # another DC (or after AUTH_RESTART); the nested call completes the
+      # whole flow, so its result must be returned instead of NULL.
+      migrated_result <- NULL
       phone <- self$parse_phone(phone) %||% self$phone
       phone_hash <- self$phone_code_hash[[phone]]
 
@@ -349,7 +366,7 @@ TelegramClient <- R6::R6Class(
           error = function(e) {
             if (inherits(e, "AuthRestartError")) {
               if (retry_count > 2) stop(e)
-              return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
             }
             if (inherits(e, c("PhoneMigrateError", "NetworkMigrateError", "UserMigrateError"))) {
               log_migrate(sprintf("migrate error class=%s new_dc=%s", class(e)[1], e$new_dc))
@@ -362,11 +379,11 @@ TelegramClient <- R6::R6Class(
                 tryCatch(self$clear_session_auth_key(delete_file = FALSE), error = function(e2) NULL)
                 tryCatch(self$disconnect(), error = function(e2) NULL)
                 tryCatch(self$connect(), error = function(e2) NULL)
-                return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+                return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
               }
               self$switch_dc(e$new_dc)
               log_migrate(sprintf("switched dc to %s", private$session$dc_id))
-              return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
             }
             mig_dc <- parse_migrate_dc(e)
             if (!is.null(mig_dc)) {
@@ -379,16 +396,19 @@ TelegramClient <- R6::R6Class(
                 tryCatch(self$clear_session_auth_key(delete_file = FALSE), error = function(e2) NULL)
                 tryCatch(self$disconnect(), error = function(e2) NULL)
                 tryCatch(self$connect(), error = function(e2) NULL)
-                return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+                return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
               }
               self$switch_dc(mig_dc)
               log_migrate(sprintf("switched dc to %s", private$session$dc_id))
-              return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
             }
             stop(e)
           }
         )
 
+        if (!is.null(migrated_result)) {
+          return(migrated_result)
+        }
         if (inherits(result, "auth.SentCodeSuccess")) {
           stop("Logged in right after sending the code")
         }
@@ -420,23 +440,26 @@ TelegramClient <- R6::R6Class(
               if (retry_count > 2) stop(e)
               self$phone_code_hash[[phone]] <- NULL
               self$log$info("Phone code expired in ResendCodeRequest, requesting a new code")
-              return(self$send_code_request(phone, force_sms = FALSE, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = FALSE, retry_count = retry_count + 1))
             }
             if (inherits(e, c("PhoneMigrateError", "NetworkMigrateError", "UserMigrateError"))) {
               if (retry_count > 2) stop(e)
               self$switch_dc(e$new_dc)
-              return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
             }
             mig_dc <- parse_migrate_dc(e)
             if (!is.null(mig_dc)) {
               if (retry_count > 2) stop(e)
               self$switch_dc(mig_dc)
-              return(self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
+              return(migrated_result <<- self$send_code_request(phone, force_sms = force_sms, retry_count = retry_count + 1))
             }
             stop(e)
           }
         )
 
+        if (!is.null(migrated_result)) {
+          return(migrated_result)
+        }
         if (inherits(result, "auth.SentCodeSuccess")) {
           stop("Logged in right after resending the code")
         }
@@ -1066,6 +1089,9 @@ TelegramClient <- R6::R6Class(
         step <- "start"
         iter_class <- "NULL"
         fs_num <- if (inherits(file_size, "bigz")) as.numeric(file_size) else file_size
+        # An unknown size (NA) must behave like NULL, otherwise part-size
+        # arithmetic below produces NA and the download silently fails.
+        if (!is.null(fs_num) && (length(fs_num) != 1 || is.na(fs_num))) fs_num <- NULL
         if (is.null(part_size_kb)) {
           if (is.null(fs_num)) {
             part_size_kb <- 512 # Default to max chunk size to minimise round trips
@@ -1116,8 +1142,8 @@ TelegramClient <- R6::R6Class(
             if (!is.null(dc_id_val) && !is.na(dc_id_val) &&
                 (is.null(self$session$dc_id) || length(self$session$dc_id) != 1 || self$session$dc_id != dc_id_val)) {
               step <- "borrow_sender"
-              if (is.function(self$borrow_exported_sender)) {
-                sender <- self$borrow_exported_sender(dc_id_val)
+              if (is.function(private$borrow_exported_sender)) {
+                sender <- private$borrow_exported_sender(dc_id_val)
                 if (inherits(sender, "promise") || inherits(sender, "Future")) {
                   sender <- future::value(sender)
                 }
@@ -1127,6 +1153,7 @@ TelegramClient <- R6::R6Class(
 
             sender_class <- paste(class(sender), collapse = ",")
             refreshed_location <- FALSE
+            migrated_dcs <- integer(0)
             offset <- 0
             repeat {
               step <- "build_request"
@@ -1151,6 +1178,23 @@ TelegramClient <- R6::R6Class(
                 if (!is.null(parsed_obj)) {
                   res <- parsed_obj
                 }
+              }
+              # The file lives on another DC: borrow a sender with our auth
+              # exported there and retry the same request.
+              if (inherits(res, "error") && grepl("FILE_MIGRATE_\\d+", conditionMessage(res))) {
+                new_dc <- res$new_dc %||% as.integer(sub(".*FILE_MIGRATE_(\\d+).*", "\\1", conditionMessage(res)))
+                if (is.na(new_dc) || new_dc %in% migrated_dcs) {
+                  stop(res)
+                }
+                step <- "borrow_sender_after_migrate"
+                migrated_dcs <- c(migrated_dcs, new_dc)
+                sender <- private$borrow_exported_sender(new_dc)
+                if (inherits(sender, "promise") || inherits(sender, "Future")) {
+                  sender <- future::value(sender)
+                }
+                exported <- TRUE
+                sender_class <- paste(class(sender), collapse = ",")
+                next
               }
               if (inherits(res, "error") && grepl("OFFSET_INVALID|FILE_REFERENCE_EXPIRED", conditionMessage(res))) {
                 if (!refreshed_location && !is.null(msg_data) && length(msg_data) >= 2) {
@@ -1316,7 +1360,7 @@ TelegramClient <- R6::R6Class(
 
             if (exported) {
               step <- "return_sender"
-              ret <- self$return_exported_sender(sender)
+              ret <- private$return_exported_sender(sender)
               if (inherits(ret, "promise") || inherits(ret, "Future")) {
                 ret <- future::value(ret)
               }
@@ -1758,7 +1802,8 @@ TelegramClient <- R6::R6Class(
           ),
           file,
           file_size = file_size,
-          progress_callback = progress_callback
+          progress_callback = progress_callback,
+          dc_id = photo$dc_id
         )
         if (inherits(result, "promise") || inherits(result, "Future")) {
           result <- future::value(result)
@@ -2235,7 +2280,7 @@ TelegramClient <- R6::R6Class(
       }
 
       return(DialogsIter$new(
-        self$self,
+        self,
         limit,
         offset_date = offset_date,
         offset_id = offset_id,
@@ -2279,7 +2324,7 @@ TelegramClient <- R6::R6Class(
                            folder = NULL,
                            archived = NULL) {
       return(future({
-        iter <- self$self$iter_dialogs(
+        iter <- self$iter_dialogs(
           limit = limit,
           offset_date = offset_date,
           offset_id = offset_id,
@@ -2304,7 +2349,7 @@ TelegramClient <- R6::R6Class(
       }
 
       # Passing a limit makes no sense for drafts
-      return(DraftsIter$new(self$self, NULL, entities = entity))
+      return(DraftsIter$new(self, NULL, entities = entity))
     },
 
     #  @description
@@ -2314,7 +2359,7 @@ TelegramClient <- R6::R6Class(
     #  @export
     get_drafts = function(entity = NULL) {
       return(future({
-        iter <- self$self$iter_drafts(entity)
+        iter <- self$iter_drafts(entity)
         await(iter$get_init_future())
         items <- await(iter$collect())
 
@@ -2341,17 +2386,17 @@ TelegramClient <- R6::R6Class(
         }
 
         if (!is.null(unpack)) {
-          return(await(self$self(DeleteFolderRequest$new(
+          return(await(self$invoke(DeleteFolderRequest$new(
             folder_id = unpack
           ))))
         }
 
         entities_list <- list()
         if (!is_list_like(entity)) {
-          entities_list <- list(await(self$self$get_input_entity(entity)))
+          entities_list <- list(await(self$get_input_entity(entity)))
         } else {
           for (e in entity) {
-            entities_list <- c(entities_list, list(await(self$self$get_input_entity(e))))
+            entities_list <- c(entities_list, list(await(self$get_input_entity(e))))
           }
         }
 
@@ -2371,7 +2416,7 @@ TelegramClient <- R6::R6Class(
           )
         }
 
-        return(await(self$self(EditPeerFoldersRequest$new(input_folder_peers))))
+        return(await(self$invoke(EditPeerFoldersRequest$new(input_folder_peers))))
       }))
     },
 
@@ -2390,18 +2435,18 @@ TelegramClient <- R6::R6Class(
           deactivated <- entity$deactivated
         }
 
-        entity <- await(self$self$get_input_entity(entity))
+        entity <- await(self$get_input_entity(entity))
         ty <- entity_type(entity)
 
         if (ty == EntityType$CHANNEL) {
-          return(await(self$self(LeaveChannelRequest$new(entity))))
+          return(await(self$invoke(LeaveChannelRequest$new(entity))))
         }
 
         result <- NULL
         if (ty == EntityType$CHAT && !deactivated) {
           tryCatch(
             {
-              result <- await(self$self(DeleteChatUserRequest$new(
+              result <- await(self$invoke(DeleteChatUserRequest$new(
                 entity$chat_id, InputUserSelf$new(),
                 revoke_history = revoke
               )))
@@ -2417,9 +2462,9 @@ TelegramClient <- R6::R6Class(
           )
         }
 
-        is_bot <- await(self$self$is_bot())
+        is_bot <- await(self$is_bot())
         if (!is_bot) {
-          await(self$self(DeleteHistoryRequest$new(entity, 0, revoke = revoke)))
+          await(self$invoke(DeleteHistoryRequest$new(entity, 0, revoke = revoke)))
         }
 
         return(result)
@@ -2447,7 +2492,7 @@ TelegramClient <- R6::R6Class(
                             exclusive = TRUE,
                             replies_are_responses = TRUE) {
       return(custom$Conversation(
-        self$self,
+        self,
         entity,
         timeout = timeout,
         total_timeout = total_timeout,
@@ -3256,7 +3301,7 @@ TelegramClient <- R6::R6Class(
       future::future({
         # Resolve entity -> InputPeer
         entity_input <- tryCatch(
-          future::value(self$get_input_entity(entity)),
+          await(self$get_input_entity(entity)),
           error = function(e) stop(sprintf("Could not resolve entity: %s", e$message))
         )
         entity_input <- tryCatch(
@@ -3314,7 +3359,7 @@ TelegramClient <- R6::R6Class(
             reply_markup  = reply_markup_built,
             entities      = if (length(msg_entities) > 0) msg_entities else NULL,
             schedule_date = schedule,
-            send_as       = if (!is.null(send_as)) tryCatch(future::value(self$get_input_entity(send_as)), error = function(e) NULL) else NULL
+            send_as       = if (!is.null(send_as)) tryCatch(await(self$get_input_entity(send_as)), error = function(e) NULL) else NULL
           )
         } else {
           # SendMessageRequest path (text only)
@@ -3330,7 +3375,7 @@ TelegramClient <- R6::R6Class(
             reply_markup  = reply_markup_built,
             entities      = if (length(msg_entities) > 0) msg_entities else NULL,
             schedule_date = schedule,
-            send_as       = if (!is.null(send_as)) tryCatch(future::value(self$get_input_entity(send_as)), error = function(e) NULL) else NULL
+            send_as       = if (!is.null(send_as)) tryCatch(await(self$get_input_entity(send_as)), error = function(e) NULL) else NULL
           )
         }
 
@@ -3341,7 +3386,9 @@ TelegramClient <- R6::R6Class(
           self$get_response_message(request, result, entity_input),
           error = function(e) result
         )
-        msg
+        # Fall back to the raw server response rather than NULL when the
+        # Updates payload could not be matched to a Message.
+        msg %||% result
       })
 
     },
@@ -3640,7 +3687,7 @@ TelegramClient <- R6::R6Class(
         file_id <- as.character(sample.int(2^31 - 1, 1))
         file_name <- stream$name %||% file_id
         is_big <- file_size > 10 * 1024 * 1024
-        hash_md5 <- md5_init()
+        hash_md5 <- raw(0)
         part_count <- ceiling(file_size / part_size)
 
         pos <- 0
@@ -3649,31 +3696,34 @@ TelegramClient <- R6::R6Class(
           pos <- pos + length(part)
 
           if (!is_big) {
-            hash_md5 <- md5_update(hash_md5, part)
+            hash_md5 <- c(hash_md5, part)
           }
 
           if (is_big) {
-            request <- list(
-              #  @field method Field.
-              method = "upload.saveBigFilePart",
+            request <- SaveBigFilePartRequest$new(
               file_id = file_id,
               file_part = part_index,
               file_total_parts = part_count,
-              bytes = part
+              bytes_data = part
             )
           } else {
-            request <- list(
-              #  @field method Field.
-              method = "upload.saveFilePart",
+            request <- SaveFilePartRequest$new(
               file_id = file_id,
               file_part = part_index,
-              bytes = part
+              bytes_data = part
             )
           }
 
           result <- self$invoke(request)
 
-          if (result) {
+          # saveFilePart returns Bool; accept TRUE, a BoolTrue object, or the
+          # constructor id of boolTrue (0x997275b5) as success.
+          ok <- isTRUE(result) ||
+            inherits(result, "BoolTrue") ||
+            (is.logical(result) && length(result) == 1 && isTRUE(result)) ||
+            (is.list(result) && !is.null(result$CONSTRUCTOR_ID) &&
+               identical(.telegramR_norm_ctor_id(result$CONSTRUCTOR_ID), .telegramR_norm_ctor_id(0x997275b5)))
+          if (ok) {
             if (!is.null(progress_callback)) {
               progress_callback(pos, file_size)
             }
@@ -3683,22 +3733,17 @@ TelegramClient <- R6::R6Class(
         }
 
         if (is_big) {
-          list(
-            #  @field type Field.
-            type = "InputFileBig",
+          InputFileBig$new(
             id = file_id,
             parts = part_count,
             name = file_name
           )
         } else {
-          list(
-            #  @field type Field.
-            type = "InputFile",
+          InputFile$new(
             id = file_id,
             parts = part_count,
             name = file_name,
-            md5_checksum = md5_final(hash_md5),
-            size = file_size
+            md5_checksum = as.character(openssl::md5(hash_md5))
           )
         }
       })
@@ -3729,9 +3774,9 @@ TelegramClient <- R6::R6Class(
 
       if (is.character(file) && grepl("^https?://", file)) {
         if (as_image) {
-          media <- list(type = "InputMediaPhotoExternal", url = file)
+          media <- InputMediaPhotoExternal$new(url = file, ttl_seconds = ttl)
         } else {
-          media <- list(type = "InputMediaDocumentExternal", url = file)
+          media <- InputMediaDocumentExternal$new(url = file, ttl_seconds = ttl)
         }
         return(list(file_handle = NULL, media = media, as_image = as_image))
       } else {
@@ -3744,9 +3789,9 @@ TelegramClient <- R6::R6Class(
         file_handle_result <- value(file_handle)
 
         if (as_image) {
-          media <- list(type = "InputMediaUploadedPhoto", file = file_handle_result)
+          media <- InputMediaUploadedPhoto$new(file = file_handle_result, ttl_seconds = ttl)
         } else {
-          attr_result <- self$get_attributes(file, attributes = attributes)
+          attr_result <- get_attributes(file, attributes = attributes)
           attributes <- attr_result$attributes
           mime_type <- attr_result$mime_type
 
@@ -3757,13 +3802,13 @@ TelegramClient <- R6::R6Class(
             thumb_result <- NULL
           }
 
-          media <- list(
-            #  @field type Field.
-            type = "InputMediaUploadedDocument",
+          media <- InputMediaUploadedDocument$new(
             file = file_handle_result,
-            mime_type = mime_type,
+            mime_type = mime_type %||% "application/octet-stream",
             attributes = attributes,
-            thumb = thumb_result
+            thumb = thumb_result,
+            force_file = force_document,
+            ttl_seconds = ttl
           )
         }
 
@@ -4976,8 +5021,8 @@ TelegramClient <- R6::R6Class(
         if (is.null(private$authorized)) {
           tryCatch(
             {
-              # Any request that requires authorization will work
-              future::value(self$call(GetStateRequest$new()))
+              res <- self$call(GetStateRequest$new())
+              if (inherits(res, c("Future", "promise"))) future::value(res)
               private$authorized <- TRUE
             },
             error = function(e) {
@@ -5034,11 +5079,15 @@ TelegramClient <- R6::R6Class(
           CHANNEL = list()
         )
 
+        # entity_type() returns a numeric EntityType code (USER=0/CHAT=1/CHANNEL=2);
+        # map it to the matching bucket name rather than indexing by the code.
+        bucket_of <- c("USER", "CHAT", "CHANNEL")
         for (x in inputs) {
           tryCatch(
             {
-              entity_type <- entity_type(x)
-              lists[[entity_type]] <- c(lists[[entity_type]], list(x))
+              ty <- entity_type(x)
+              key <- bucket_of[[ty + 1L]]
+              lists[[key]] <- c(lists[[key]], list(x))
             },
             error = function(e) {
               # Skip if type can't be determined
@@ -5046,9 +5095,13 @@ TelegramClient <- R6::R6Class(
           )
         }
 
-        users <- lists$USER
+        # Telegram expects InputUser / InputChannel here, not InputPeer*.
+        to_input <- function(items, fn) {
+          lapply(items, function(x) tryCatch(fn(x), error = function(e) x))
+        }
+        users <- to_input(lists$USER, utils$get_input_user)
         chats <- lists$CHAT
-        channels <- lists$CHANNEL
+        channels <- to_input(lists$CHANNEL, utils$get_input_channel)
 
         if (length(users) > 0) {
           # GetUsersRequest has a limit of 200 per call
@@ -5075,6 +5128,10 @@ TelegramClient <- R6::R6Class(
         for (x in c(users, chats, channels)) {
           id <- get_peer_id(x, add_mark = FALSE)
           id_entity[[as.character(id)]] <- x
+        }
+        # Remember what we fetched so numeric ids can be resolved later.
+        if (!is.null(private$mb_entity_cache) && is.function(private$mb_entity_cache$extend)) {
+          tryCatch(private$mb_entity_cache$extend(users, c(chats, channels)), error = function(e) NULL)
         }
 
         # We could check saved usernames and put them into the users,
@@ -5133,23 +5190,45 @@ TelegramClient <- R6::R6Class(
           }
         )
 
+        # Numeric id: try the entity cache (bare or marked id), then fall
+        # back to a Peer object so the lookups below can query Telegram.
+        if (is.numeric(peer) && length(peer) == 1 && is.finite(peer)) {
+          if (!is.null(private$mb_entity_cache) && is.function(private$mb_entity_cache$get)) {
+            bare <- tryCatch(abs(resolve_id(as.numeric(peer))[[1]]), error = function(e) abs(as.numeric(peer)))
+            cached <- private$mb_entity_cache$get(bare)
+            if (!is.null(cached)) {
+              ip <- tryCatch(get_input_peer(cached), error = function(e) NULL)
+              if (!is.null(ip)) return(ip)
+            }
+          }
+          if (peer < 0) {
+            peer <- tryCatch({
+              r <- resolve_id(as.numeric(peer))
+              r[[2]]$new(r[[1]])
+            }, error = function(e) PeerChannel$new(abs(as.numeric(peer))))
+          } else {
+            # A bare positive id is ambiguous; channels are the documented use
+            # case (download_channel_* helpers).
+            peer <- PeerChannel$new(as.numeric(peer))
+          }
+        }
+
         # Next in priority is having a peer (or its ID) cached in-memory
         tryCatch(
           {
             # 0x2d45687 == crc32(b'Peer')
-            if (is.numeric(peer) || peer$SUBCLASS_OF_ID == 0x2d45687) {
+            if (!is.null(peer$SUBCLASS_OF_ID) && peer$SUBCLASS_OF_ID == 0x2d45687) {
               if (!is.null(private$mb_entity_cache) && is.function(private$mb_entity_cache$get)) {
                 id <- get_peer_id(peer, add_mark = FALSE)
-                return(private$mb_entity_cache$get(id)$as_input_peer())
+                cached <- private$mb_entity_cache$get(id)
+                if (!is.null(cached)) return(get_input_peer(cached))
               }
             }
           },
           error = function(e) {
-            # Continue with other methods
           }
         )
 
-        # Then come known strings that take precedence
         if (is.character(peer) && peer %in% c("me", "self")) {
           return(InputPeerSelf$new())
         }
@@ -5161,7 +5240,9 @@ TelegramClient <- R6::R6Class(
               channels <- resolve_future(self$call(GetChannelsRequest$new(list(
                 InputChannel$new(channel_id = peer$channel_id, access_hash = 0)
               ))))
-              return(get_input_peer(channels$chats[[1]]))
+              if (length(channels$chats) > 0) {
+                return(get_input_peer(channels$chats[[1]]))
+              }
             },
             error = function(e) {
               # Continue to other methods
@@ -5205,7 +5286,9 @@ TelegramClient <- R6::R6Class(
               channels <- resolve_future(self$call(GetChannelsRequest$new(list(
                 InputChannel$new(channel_id = peer$channel_id, access_hash = 0)
               ))))
-              return(get_input_peer(channels$chats[[1]]))
+              if (length(channels$chats) > 0) {
+                return(get_input_peer(channels$chats[[1]]))
+              }
             },
             error = function(e) {
               if (inherits(e, "ChannelInvalidError")) {
@@ -5315,11 +5398,11 @@ TelegramClient <- R6::R6Class(
               # 0x2d45687, 0xc91c90b6 == crc32(b'Peer') and b'InputPeer'
               # Already a Peer or InputPeer
             } else {
-              peer <- future::value(self$get_input_entity(peer))
+              peer <- await(self$get_input_entity(peer))
             }
           },
           error = function(e) {
-            peer <- future::value(self$get_input_entity(peer))
+            peer <- await(self$get_input_entity(peer))
           }
         )
 
@@ -5388,6 +5471,10 @@ TelegramClient <- R6::R6Class(
               {
                 result <- resolve_future(self$call(ResolveUsernameRequest$new(username)))
                 pid <- get_peer_id(result$peer, add_mark = FALSE)
+                # Cache the resolved entities so numeric ids work afterwards.
+                if (!is.null(private$mb_entity_cache) && is.function(private$mb_entity_cache$extend)) {
+                  tryCatch(private$mb_entity_cache$extend(result$users, result$chats), error = function(e) NULL)
+                }
 
                 if (inherits(result$peer, "PeerUser")) {
                   for (x in result$users) {

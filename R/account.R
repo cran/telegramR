@@ -1,10 +1,8 @@
-#  @title Account Methods
-#  @description This file contains the `AccountMethods` class and the `TakeoutClient` class, which are used to manage account-related operations in the Telegram API.
-#  @details The `AccountMethods` class provides methods for managing account-related operations, including takeout sessions.
-#  The `TakeoutClient` class is used to handle the takeout session and its associated requests.
-#  @export
-#  @noRd
-#  @noRd
+#' @title Account Methods
+#' @description This file contains the `AccountMethods` class and the `TakeoutClient` class, which are used to manage account-related operations in the Telegram API.
+#' @details The `AccountMethods` class provides methods for managing account-related operations, including takeout sessions.
+#' The `TakeoutClient` class is used to handle the takeout session and its associated requests.
+#' @noRd
 AccountMethods <- R6::R6Class(
   "AccountMethods",
   public = list(
@@ -19,11 +17,9 @@ AccountMethods <- R6::R6Class(
   )
 )
 
-#  @title TakeoutClient
-#  @description Telegram API type TakeoutClient
-#  @export
-#  @noRd
-#  @noRd
+#' @title TakeoutClient
+#' @description Telegram API type TakeoutClient
+#' @noRd
 TakeoutClient <- R6::R6Class(
   "TakeoutClient",
   public = list(

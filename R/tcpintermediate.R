@@ -1,11 +1,9 @@
-#  @title IntermediatePacketCodec
-#  @description A codec for intermediate TCP packets.
-#  @details Encodes packets by prepending a 4-byte little-endian length prefix.
-#  @inherit PacketCodec
-#  @return A raw vector representing the packet data.
-#  @export
-#  @noRd
-#  @noRd
+#' @title IntermediatePacketCodec
+#' @description A codec for intermediate TCP packets.
+#' @details Encodes packets by prepending a 4-byte little-endian length prefix.
+#' @inherit PacketCodec
+#' @return A raw vector representing the packet data.
+#' @noRd
 IntermediatePacketCodec <- R6::R6Class("IntermediatePacketCodec",
   inherit = PacketCodec,
   public = list(
@@ -46,12 +44,10 @@ IntermediatePacketCodec <- R6::R6Class("IntermediatePacketCodec",
   )
 )
 
-#  @title RandomizedIntermediatePacketCodec
-#  @description A codec that adds random padding to align packets to 4 bytes.
-#  @inherit IntermediatePacketCodec
-#  @export
-#  @noRd
-#  @noRd
+#' @title RandomizedIntermediatePacketCodec
+#' @description A codec that adds random padding to align packets to 4 bytes.
+#' @inherit IntermediatePacketCodec
+#' @noRd
 RandomizedIntermediatePacketCodec <- R6::R6Class("RandomizedIntermediatePacketCodec",
   inherit = IntermediatePacketCodec,
   public = list(
@@ -89,13 +85,11 @@ RandomizedIntermediatePacketCodec <- R6::R6Class("RandomizedIntermediatePacketCo
   )
 )
 
-#  @title ConnectionTcpIntermediate
-#  @description Intermediate mode between ConnectionTcpFull and ConnectionTcpAbridged.
-#  @details Always sends 4 extra bytes for the packet length.
-#  @inherit Connection
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpIntermediate
+#' @description Intermediate mode between ConnectionTcpFull and ConnectionTcpAbridged.
+#' @details Always sends 4 extra bytes for the packet length.
+#' @inherit Connection
+#' @noRd
 ConnectionTcpIntermediate <- R6::R6Class("ConnectionTcpIntermediate",
   inherit = Connection,
   public = list(

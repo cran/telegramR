@@ -1,9 +1,9 @@
-#  Cancel a future
-#
-#  Attempts to safely cancel a running future task.
-#  @param future The future object to cancel
-#  @return Invisible NULL
-#  @export
+#' Cancel a future
+#'
+#' Attempts to safely cancel a running future task.
+#' @param future The future object to cancel
+#' @return Invisible NULL
+#' @noRd
 cancel <- function(future) {
   if (requireNamespace("future", quietly = TRUE)) {
     # Try to halt the future if it's still running
@@ -33,27 +33,20 @@ cancel <- function(future) {
   invisible(NULL)
 }
 
-#  Connection Module
-#
-#  This module provides connection handling for Telegram API communications.
-#  It relies on the future package for asynchronous operations and R6 for
-#  object-oriented programming.
-#  @import R6
-#  @import promises
-#  @import stringr
-#  @import later
-#  @title Connection Class
-#  @description
-#  The Connection class wraps asynchronous socket connections.
-#  Subclasses implement different transport modes by exposing a simple
-#  interface for sending and receiving complete data payloads.
-#
-#  The only error raised from send and receive methods is ConnectionError,
-#  thrown when attempting to send on a disconnected client.
-#
-#  @export
-#  @noRd
-#  @noRd
+#' Connection Module
+#'
+#' This module provides connection handling for Telegram API communications.
+#' It relies on the future package for asynchronous operations and R6 for
+#' object-oriented programming.
+#' @title Connection Class
+#' @description
+#' The Connection class wraps asynchronous socket connections.
+#' Subclasses implement different transport modes by exposing a simple
+#' interface for sending and receiving complete data payloads.
+#'
+#' The only error raised from send and receive methods is ConnectionError,
+#' thrown when attempting to send on a disconnected client.
+#' @noRd
 Connection <- R6::R6Class(
   "Connection",
   public = list(
@@ -466,13 +459,11 @@ Connection <- R6::R6Class(
   )
 )
 
-#  ObfuscatedConnection Class
-#
-#  @description
-#  Base class for obfuscated connections (e.g., obfuscated2, mtproto proxy).
-#  @export
-#  @noRd
-#  @noRd
+#' ObfuscatedConnection Class
+#'
+#' @description
+#' Base class for obfuscated connections (e.g., obfuscated2, mtproto proxy).
+#' @noRd
 ObfuscatedConnection <- R6::R6Class(
   "ObfuscatedConnection",
   inherit = Connection,
@@ -494,13 +485,11 @@ ObfuscatedConnection <- R6::R6Class(
   )
 )
 
-#  PacketCodec Class
-#
-#  @description
-#  Abstract base class for packet codecs.
-#  @export
-#  @noRd
-#  @noRd
+#' PacketCodec Class
+#'
+#' @description
+#' Abstract base class for packet codecs.
+#' @noRd
 PacketCodec <- R6::R6Class(
   "PacketCodec",
   public = list(
@@ -546,13 +535,11 @@ PacketCodec <- R6::R6Class(
   )
 )
 
-#  AsyncQueue Class
-#
-#  @description
-#  Implements an asynchronous queue.
-#  @export
-#  @noRd
-#  @noRd
+#' AsyncQueue Class
+#'
+#' @description
+#' Implements an asynchronous queue.
+#' @noRd
 AsyncQueue <- R6::R6Class(
   "AsyncQueue",
   public = list(
@@ -611,15 +598,16 @@ AsyncQueue <- R6::R6Class(
   )
 )
 
-#  Helper function for asynchronous open connection.
-#
-#  @param host Hostname.
-#  @param port Port number.
-#  @param ssl Optional SSL configuration.
-#  @param local_addr Optional local address.
-#  @param sock Optional socket.
-#  @param timeout Optional timeout.
-#  @return A promise resolving with a list containing reader and writer.
+#' Helper function for asynchronous open connection.
+#'
+#' @param host Hostname.
+#' @param port Port number.
+#' @param ssl Optional SSL configuration.
+#' @param local_addr Optional local address.
+#' @param sock Optional socket.
+#' @param timeout Optional timeout.
+#' @return A promise resolving with a list containing reader and writer.
+#' @noRd
 async_open_connection <- function(host = NULL, port = NULL, ssl = NULL, local_addr = NULL, sock = NULL, timeout = NULL) {
   promise(function(resolve, reject) {
     tryCatch(
@@ -663,13 +651,11 @@ async_open_connection <- function(host = NULL, port = NULL, ssl = NULL, local_ad
   })
 }
 
-#  Reader Class
-#
-#  @description
-#  Implements a simple reader.
-#  @export
-#  @noRd
-#  @noRd
+#' Reader Class
+#'
+#' @description
+#' Implements a simple reader.
+#' @noRd
 Reader <- R6::R6Class(
   "Reader",
   public = list(
@@ -745,13 +731,11 @@ Reader <- R6::R6Class(
   )
 )
 
-#  Writer Class
-#
-#  @description
-#  Implements a simple writer.
-#  @export
-#  @noRd
-#  @noRd
+#' Writer Class
+#'
+#' @description
+#' Implements a simple writer.
+#' @noRd
 Writer <- R6::R6Class(
   "Writer",
   public = list(
@@ -849,16 +833,17 @@ Writer <- R6::R6Class(
   )
 )
 
-#  Create a socket connection.
-#
-#  @description
-#  Placeholder function. In practice, use proper R networking packages.
-#  @param host Hostname.
-#  @param port Port number.
-#  @param proxy Parsed proxy settings.
-#  @param local_addr Local address.
-#  @param timeout Connection timeout.
-#  @return A socket object.
+#' Create a socket connection.
+#'
+#' @description
+#' Placeholder function. In practice, use proper R networking packages.
+#' @param host Hostname.
+#' @param port Port number.
+#' @param proxy Parsed proxy settings.
+#' @param local_addr Local address.
+#' @param timeout Connection timeout.
+#' @return A socket object.
+#' @noRd
 create_socket_connection <- function(host, port, proxy = NULL, local_addr = NULL, timeout = NULL) {
   if (!is.null(proxy)) {
     if (TRUE) { # HTTP proxy proxy$protocol == 3
@@ -886,11 +871,9 @@ create_socket_connection <- function(host, port, proxy = NULL, local_addr = NULL
   socketConnection(host = host, port = port, blocking = TRUE, open = "r+b", timeout = timeout)
 }
 
-#  @method value promise
-#  @export
-#  @noRd
 # S3 method to make future::value() work with promises::promise objects used here.
-# This lets tests call future::value(promise) and block until the promise resolves.
+# This lets callers future::value(promise) and block until the promise resolves.
+#' @exportS3Method future::value
 value.promise <- function(x, ...) {
   done <- FALSE
   val <- NULL

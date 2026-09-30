@@ -1,7 +1,3 @@
-#  @import logger
-#  @import jsonlite
-#  @import httr
-#  @import R6
 NULL
 #  Constants
 DEFAULT_DC_ID <- 2
@@ -10,22 +6,20 @@ DEFAULT_IPV6_IP <- "2001:67c:4e8:f002::a"
 DEFAULT_PORT <- 443
 
 # Global variables
-LAYER <- 216 # Telegram API layer (aligned with recent Telethon layer)
+LAYER <- 229 # regenerated from Telethon v1 api.tl (data-raw/api.tl)
 
 # Time in seconds before disconnecting exported senders
 DISCONNECT_EXPORTED_AFTER <- 60
 
-#  Export State Class
-# 
-#  Tracks the state of exported MTProto senders
-# 
-#  @description
-#  This class manages the state of exported MTProto senders, including
-#  tracking the number of borrowed senders and the time since the last
-#  borrowed sender was returned.
-#  @export
-#  @noRd
-#  @noRd
+#' Export State Class
+#'
+#' Tracks the state of exported MTProto senders
+#'
+#' @description
+#' This class manages the state of exported MTProto senders, including
+#' tracking the number of borrowed senders and the time since the last
+#' borrowed sender was returned.
+#' @noRd
 ExportState <- R6::R6Class("ExportState",
   public = list(
     #  @description
@@ -87,17 +81,15 @@ ExportState <- R6::R6Class("ExportState",
   )
 )
 
-#  Telegram Base Client
-# 
-#  Abstract base class for telegram client implementation
-# 
-#  @description
-#  This class provides the core functionality for a Telegram client,
-#  including connection management, session handling, and
-#  message processing.
-#  @export
-#  @noRd
-#  @noRd
+#' Telegram Base Client
+#'
+#' Abstract base class for telegram client implementation
+#'
+#' @description
+#' This class provides the core functionality for a Telegram client,
+#' including connection management, session handling, and
+#' message processing.
+#' @noRd
 TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
   public = list(
     #  @description Initialize a new Telegram client
@@ -560,9 +552,13 @@ TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
       }
 
       if (!is.null(private$sender)) {
-        private$sender$auth_key <- AuthKey$new(NULL)
+        # Clear the key in place: the sender's MTProtoState shares this AuthKey object
+        private$sender$auth_key$key <- NULL
         tryCatch(future::value(private$sender$disconnect()), error = function(e) NULL)
-        private$connect_sender()
+        # Run the full connect so the new DC receives the mandatory
+        # invokeWithLayer(initConnection(...)) handshake; a bare reconnect
+        # leaves subsequent requests unanswered.
+        self$connect()
       }
       invisible(TRUE)
     }
@@ -590,7 +586,8 @@ TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
         private$session$auth_key <- NULL
       }
       if (!is.null(private$sender)) {
-        private$sender$auth_key <- AuthKey$new(NULL)
+        # Clear the key in place: the sender's MTProtoState shares this AuthKey object
+        private$sender$auth_key$key <- NULL
       }
       if (isTRUE(delete_file) && !is.null(private$session$path) && file.exists(private$session$path)) {
         tryCatch(unlink(private$session$path, force = TRUE), error = function(e) NULL)
@@ -836,18 +833,77 @@ TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
         stop(sprintf("Failed to get DC %d (cdn = %s)", dc_id, cdn))
       })
     },
+    # Build a transport connection object for an arbitrary DC using the same
+    # connection class as the primary sender.
+    new_connection_for = function(ip, port, dc_id) {
+      conn_class <- private$connection
+      if (is.null(conn_class)) {
+        conn_class <- base::get0("ConnectionTcpAbridged", envir = asNamespace("telegramR"))
+      }
+      args <- list(
+        ip = ip, port = port, dc_id = dc_id,
+        proxy = private$proxy, local_addr = private$local_addr, loggers = private$log
+      )
+      init_fun <- if (inherits(conn_class, "R6ClassGenerator")) conn_class$public_methods$initialize else conn_class
+      fml <- tryCatch(names(formals(init_fun)), error = function(e) NULL)
+      if (!is.null(fml) && !("..." %in% fml)) {
+        args <- args[intersect(names(args), fml)]
+      }
+      if (inherits(conn_class, "R6ClassGenerator")) {
+        return(do.call(conn_class$new, args))
+      }
+      do.call(conn_class, args)
+    },
+    # Create a sender connected to another DC with our authorization
+    # imported into it (auth.exportAuthorization / auth.importAuthorization).
+    # Needed for downloading files that live on a DC other than the home DC
+    # (FILE_MIGRATE_X).
     create_exported_sender = function(dc_id) {
-      # Would create an exported sender in a real implementation
       future({
-        dc <- private$get_dc(dc_id)
-        sender <- "new_sender" # Placeholder for a new sender
-
-        # Would connect the sender to the DC
-
+        dc_id <- as.integer(dc_id)
+        dc <- future::value(private$get_dc(dc_id))
         logger::log_info("Exporting auth for new borrowed sender in DC {dc_id}")
 
-        # Would send export/import authorization
+        sender_cls <- base::get0("MTProtoSender", envir = asNamespace("telegramR"))
+        sender <- sender_cls$new(
+          AuthKey$new(NULL),
+          retries = private$connection_retries,
+          delay = private$retry_delay,
+          auto_reconnect = private$auto_reconnect,
+          connect_timeout = private$timeout
+        )
+        sender$dc_id <- dc_id
+        conn <- private$new_connection_for(dc$ip_address, dc$port, dc$id)
+        res <- sender$connect(conn)
+        if (inherits(res, "Future")) res <- future::value(res)
 
+        # Export our authorization from the home DC and import it on the new one.
+        auth <- self$invoke(ExportAuthorizationRequest$new(dc_id = dc_id))
+        if (inherits(auth, "Future")) auth <- future::value(auth)
+        if ((is.null(auth$id) || is.null(auth$bytes)) && is.list(auth) && is.raw(auth$data)) {
+          # Raw fallback: auth.exportedAuthorization#b434e2b8 id:long bytes:bytes
+          # (`data` holds the body after the constructor id)
+          reader <- BinaryReader$new(auth$data)
+          auth <- list(id = reader$read_long(), bytes = reader$tgread_bytes())
+        }
+        if (is.null(auth$id) || is.null(auth$bytes)) {
+          stop(sprintf("ExportAuthorizationRequest returned an unexpected response (%s)", paste(class(auth), collapse = ",")))
+        }
+        init_query <- InitConnectionRequest$new(
+          api_id = private$init_request$api_id,
+          device_model = private$init_request$device_model,
+          system_version = private$init_request$system_version,
+          app_version = private$init_request$app_version,
+          lang_code = private$init_request$lang_code,
+          system_lang_code = private$init_request$system_lang_code,
+          lang_pack = private$init_request$lang_pack,
+          query = ImportAuthorizationRequest$new(id = auth$id, bytes = auth$bytes)
+        )
+        imported <- self$call_internal(
+          sender,
+          InvokeWithLayerRequest$new(layer = as.integer(LAYER), query = init_query)
+        )
+        if (inherits(imported, "Future")) imported <- future::value(imported)
         return(sender)
       })
     },
@@ -880,7 +936,8 @@ TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
 
         if (is.null(state_sender)) {
           state <- ExportState$new()
-          sender <- private$create_exported_sender(dc_id)
+          # Resolve now so the pool holds a live sender, not a Future.
+          sender <- future::value(private$create_exported_sender(dc_id))
           private$borrowed_senders[[dc_key]] <- list(state, sender)
         } else {
           state <- state_sender[[1]]
@@ -1071,8 +1128,6 @@ TelegramBaseClient <- R6::R6Class("TelegramBaseClient",
 )
 
 if (!exists("Queue", inherits = FALSE)) {
-#  @noRd
-#  @noRd
   Queue <- R6::R6Class(
     "Queue",
     public = list(
@@ -1089,12 +1144,12 @@ if (!exists("Queue", inherits = FALSE)) {
   )
 }
 
-#  Null coalescing operator
-#  @name null-coalesce
-#  @param x The first value
-#  @param y The second value
-#  @return The first value if not NULL, otherwise the second value
-#  @export
+#' Null coalescing operator
+#' @name null-coalesce
+#' @param x The first value
+#' @param y The second value
+#' @return The first value if not NULL, otherwise the second value
+#' @noRd
 `%||%` <- function(x, y) {
   if (is.null(x)) y else x
 }

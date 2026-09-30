@@ -96,7 +96,7 @@ test_that("_ParticipantsIter initializes correctly", {
 
   ent <- InputPeerChannel$new(channel_id = 1, access_hash = 1)
   iter <- telegramR:::.ParticipantsIter$new(client = mock_client, limit = 1, entity = ent)
-  iter$.load_next_chunk()
+  iter$load_next_chunk()
 
   expect_true(length(iter$buffer) >= 1L)
 })

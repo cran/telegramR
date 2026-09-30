@@ -1,8 +1,8 @@
-#  @title ApplyGiftCodeRequest
-#  @description Represents a request to apply a gift code. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ApplyGiftCodeRequest
+#' @description Telegram API request \code{payments.applyGiftCode} (constructor \code{#f6e26854}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ApplyGiftCodeRequest <- R6::R6Class(
   "ApplyGiftCodeRequest",
   inherit = TLRequest,
@@ -49,11 +49,11 @@ ApplyGiftCodeRequest <- R6::R6Class(
   )
 )
 
-#  @title AssignAppStoreTransactionRequest
-#  @description Telegram API type AssignAppStoreTransactionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title AssignAppStoreTransactionRequest
+#' @description Telegram API request \code{payments.assignAppStoreTransaction} (constructor \code{#80ed747d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AssignAppStoreTransactionRequest <- R6::R6Class(
   "AssignAppStoreTransactionRequest",
   inherit = TLRequest,
@@ -107,11 +107,11 @@ AssignAppStoreTransactionRequest <- R6::R6Class(
   )
 )
 
-#  @title AssignPlayMarketTransactionRequest
-#  @description Telegram API type AssignPlayMarketTransactionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title AssignPlayMarketTransactionRequest
+#' @description Telegram API request \code{payments.assignPlayMarketTransaction} (constructor \code{#dffd50d3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AssignPlayMarketTransactionRequest <- R6::R6Class(
   "AssignPlayMarketTransactionRequest",
   inherit = TLRequest,
@@ -166,11 +166,11 @@ AssignPlayMarketTransactionRequest <- R6::R6Class(
 )
 
 
-#  @title BotCancelStarsSubscriptionRequest
-#  @description Telegram API type BotCancelStarsSubscriptionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title BotCancelStarsSubscriptionRequest
+#' @description Telegram API request \code{payments.botCancelStarsSubscription} (constructor \code{#6dfa0622}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 BotCancelStarsSubscriptionRequest <- R6::R6Class(
   "BotCancelStarsSubscriptionRequest",
   inherit = TLRequest,
@@ -240,11 +240,11 @@ BotCancelStarsSubscriptionRequest <- R6::R6Class(
   )
 )
 
-#  @title CanPurchaseStoreRequest
-#  @description Represents a request to check if a store purchase can be made. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CanPurchaseStoreRequest
+#' @description Telegram API request \code{payments.canPurchaseStore} (constructor \code{#4fdc5ea7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CanPurchaseStoreRequest <- R6::R6Class(
   "CanPurchaseStoreRequest",
   inherit = TLRequest,
@@ -291,11 +291,11 @@ CanPurchaseStoreRequest <- R6::R6Class(
   )
 )
 
-#  @title ChangeStarsSubscriptionRequest
-#  @description Telegram API type ChangeStarsSubscriptionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ChangeStarsSubscriptionRequest
+#' @description Telegram API request \code{payments.changeStarsSubscription} (constructor \code{#c7770878}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ChangeStarsSubscriptionRequest <- R6::R6Class(
   "ChangeStarsSubscriptionRequest",
   inherit = TLRequest,
@@ -343,7 +343,7 @@ ChangeStarsSubscriptionRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       flags <- if (is.null(self$canceled)) 0 else 1
-      canceled_bytes <- if (is.null(self$canceled)) raw() else if (self$canceled) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc))
+      canceled_bytes <- if (is.null(self$canceled)) raw() else if (self$canceled) as.raw(c(0x78, 0x08, 0x77, 0xc7)) else as.raw(c(0x37, 0x97, 0x79, 0xbc))
       c(
         as.raw(c(0x78, 0x08, 0x77, 0xc7)),
         pack("<I", flags),
@@ -368,11 +368,11 @@ ChangeStarsSubscriptionRequest <- R6::R6Class(
 )
 
 
-#  @title CheckCanSendGiftRequest
-#  @description Represents a request to check if a gift can be sent. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckCanSendGiftRequest
+#' @description Telegram API request \code{payments.checkCanSendGift} (constructor \code{#c0c4edc9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckCanSendGiftRequest <- R6::R6Class(
   "CheckCanSendGiftRequest",
   inherit = TLRequest,
@@ -419,11 +419,11 @@ CheckCanSendGiftRequest <- R6::R6Class(
   )
 )
 
-#  @title CheckGiftCodeRequest
-#  @description Represents a request to check a gift code. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckGiftCodeRequest
+#' @description Telegram API request \code{payments.checkGiftCode} (constructor \code{#8e51b4c1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckGiftCodeRequest <- R6::R6Class(
   "CheckGiftCodeRequest",
   inherit = TLRequest,
@@ -470,11 +470,11 @@ CheckGiftCodeRequest <- R6::R6Class(
   )
 )
 
-#  @title ClearSavedInfoRequest
-#  @description Telegram API type ClearSavedInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClearSavedInfoRequest
+#' @description Telegram API request \code{payments.clearSavedInfo} (constructor \code{#d83d70c1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClearSavedInfoRequest <- R6::R6Class(
   "ClearSavedInfoRequest",
   inherit = TLRequest,
@@ -529,11 +529,11 @@ ClearSavedInfoRequest <- R6::R6Class(
 )
 
 
-#  @title ConnectStarRefBotRequest
-#  @description Telegram API type ConnectStarRefBotRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectStarRefBotRequest
+#' @description Telegram API request \code{payments.connectStarRefBot} (constructor \code{#7ed5348a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ConnectStarRefBotRequest <- R6::R6Class(
   "ConnectStarRefBotRequest",
   inherit = TLRequest,
@@ -595,11 +595,11 @@ ConnectStarRefBotRequest <- R6::R6Class(
   )
 )
 
-#  @title ConvertStarGiftRequest
-#  @description Represents a request to convert a star gift. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConvertStarGiftRequest
+#' @description Telegram API request \code{payments.convertStarGift} (constructor \code{#74bf076b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ConvertStarGiftRequest <- R6::R6Class(
   "ConvertStarGiftRequest",
   inherit = TLRequest,
@@ -646,11 +646,11 @@ ConvertStarGiftRequest <- R6::R6Class(
   )
 )
 
-#  @title CreateStarGiftCollectionRequest
-#  @description Telegram API type CreateStarGiftCollectionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateStarGiftCollectionRequest
+#' @description Telegram API request \code{payments.createStarGiftCollection} (constructor \code{#1f4a0e87}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateStarGiftCollectionRequest <- R6::R6Class(
   "CreateStarGiftCollectionRequest",
   inherit = TLRequest,
@@ -720,11 +720,11 @@ CreateStarGiftCollectionRequest <- R6::R6Class(
 )
 
 
-#  @title DeleteStarGiftCollectionRequest
-#  @description Telegram API type DeleteStarGiftCollectionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteStarGiftCollectionRequest
+#' @description Telegram API request \code{payments.deleteStarGiftCollection} (constructor \code{#ad5648e8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteStarGiftCollectionRequest <- R6::R6Class(
   "DeleteStarGiftCollectionRequest",
   inherit = TLRequest,
@@ -785,11 +785,11 @@ DeleteStarGiftCollectionRequest <- R6::R6Class(
   )
 )
 
-#  @title EditConnectedStarRefBotRequest
-#  @description Telegram API type EditConnectedStarRefBotRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditConnectedStarRefBotRequest
+#' @description Telegram API request \code{payments.editConnectedStarRefBot} (constructor \code{#e4fca4a3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditConnectedStarRefBotRequest <- R6::R6Class(
   "EditConnectedStarRefBotRequest",
   inherit = TLRequest,
@@ -858,11 +858,11 @@ EditConnectedStarRefBotRequest <- R6::R6Class(
   )
 )
 
-#  @title ExportInvoiceRequest
-#  @description Represents a request to export an invoice. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ExportInvoiceRequest
+#' @description Telegram API request \code{payments.exportInvoice} (constructor \code{#0f91b065}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ExportInvoiceRequest <- R6::R6Class(
   "ExportInvoiceRequest",
   inherit = TLRequest,
@@ -917,11 +917,11 @@ ExportInvoiceRequest <- R6::R6Class(
 )
 
 
-#  @title FulfillStarsSubscriptionRequest
-#  @description Telegram API type FulfillStarsSubscriptionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title FulfillStarsSubscriptionRequest
+#' @description Telegram API request \code{payments.fulfillStarsSubscription} (constructor \code{#cc5bebb3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 FulfillStarsSubscriptionRequest <- R6::R6Class(
   "FulfillStarsSubscriptionRequest",
   inherit = TLRequest,
@@ -982,11 +982,11 @@ FulfillStarsSubscriptionRequest <- R6::R6Class(
   )
 )
 
-#  @title GetBankCardDataRequest
-#  @description Represents a request to get bank card data. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBankCardDataRequest
+#' @description Telegram API request \code{payments.getBankCardData} (constructor \code{#2e79d779}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBankCardDataRequest <- R6::R6Class(
   "GetBankCardDataRequest",
   inherit = TLRequest,
@@ -1034,11 +1034,11 @@ GetBankCardDataRequest <- R6::R6Class(
 )
 
 
-#  @title GetConnectedStarRefBotRequest
-#  @description Telegram API type GetConnectedStarRefBotRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetConnectedStarRefBotRequest
+#' @description Telegram API request \code{payments.getConnectedStarRefBot} (constructor \code{#b7d998f0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetConnectedStarRefBotRequest <- R6::R6Class(
   "GetConnectedStarRefBotRequest",
   inherit = TLRequest,
@@ -1100,11 +1100,11 @@ GetConnectedStarRefBotRequest <- R6::R6Class(
   )
 )
 
-#  @title GetConnectedStarRefBotsRequest
-#  @description Telegram API type GetConnectedStarRefBotsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetConnectedStarRefBotsRequest
+#' @description Telegram API request \code{payments.getConnectedStarRefBots} (constructor \code{#5869a553}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetConnectedStarRefBotsRequest <- R6::R6Class(
   "GetConnectedStarRefBotsRequest",
   inherit = TLRequest,
@@ -1183,11 +1183,11 @@ GetConnectedStarRefBotsRequest <- R6::R6Class(
 )
 
 
-#  @title GetGiveawayInfoRequest
-#  @description Telegram API type GetGiveawayInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGiveawayInfoRequest
+#' @description Telegram API request \code{payments.getGiveawayInfo} (constructor \code{#f4239425}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGiveawayInfoRequest <- R6::R6Class(
   "GetGiveawayInfoRequest",
   inherit = TLRequest,
@@ -1248,11 +1248,11 @@ GetGiveawayInfoRequest <- R6::R6Class(
   )
 )
 
-#  @title GetPaymentFormRequest
-#  @description Telegram API type GetPaymentFormRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPaymentFormRequest
+#' @description Telegram API request \code{payments.getPaymentForm} (constructor \code{#37148dbb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPaymentFormRequest <- R6::R6Class(
   "GetPaymentFormRequest",
   inherit = TLRequest,
@@ -1309,11 +1309,11 @@ GetPaymentFormRequest <- R6::R6Class(
 )
 
 
-#  @title GetPaymentReceiptRequest
-#  @description Telegram API type GetPaymentReceiptRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPaymentReceiptRequest
+#' @description Telegram API request \code{payments.getPaymentReceipt} (constructor \code{#2478d1cc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPaymentReceiptRequest <- R6::R6Class(
   "GetPaymentReceiptRequest",
   inherit = TLRequest,
@@ -1374,11 +1374,11 @@ GetPaymentReceiptRequest <- R6::R6Class(
   )
 )
 
-#  @title GetPremiumGiftCodeOptionsRequest
-#  @description Represents a request to get premium gift code options. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPremiumGiftCodeOptionsRequest
+#' @description Telegram API request \code{payments.getPremiumGiftCodeOptions} (constructor \code{#2757ba54}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPremiumGiftCodeOptionsRequest <- R6::R6Class(
   "GetPremiumGiftCodeOptionsRequest",
   inherit = TLRequest,
@@ -1437,11 +1437,11 @@ GetPremiumGiftCodeOptionsRequest <- R6::R6Class(
 )
 
 
-#  @title GetResaleStarGiftsRequest
-#  @description Telegram API type GetResaleStarGiftsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetResaleStarGiftsRequest
+#' @description Telegram API request \code{payments.getResaleStarGifts} (constructor \code{#7a5fa236}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetResaleStarGiftsRequest <- R6::R6Class(
   "GetResaleStarGiftsRequest",
   inherit = TLRequest,
@@ -1543,11 +1543,11 @@ GetResaleStarGiftsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetSavedInfoRequest
-#  @description Represents a request to get saved payment info. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedInfoRequest
+#' @description Telegram API request \code{payments.getSavedInfo} (constructor \code{#227d824b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedInfoRequest <- R6::R6Class(
   "GetSavedInfoRequest",
   inherit = TLRequest,
@@ -1586,11 +1586,11 @@ GetSavedInfoRequest <- R6::R6Class(
   )
 )
 
-#  @title GetSavedStarGiftRequest
-#  @description Represents a request to get a saved star gift. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedStarGiftRequest
+#' @description Telegram API request \code{payments.getSavedStarGift} (constructor \code{#b455a106}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedStarGiftRequest <- R6::R6Class(
   "GetSavedStarGiftRequest",
   inherit = TLRequest,
@@ -1639,11 +1639,11 @@ GetSavedStarGiftRequest <- R6::R6Class(
 )
 
 
-#  @title GetSavedStarGiftsRequest
-#  @description Telegram API type GetSavedStarGiftsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedStarGiftsRequest
+#' @description Telegram API request \code{payments.getSavedStarGifts} (constructor \code{#a319e569}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedStarGiftsRequest <- R6::R6Class(
   "GetSavedStarGiftsRequest",
   inherit = TLRequest,
@@ -1770,11 +1770,11 @@ GetSavedStarGiftsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarGiftCollectionsRequest
-#  @description Telegram API type GetStarGiftCollectionsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarGiftCollectionsRequest
+#' @description Telegram API request \code{payments.getStarGiftCollections} (constructor \code{#981b91dd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarGiftCollectionsRequest <- R6::R6Class(
   "GetStarGiftCollectionsRequest",
   inherit = TLRequest,
@@ -1836,11 +1836,11 @@ GetStarGiftCollectionsRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarGiftUpgradePreviewRequest
-#  @description Represents a request to get the star gift upgrade preview. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarGiftUpgradePreviewRequest
+#' @description Telegram API request \code{payments.getStarGiftUpgradePreview} (constructor \code{#9c9abcb1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarGiftUpgradePreviewRequest <- R6::R6Class(
   "GetStarGiftUpgradePreviewRequest",
   inherit = TLRequest,
@@ -1887,11 +1887,11 @@ GetStarGiftUpgradePreviewRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarGiftWithdrawalUrlRequest
-#  @description Telegram API type GetStarGiftWithdrawalUrlRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarGiftWithdrawalUrlRequest
+#' @description Telegram API request \code{payments.getStarGiftWithdrawalUrl} (constructor \code{#d06e93a8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarGiftWithdrawalUrlRequest <- R6::R6Class(
   "GetStarGiftWithdrawalUrlRequest",
   inherit = TLRequest,
@@ -1945,11 +1945,11 @@ GetStarGiftWithdrawalUrlRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarGiftsRequest
-#  @description Represents a request to get star gifts. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarGiftsRequest
+#' @description Telegram API request \code{payments.getStarGifts} (constructor \code{#c4563590}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarGiftsRequest <- R6::R6Class(
   "GetStarGiftsRequest",
   inherit = TLRequest,
@@ -1980,7 +1980,7 @@ GetStarGiftsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x90, 0x53, 0x56, 0xc4)),
+        as.raw(c(0x90, 0x35, 0x56, 0xc4)),
         pack("<i", self$hash)
       )
     },
@@ -1997,11 +1997,11 @@ GetStarGiftsRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarsGiftOptionsRequest
-#  @description Represents a request to get stars gift options. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsGiftOptionsRequest
+#' @description Telegram API request \code{payments.getStarsGiftOptions} (constructor \code{#d3c96bc8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsGiftOptionsRequest <- R6::R6Class(
   "GetStarsGiftOptionsRequest",
   inherit = TLRequest,
@@ -2059,11 +2059,11 @@ GetStarsGiftOptionsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarsGiveawayOptionsRequest
-#  @description Represents a request to get stars giveaway options. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsGiveawayOptionsRequest
+#' @description Telegram API request \code{payments.getStarsGiveawayOptions} (constructor \code{#bd1efd3e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsGiveawayOptionsRequest <- R6::R6Class(
   "GetStarsGiveawayOptionsRequest",
   inherit = TLRequest,
@@ -2096,11 +2096,11 @@ GetStarsGiveawayOptionsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarsRevenueAdsAccountUrlRequest
-#  @description Represents a request to get stars revenue ads account URL. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsRevenueAdsAccountUrlRequest
+#' @description Telegram API request \code{payments.getStarsRevenueAdsAccountUrl} (constructor \code{#d1d7efc5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsRevenueAdsAccountUrlRequest <- R6::R6Class(
   "GetStarsRevenueAdsAccountUrlRequest",
   inherit = TLRequest,
@@ -2155,11 +2155,11 @@ GetStarsRevenueAdsAccountUrlRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarsRevenueStatsRequest
-#  @description Telegram API type GetStarsRevenueStatsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsRevenueStatsRequest
+#' @description Telegram API request \code{payments.getStarsRevenueStats} (constructor \code{#d91ffad6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsRevenueStatsRequest <- R6::R6Class(
   "GetStarsRevenueStatsRequest",
   inherit = TLRequest,
@@ -2227,11 +2227,11 @@ GetStarsRevenueStatsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarsRevenueWithdrawalUrlRequest
-#  @description Telegram API type GetStarsRevenueWithdrawalUrlRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsRevenueWithdrawalUrlRequest
+#' @description Telegram API request \code{payments.getStarsRevenueWithdrawalUrl} (constructor \code{#2433dc92}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsRevenueWithdrawalUrlRequest <- R6::R6Class(
   "GetStarsRevenueWithdrawalUrlRequest",
   inherit = TLRequest,
@@ -2308,11 +2308,11 @@ GetStarsRevenueWithdrawalUrlRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarsStatusRequest
-#  @description Telegram API type GetStarsStatusRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsStatusRequest
+#' @description Telegram API request \code{payments.getStarsStatus} (constructor \code{#4ea9b3bf}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsStatusRequest <- R6::R6Class(
   "GetStarsStatusRequest",
   inherit = TLRequest,
@@ -2374,11 +2374,11 @@ GetStarsStatusRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarsSubscriptionsRequest
-#  @description Telegram API type GetStarsSubscriptionsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsSubscriptionsRequest
+#' @description Telegram API request \code{payments.getStarsSubscriptions} (constructor \code{#032512c5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsSubscriptionsRequest <- R6::R6Class(
   "GetStarsSubscriptionsRequest",
   inherit = TLRequest,
@@ -2448,11 +2448,11 @@ GetStarsSubscriptionsRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarsTopupOptionsRequest
-#  @description Represents a request to get stars topup options. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsTopupOptionsRequest
+#' @description Telegram API request \code{payments.getStarsTopupOptions} (constructor \code{#c00ec7d3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsTopupOptionsRequest <- R6::R6Class(
   "GetStarsTopupOptionsRequest",
   inherit = TLRequest,
@@ -2485,11 +2485,11 @@ GetStarsTopupOptionsRequest <- R6::R6Class(
   )
 )
 
-#  @title GetStarsTransactionsRequest
-#  @description Telegram API type GetStarsTransactionsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsTransactionsRequest
+#' @description Telegram API request \code{payments.getStarsTransactions} (constructor \code{#69da4557}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsTransactionsRequest <- R6::R6Class(
   "GetStarsTransactionsRequest",
   inherit = TLRequest,
@@ -2596,11 +2596,11 @@ GetStarsTransactionsRequest <- R6::R6Class(
 )
 
 
-#  @title GetStarsTransactionsByIDRequest
-#  @description Telegram API type GetStarsTransactionsByIDRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStarsTransactionsByIDRequest
+#' @description Telegram API request \code{payments.getStarsTransactionsByID} (constructor \code{#2dca16b8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStarsTransactionsByIDRequest <- R6::R6Class(
   "GetStarsTransactionsByIDRequest",
   inherit = TLRequest,
@@ -2670,11 +2670,11 @@ GetStarsTransactionsByIDRequest <- R6::R6Class(
   )
 )
 
-#  @title GetSuggestedStarRefBotsRequest
-#  @description Telegram API type GetSuggestedStarRefBotsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSuggestedStarRefBotsRequest
+#' @description Telegram API request \code{payments.getSuggestedStarRefBots} (constructor \code{#0d6b48f7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSuggestedStarRefBotsRequest <- R6::R6Class(
   "GetSuggestedStarRefBotsRequest",
   inherit = TLRequest,
@@ -2757,11 +2757,11 @@ GetSuggestedStarRefBotsRequest <- R6::R6Class(
 )
 
 
-#  @title GetUniqueStarGiftRequest
-#  @description Represents a request to get a unique star gift. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUniqueStarGiftRequest
+#' @description Telegram API request \code{payments.getUniqueStarGift} (constructor \code{#a1974d72}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUniqueStarGiftRequest <- R6::R6Class(
   "GetUniqueStarGiftRequest",
   inherit = TLRequest,
@@ -2808,11 +2808,11 @@ GetUniqueStarGiftRequest <- R6::R6Class(
   )
 )
 
-#  @title GetUniqueStarGiftValueInfoRequest
-#  @description Represents a request to get unique star gift value info. Inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUniqueStarGiftValueInfoRequest
+#' @description Telegram API request \code{payments.getUniqueStarGiftValueInfo} (constructor \code{#4365af6b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUniqueStarGiftValueInfoRequest <- R6::R6Class(
   "GetUniqueStarGiftValueInfoRequest",
   inherit = TLRequest,
@@ -2859,11 +2859,11 @@ GetUniqueStarGiftValueInfoRequest <- R6::R6Class(
   )
 )
 
-#  @title LaunchPrepaidGiveawayRequest
-#  @description Telegram API type LaunchPrepaidGiveawayRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title LaunchPrepaidGiveawayRequest
+#' @description Telegram API request \code{payments.launchPrepaidGiveaway} (constructor \code{#5ff58f20}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 LaunchPrepaidGiveawayRequest <- R6::R6Class(
   "LaunchPrepaidGiveawayRequest",
   inherit = TLRequest,
@@ -2932,11 +2932,11 @@ LaunchPrepaidGiveawayRequest <- R6::R6Class(
 )
 
 
-#  @title RefundStarsChargeRequest
-#  @description Telegram API type RefundStarsChargeRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title RefundStarsChargeRequest
+#' @description Telegram API request \code{payments.refundStarsCharge} (constructor \code{#25ae8f4a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RefundStarsChargeRequest <- R6::R6Class(
   "RefundStarsChargeRequest",
   inherit = TLRequest,
@@ -2997,11 +2997,11 @@ RefundStarsChargeRequest <- R6::R6Class(
   )
 )
 
-#  @title ReorderStarGiftCollectionsRequest
-#  @description Telegram API type ReorderStarGiftCollectionsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderStarGiftCollectionsRequest
+#' @description Telegram API request \code{payments.reorderStarGiftCollections} (constructor \code{#c32af4cc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderStarGiftCollectionsRequest <- R6::R6Class(
   "ReorderStarGiftCollectionsRequest",
   inherit = TLRequest,
@@ -3063,11 +3063,11 @@ ReorderStarGiftCollectionsRequest <- R6::R6Class(
   )
 )
 
-#  @title SaveStarGiftRequest
-#  @description Telegram API type SaveStarGiftRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveStarGiftRequest
+#' @description Telegram API request \code{payments.saveStarGift} (constructor \code{#2a2a697c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveStarGiftRequest <- R6::R6Class(
   "SaveStarGiftRequest",
   inherit = TLRequest,
@@ -3123,11 +3123,11 @@ SaveStarGiftRequest <- R6::R6Class(
 )
 
 
-#  @title SendPaymentFormRequest
-#  @description Telegram API type SendPaymentFormRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendPaymentFormRequest
+#' @description Telegram API request \code{payments.sendPaymentForm} (constructor \code{#2d03522f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendPaymentFormRequest <- R6::R6Class(
   "SendPaymentFormRequest",
   inherit = TLRequest,
@@ -3214,11 +3214,11 @@ SendPaymentFormRequest <- R6::R6Class(
   )
 )
 
-#  @title SendStarsFormRequest
-#  @description Telegram API type SendStarsFormRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendStarsFormRequest
+#' @description Telegram API request \code{payments.sendStarsForm} (constructor \code{#7998c914}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendStarsFormRequest <- R6::R6Class(
   "SendStarsFormRequest",
   inherit = TLRequest,
@@ -3273,11 +3273,11 @@ SendStarsFormRequest <- R6::R6Class(
 )
 
 
-#  @title ToggleChatStarGiftNotificationsRequest
-#  @description Telegram API type ToggleChatStarGiftNotificationsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleChatStarGiftNotificationsRequest
+#' @description Telegram API request \code{payments.toggleChatStarGiftNotifications} (constructor \code{#60eaefa1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleChatStarGiftNotificationsRequest <- R6::R6Class(
   "ToggleChatStarGiftNotificationsRequest",
   inherit = TLRequest,
@@ -3339,11 +3339,11 @@ ToggleChatStarGiftNotificationsRequest <- R6::R6Class(
   )
 )
 
-#  @title ToggleStarGiftsPinnedToTopRequest
-#  @description Telegram API type ToggleStarGiftsPinnedToTopRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleStarGiftsPinnedToTopRequest
+#' @description Telegram API request \code{payments.toggleStarGiftsPinnedToTop} (constructor \code{#1513e7b0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleStarGiftsPinnedToTopRequest <- R6::R6Class(
   "ToggleStarGiftsPinnedToTopRequest",
   inherit = TLRequest,
@@ -3405,11 +3405,11 @@ ToggleStarGiftsPinnedToTopRequest <- R6::R6Class(
   )
 )
 
-#  @title TransferStarGiftRequest
-#  @description Telegram API type TransferStarGiftRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title TransferStarGiftRequest
+#' @description Telegram API request \code{payments.transferStarGift} (constructor \code{#7f18176a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 TransferStarGiftRequest <- R6::R6Class(
   "TransferStarGiftRequest",
   inherit = TLRequest,
@@ -3471,11 +3471,11 @@ TransferStarGiftRequest <- R6::R6Class(
 )
 
 
-#  @title UpdateStarGiftCollectionRequest
-#  @description Telegram API type UpdateStarGiftCollectionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateStarGiftCollectionRequest
+#' @description Telegram API request \code{payments.updateStarGiftCollection} (constructor \code{#4fddbee7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateStarGiftCollectionRequest <- R6::R6Class(
   "UpdateStarGiftCollectionRequest",
   inherit = TLRequest,
@@ -3585,11 +3585,11 @@ UpdateStarGiftCollectionRequest <- R6::R6Class(
   )
 )
 
-#  @title UpdateStarGiftPriceRequest
-#  @description Telegram API type UpdateStarGiftPriceRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateStarGiftPriceRequest
+#' @description Telegram API request \code{payments.updateStarGiftPrice} (constructor \code{#edbe6ccb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateStarGiftPriceRequest <- R6::R6Class(
   "UpdateStarGiftPriceRequest",
   inherit = TLRequest,
@@ -3644,11 +3644,11 @@ UpdateStarGiftPriceRequest <- R6::R6Class(
 )
 
 
-#  @title UpgradeStarGiftRequest
-#  @description Telegram API type UpgradeStarGiftRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpgradeStarGiftRequest
+#' @description Telegram API request \code{payments.upgradeStarGift} (constructor \code{#aed6e4f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpgradeStarGiftRequest <- R6::R6Class(
   "UpgradeStarGiftRequest",
   inherit = TLRequest,
@@ -3705,11 +3705,11 @@ UpgradeStarGiftRequest <- R6::R6Class(
   )
 )
 
-#  @title ValidateRequestedInfoRequest
-#  @description Telegram API type ValidateRequestedInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ValidateRequestedInfoRequest
+#' @description Telegram API request \code{payments.validateRequestedInfo} (constructor \code{#b6c8f12b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ValidateRequestedInfoRequest <- R6::R6Class(
   "ValidateRequestedInfoRequest",
   inherit = TLRequest,

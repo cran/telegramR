@@ -1,16 +1,15 @@
-#  DestroyAuthKeyRequest R6 class
-# 
-#  Represents the TL request `DestroyAuthKeyRequest`.
-# 
-#  Fields:
-#  - (no fields)
-# 
-#  Methods:
-#  - new(): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  @noRd
-#  @noRd
+#' DestroyAuthKeyRequest R6 class
+#'
+#' Represents the TL request `DestroyAuthKeyRequest`.
+#'
+#' Fields:
+#' - (no fields)
+#'
+#' Methods:
+#' - new(): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' @noRd
 DestroyAuthKeyRequest <- R6::R6Class(
   classname = "DestroyAuthKeyRequest",
   public = list(
@@ -54,19 +53,18 @@ DestroyAuthKeyRequest$from_reader <- function(reader) {
 }
 
 
-#  DestroySessionRequest R6 class
-# 
-#  Represents the TL request `DestroySessionRequest`.
-# 
-#  Fields:
-#  - session_id: numeric/integer (64-bit placeholder)
-# 
-#  Methods:
-#  - new(session_id): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  @noRd
-#  @noRd
+#' DestroySessionRequest R6 class
+#'
+#' Represents the TL request `DestroySessionRequest`.
+#'
+#' Fields:
+#' - session_id: numeric/integer (64-bit placeholder)
+#'
+#' Methods:
+#' - new(session_id): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' @noRd
 DestroySessionRequest <- R6::R6Class(
   classname = "DestroySessionRequest",
   public = list(
@@ -100,7 +98,7 @@ DestroySessionRequest <- R6::R6Class(
       writeBin(constructor_bytes, conn)
       # NOTE: writeBin on numeric with size=8 uses IEEE754 double; for exact 64-bit two's-complement
       # preservation, replace with a dedicated 64-bit writer.
-      writeBin(as.numeric(self$session_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$session_id), conn)
       rawConnectionValue(conn)
     }
   ),
@@ -124,19 +122,18 @@ DestroySessionRequest$from_reader <- function(reader) {
 }
 
 
-#  GetFutureSaltsRequest R6 class
-# 
-#  Represents the TL request `GetFutureSaltsRequest`.
-# 
-#  Fields:
-#  - num: integer (32-bit)
-# 
-#  Methods:
-#  - new(num): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  @noRd
-#  @noRd
+#' GetFutureSaltsRequest R6 class
+#'
+#' Represents the TL request `GetFutureSaltsRequest`.
+#'
+#' Fields:
+#' - num: integer (32-bit)
+#'
+#' Methods:
+#' - new(num): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' @noRd
 GetFutureSaltsRequest <- R6::R6Class(
   classname = "GetFutureSaltsRequest",
   public = list(
@@ -192,31 +189,11 @@ GetFutureSaltsRequest$from_reader <- function(reader) {
 }
 
 
-#  InitConnectionRequest R6 class
-# 
-#  Represents the TL request `InitConnectionRequest`.
-# 
-#  Fields:
-#  - api_id: integer (32-bit)
-#  - device_model: character
-#  - system_version: character
-#  - app_version: character
-#  - system_lang_code: character
-#  - lang_pack: character
-#  - lang_code: character
-#  - query: TypeX (an object providing to_raw()/to_list() or a raw vector/character)
-#  - proxy: optional TypeInputClientProxy (object with to_raw()/to_list(), raw, or character)
-#  - params: optional TypeJSONValue (object with to_raw()/to_list(), raw, or character)
-# 
-#  Methods:
-#  - new(api_id, device_model, system_version, app_version, system_lang_code, lang_pack, lang_code, query, proxy = NULL, params = NULL)
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: string and object serialization is simplified (charToRaw, nested to_raw()). For
-#  exact TL compact string encoding or precise integer widths replace with correct utilities.
-#  @noRd
-#  @noRd
+#' @title InitConnectionRequest
+#' @description Telegram API request \code{initConnection} (constructor \code{#c1cd5ea9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InitConnectionRequest <- R6::R6Class(
   classname = "InitConnectionRequest",
   public = list(
@@ -448,26 +425,11 @@ InitConnectionRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeAfterMsgRequest R6 class
-# 
-#  Represents the TL request `InvokeAfterMsgRequest`.
-# 
-#  Fields:
-#  - msg_id: numeric/integer (64-bit placeholder)
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(msg_id, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0xcb9f372d) in little-endian (bytes: 0x2D 0x37 0x9F 0xCB),
-#  then msg_id as 8-byte little-endian value, followed by nested query bytes.
-#  Note: writeBin on numeric with size=8 uses IEEE754 double; for exact 64-bit two's-complement
-#  preservation, replace with a dedicated 64-bit writer.
-#  @noRd
-#  @noRd
+#' @title InvokeAfterMsgRequest
+#' @description Telegram API request \code{invokeAfterMsg} (constructor \code{#cb9f372d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeAfterMsgRequest <- R6::R6Class(
   classname = "InvokeAfterMsgRequest",
   public = list(
@@ -518,7 +480,7 @@ InvokeAfterMsgRequest <- R6::R6Class(
       writeBin(constructor_bytes, conn)
       # NOTE: writeBin on numeric with size=8 uses IEEE754 double; if you need exact
       # two's-complement 64-bit integer, replace this with a proper 64-bit writer.
-      writeBin(as.numeric(self$msg_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$msg_id), conn)
       # nested query bytes: prefer query$to_raw(), else if raw, write directly
       if (is.raw(self$query)) {
         if (length(self$query) > 0) writeBin(self$query, conn)
@@ -558,25 +520,11 @@ InvokeAfterMsgRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeAfterMsgsRequest R6 class
-# 
-#  Represents the TL request `InvokeAfterMsgsRequest`.
-# 
-#  Fields:
-#  - msg_ids: numeric/integer vector (64-bit ids; numeric placeholders are used)
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(msg_ids, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0x3dc4b4f0) in little-endian, then the TL-vector
-#  constructor id (0x1cb5c415) and the vector length, then each msg_id as 8-byte
-#  little-endian values, followed by nested query bytes.
-#  @noRd
-#  @noRd
+#' @title InvokeAfterMsgsRequest
+#' @description Telegram API request \code{invokeAfterMsgs} (constructor \code{#3dc4b4f0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeAfterMsgsRequest <- R6::R6Class(
   classname = "InvokeAfterMsgsRequest",
   public = list(
@@ -632,7 +580,7 @@ InvokeAfterMsgsRequest <- R6::R6Class(
         for (v in self$msg_ids) {
           # NOTE: writeBin on numeric with size=8 uses IEEE754 double;
           # for exact 64-bit representation, replace with a proper 64-bit writer.
-          writeBin(as.numeric(v), conn, size = 8, endian = "little")
+          writeBin(packInt64(v), conn)
         }
       }
       # nested query bytes: prefer query$to_raw(), else if raw, write directly
@@ -687,26 +635,11 @@ InvokeAfterMsgsRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithApnsSecretRequest R6 class
-# 
-#  Represents the TL request `InvokeWithApnsSecretRequest`.
-# 
-#  Fields:
-#  - nonce: character string
-#  - secret: character string
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(nonce, secret, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes constructor id 0x0dae54f8 (little-endian bytes: 0xf8 0x54 0xae 0x0d),
-#  then nonce and secret as TL strings (here serialized via charToRaw for simplicity),
-#  then nested query bytes.
-#  @noRd
-#  @noRd
+#' @title InvokeWithApnsSecretRequest
+#' @description Telegram API request \code{invokeWithApnsSecret} (constructor \code{#0dae54f8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithApnsSecretRequest <- R6::R6Class(
   classname = "InvokeWithApnsSecretRequest",
   public = list(
@@ -800,26 +733,11 @@ InvokeWithApnsSecretRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithBusinessConnectionRequest R6 class
-# 
-#  Represents the TL request `InvokeWithBusinessConnectionRequest`.
-# 
-#  Fields:
-#  - connection_id: character string
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(connection_id, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0xdd289f8e) in little-endian, then the
-#  connection_id bytes (here via charToRaw) and then the nested query bytes.
-#  The nested query is expected to provide a to_raw() method returning a raw vector,
-#  or to already be a raw vector. If the query is a character, it will be converted using charToRaw().
-#  @noRd
-#  @noRd
+#' @title InvokeWithBusinessConnectionRequest
+#' @description Telegram API request \code{invokeWithBusinessConnection} (constructor \code{#dd289f8e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithBusinessConnectionRequest <- R6::R6Class(
   classname = "InvokeWithBusinessConnectionRequest",
   public = list(
@@ -908,26 +826,11 @@ InvokeWithBusinessConnectionRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithGooglePlayIntegrityRequest R6 class
-# 
-#  Represents the TL request `InvokeWithGooglePlayIntegrityRequest`.
-# 
-#  Fields:
-#  - nonce: character string
-#  - token: character string
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(nonce, token, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0x1df92984) in little-endian, then nonce,
-#  token as raw bytes and then the nested query bytes. The nested query is expected
-#  to provide a to_raw() method or be a raw vector.
-#  @noRd
-#  @noRd
+#' @title InvokeWithGooglePlayIntegrityRequest
+#' @description Telegram API request \code{invokeWithGooglePlayIntegrity} (constructor \code{#1df92984}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithGooglePlayIntegrityRequest <- R6::R6Class(
   #  @field classname Field.
   classname = "InvokeWithGooglePlayIntegrityRequest",
@@ -1024,26 +927,11 @@ InvokeWithGooglePlayIntegrityRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithLayerRequest R6 class
-# 
-#  Represents the TL request `InvokeWithLayerRequest`.
-# 
-#  Fields:
-#  - layer: integer (32-bit)
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(layer, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0xda9b0d0d) in little-endian, then a 4-byte
-#  integer for layer, then the nested query bytes. The nested query is expected to
-#  provide a to_raw() method returning a raw vector, or to already be a raw vector.
-#  If the query is a character, it will be converted using charToRaw().
-#  @noRd
-#  @noRd
+#' @title InvokeWithLayerRequest
+#' @description Telegram API request \code{invokeWithLayer} (constructor \code{#da9b0d0d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithLayerRequest <- R6::R6Class(
   classname = "InvokeWithLayerRequest",
   public = list(
@@ -1132,24 +1020,11 @@ InvokeWithLayerRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithMessagesRangeRequest R6 class
-# 
-#  Represents the TL request `InvokeWithMessagesRangeRequest`.
-# 
-#  Fields:
-#  - range: TypeMessageRange (an object representing a message range). May be an R6 TL object with to_raw()/to_list().
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(range, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes the constructor id (0x365275f2) in little-endian, then the
-#  serialized bytes for the range, then the serialized bytes for the nested query.
-#  @noRd
-#  @noRd
+#' @title InvokeWithMessagesRangeRequest
+#' @description Telegram API request \code{invokeWithMessagesRange} (constructor \code{#365275f2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithMessagesRangeRequest <- R6::R6Class(
   classname = "InvokeWithMessagesRangeRequest",
   public = list(
@@ -1249,25 +1124,11 @@ InvokeWithMessagesRangeRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithReCaptchaRequest R6 class
-# 
-#  Represents the TL request `InvokeWithReCaptchaRequest`.
-# 
-#  Fields:
-#  - token: character string
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(token, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() expects the query to provide a to_raw() method returning a raw vector,
-#  or to already be a raw vector. If neither is true and query is character, it will
-#  be coerced with charToRaw().
-#  @noRd
-#  @noRd
+#' @title InvokeWithReCaptchaRequest
+#' @description Telegram API request \code{invokeWithReCaptcha} (constructor \code{#adbb0f94}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithReCaptchaRequest <- R6::R6Class(
   classname = "InvokeWithReCaptchaRequest",
   public = list(
@@ -1354,24 +1215,11 @@ InvokeWithReCaptchaRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithTakeoutRequest R6 class
-# 
-#  Represents the TL request `InvokeWithTakeoutRequest`.
-# 
-#  Fields:
-#  - takeout_id: numeric/integer (64-bit placeholder)
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(takeout_id, query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  @details
-#  to_raw() writes takeout_id as an 8-byte little-endian value using writeBin(as.numeric(...), size=8).
-#  For exact two's-complement 64-bit preservation, replace with a dedicated 64-bit serializer.
-#  @noRd
-#  @noRd
+#' @title InvokeWithTakeoutRequest
+#' @description Telegram API request \code{invokeWithTakeout} (constructor \code{#aca9fd2e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithTakeoutRequest <- R6::R6Class(
   classname = "InvokeWithTakeoutRequest",
   public = list(
@@ -1416,7 +1264,7 @@ InvokeWithTakeoutRequest <- R6::R6Class(
       on.exit(close(conn))
       writeBin(constructor_bytes, conn)
       # write takeout_id as 8-byte little-endian (placeholder via numeric)
-      writeBin(as.numeric(self$takeout_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$takeout_id), conn)
       # write nested query bytes: prefer query$to_raw(), else if raw, write directly
       if (is.raw(self$query)) {
         if (length(self$query) > 0) writeBin(self$query, conn)
@@ -1456,23 +1304,11 @@ InvokeWithTakeoutRequest$from_reader <- function(reader) {
 }
 
 
-#  InvokeWithoutUpdatesRequest R6 class
-# 
-#  Represents the TL request `InvokeWithoutUpdatesRequest`.
-# 
-#  Fields:
-#  - query: TypeX (an object representing a TL query). May be an R6 TL object with to_raw()/to_list().
-# 
-#  Methods:
-#  - new(query): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: to_raw() expects the query to provide a to_raw() method returning a raw vector,
-#  or to already be a raw vector. If neither is true, the query is written via as.raw
-#  of its serialized form where appropriate.
-#  @noRd
-#  @noRd
+#' @title InvokeWithoutUpdatesRequest
+#' @description Telegram API request \code{invokeWithoutUpdates} (constructor \code{#bf9459b7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InvokeWithoutUpdatesRequest <- R6::R6Class(
   classname = "InvokeWithoutUpdatesRequest",
   public = list(
@@ -1552,22 +1388,21 @@ InvokeWithoutUpdatesRequest$from_reader <- function(reader) {
 }
 
 
-#  PingRequest R6 class
-# 
-#  Represents the TL request `PingRequest`.
-# 
-#  Fields:
-#  - ping_id: numeric/integer (64-bit placeholder)
-# 
-#  Methods:
-#  - new(ping_id): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  - from_reader(reader): construct instance from a reader with read_long().
-# 
-#  Note: 64-bit integer handling uses numeric placeholders via writeBin.
-#  @noRd
-#  @noRd
+#' PingRequest R6 class
+#'
+#' Represents the TL request `PingRequest`.
+#'
+#' Fields:
+#' - ping_id: numeric/integer (64-bit placeholder)
+#'
+#' Methods:
+#' - new(ping_id): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' - from_reader(reader): construct instance from a reader with read_long().
+#'
+#' Note: 64-bit integer handling uses numeric placeholders via writeBin.
+#' @noRd
 PingRequest <- R6::R6Class(
   classname = "PingRequest",
   public = list(
@@ -1600,7 +1435,7 @@ PingRequest <- R6::R6Class(
       writeBin(constructor_bytes, conn)
       # NOTE: writeBin on numeric with size=8 uses IEEE754 double; if you need exact
       # two's-complement 64-bit integer, replace this with a proper 64-bit writer.
-      writeBin(as.numeric(self$ping_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$ping_id), conn)
       rawConnectionValue(conn)
     }
   ),
@@ -1624,22 +1459,21 @@ PingRequest$from_reader <- function(reader) {
 }
 
 
-#  PingDelayDisconnectRequest R6 class
-# 
-#  Represents the TL request `PingDelayDisconnectRequest`.
-# 
-#  Fields:
-#  - ping_id: numeric/integer (64-bit placeholder)
-#  - disconnect_delay: integer (32-bit)
-# 
-#  Methods:
-#  - new(ping_id, disconnect_delay): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: 64-bit integer handling uses numeric placeholders via writeBin.
-#  @noRd
-#  @noRd
+#' PingDelayDisconnectRequest R6 class
+#'
+#' Represents the TL request `PingDelayDisconnectRequest`.
+#'
+#' Fields:
+#' - ping_id: numeric/integer (64-bit placeholder)
+#' - disconnect_delay: integer (32-bit)
+#'
+#' Methods:
+#' - new(ping_id, disconnect_delay): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#'
+#' Note: 64-bit integer handling uses numeric placeholders via writeBin.
+#' @noRd
 PingDelayDisconnectRequest <- R6::R6Class(
   classname = "PingDelayDisconnectRequest",
   public = list(
@@ -1679,7 +1513,7 @@ PingDelayDisconnectRequest <- R6::R6Class(
       writeBin(constructor_bytes, conn)
       # NOTE: writeBin on numeric with size=8 uses IEEE754 double; if you need exact
       # two's-complement 64-bit integer, replace this with a proper 64-bit writer.
-      writeBin(as.numeric(self$ping_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$ping_id), conn)
       # write 4-byte integer for disconnect_delay
       writeBin(as.integer(self$disconnect_delay), conn, size = 4, endian = "little")
       rawConnectionValue(conn)
@@ -1708,28 +1542,27 @@ PingDelayDisconnectRequest$from_reader <- function(reader) {
 }
 
 
-#  ReqDHParamsRequest R6 class
-# 
-#  Represents the TL request `ReqDHParamsRequest`.
-# 
-#  Fields:
-#  - nonce: numeric/integer 128-bit nonce (placeholder representation)
-#  - server_nonce: numeric/integer 128-bit server nonce (placeholder)
-#  - p: raw, bytes
-#  - q: raw, bytes
-#  - public_key_fingerprint: numeric/integer 64-bit
-#  - encrypted_data: raw, bytes
-# 
-#  Methods:
-#  - new(nonce, server_nonce, p, q, public_key_fingerprint, encrypted_data): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: 128-bit integer handling is represented as numeric/double placeholders.
-#  For precise 128-bit two's-complement behavior, use a big-integer library and
-#  implement a precise serializer.
-#  @noRd
-#  @noRd
+#' ReqDHParamsRequest R6 class
+#'
+#' Represents the TL request `ReqDHParamsRequest`.
+#'
+#' Fields:
+#' - nonce: numeric/integer 128-bit nonce (placeholder representation)
+#' - server_nonce: numeric/integer 128-bit server nonce (placeholder)
+#' - p: raw, bytes
+#' - q: raw, bytes
+#' - public_key_fingerprint: numeric/integer 64-bit
+#' - encrypted_data: raw, bytes
+#'
+#' Methods:
+#' - new(nonce, server_nonce, p, q, public_key_fingerprint, encrypted_data): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#'
+#' Note: 128-bit integer handling is represented as numeric/double placeholders.
+#' For precise 128-bit two's-complement behavior, use a big-integer library and
+#' implement a precise serializer.
+#' @noRd
 ReqDHParamsRequest <- R6::R6Class(
   classname = "ReqDHParamsRequest",
   public = list(
@@ -1817,7 +1650,7 @@ ReqDHParamsRequest <- R6::R6Class(
       write_tl_bytes(self$p)
       write_tl_bytes(self$q)
       # public_key_fingerprint as 8-byte little endian
-      writeBin(as.numeric(self$public_key_fingerprint), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$public_key_fingerprint), conn)
       write_tl_bytes(self$encrypted_data)
 
       rawConnectionValue(conn)
@@ -1857,22 +1690,21 @@ ReqDHParamsRequest$from_reader <- function(reader) {
 }
 
 
-#  ReqPqRequest R6 class
-# 
-#  Represents the TL request `ReqPqRequest`.
-# 
-# 
-#  @description
-#  Methods:
-#  - new(nonce): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: 128-bit integer handling is represented here as numeric/double placeholders.
-#  For precise 128-bit two's-complement behavior, use a big-integer library and
-#  implement a precise serializer.
-#  @noRd
-#  @noRd
+#' ReqPqRequest R6 class
+#'
+#' Represents the TL request `ReqPqRequest`.
+#'
+#'
+#' @description
+#' Methods:
+#' - new(nonce): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#'
+#' Note: 128-bit integer handling is represented here as numeric/double placeholders.
+#' For precise 128-bit two's-complement behavior, use a big-integer library and
+#' implement a precise serializer.
+#' @noRd
 ReqPqRequest <- R6::R6Class(
   classname = "ReqPqRequest",
   public = list(
@@ -1930,22 +1762,21 @@ ReqPqRequest$from_reader <- function(reader) {
 }
 
 
-#  ReqPqMultiRequest R6 class
-# 
-#  Represents the TL request `ReqPqMultiRequest`.
-# 
-# 
-#  @description
-#  Methods:
-#  - new(nonce): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-# 
-#  Note: 128-bit integer handling is represented here as numeric/double placeholders.
-#  For precise 128-bit two's-complement behavior, use a big-integer library and
-#  implement a precise serializer.
-#  @noRd
-#  @noRd
+#' ReqPqMultiRequest R6 class
+#'
+#' Represents the TL request `ReqPqMultiRequest`.
+#'
+#'
+#' @description
+#' Methods:
+#' - new(nonce): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#'
+#' Note: 128-bit integer handling is represented here as numeric/double placeholders.
+#' For precise 128-bit two's-complement behavior, use a big-integer library and
+#' implement a precise serializer.
+#' @noRd
 ReqPqMultiRequest <- R6::R6Class(
   classname = "ReqPqMultiRequest",
   public = list(
@@ -2003,25 +1834,23 @@ ReqPqMultiRequest$from_reader <- function(reader) {
 }
 
 
-#  RpcDropAnswerRequest R6 class
-# 
-#  Represents the TL request `RpcDropAnswerRequest`.
-# 
-# 
-#  @description
-#  Methods:
-#  - new(req_msg_id): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  - from_reader(reader): class method, construct instance from a `reader` object
-#    that exposes `read_long()` (returns numeric/integer) and similar methods.
-# 
-#  Note: to_raw() uses writeBin on numeric for 8-byte values. If exact 64-bit
-#  two's-complement preservation is required, replace with a dedicated 64-bit
-#  integer serialization utility.
-# 
-#  @noRd
-#  @noRd
+#' RpcDropAnswerRequest R6 class
+#'
+#' Represents the TL request `RpcDropAnswerRequest`.
+#'
+#'
+#' @description
+#' Methods:
+#' - new(req_msg_id): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' - from_reader(reader): class method, construct instance from a `reader` object
+#'   that exposes `read_long()` (returns numeric/integer) and similar methods.
+#'
+#' Note: to_raw() uses writeBin on numeric for 8-byte values. If exact 64-bit
+#' two's-complement preservation is required, replace with a dedicated 64-bit
+#' integer serialization utility.
+#' @noRd
 RpcDropAnswerRequest <- R6::R6Class(
   classname = "RpcDropAnswerRequest",
   public = list(
@@ -2055,7 +1884,7 @@ RpcDropAnswerRequest <- R6::R6Class(
       writeBin(constructor_bytes, conn)
       # NOTE: writeBin on numeric with size=8 uses IEEE754 double; if you need exact
       # two's-complement 64-bit integer, replace this with a proper 64-bit writer.
-      writeBin(as.numeric(self$req_msg_id), conn, size = 8, endian = "little")
+      writeBin(packInt64(self$req_msg_id), conn)
       rawConnectionValue(conn)
     }
   ),
@@ -2081,25 +1910,23 @@ RpcDropAnswerRequest$from_reader <- function(reader) {
 }
 
 
-#  SetClientDHParamsRequest R6 class
-# 
-#  Represents the TL request `SetClientDHParamsRequest`.
-# 
-# 
-#  @description
-#  Methods:
-#  - new(nonce, server_nonce, encrypted_data): create new instance.
-#  - to_list(): return an R list representation.
-#  - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
-#  - from_reader(reader): class method, construct instance from a `reader` object
-#    that exposes `read_large_int(bits = 128)` and `tgread_bytes()`.
-# 
-#  Note: 128-bit integer handling is represented here as numeric/double placeholders.
-#  For precise 128-bit two's-complement behavior, use a big-integer library and
-#  implement a precise serializer.
-# 
-#  @noRd
-#  @noRd
+#' SetClientDHParamsRequest R6 class
+#'
+#' Represents the TL request `SetClientDHParamsRequest`.
+#'
+#'
+#' @description
+#' Methods:
+#' - new(nonce, server_nonce, encrypted_data): create new instance.
+#' - to_list(): return an R list representation.
+#' - to_raw(): serialize to raw vector (bytes) in little endian as used in TL.
+#' - from_reader(reader): class method, construct instance from a `reader` object
+#'   that exposes `read_large_int(bits = 128)` and `tgread_bytes()`.
+#'
+#' Note: 128-bit integer handling is represented here as numeric/double placeholders.
+#' For precise 128-bit two's-complement behavior, use a big-integer library and
+#' implement a precise serializer.
+#' @noRd
 SetClientDHParamsRequest <- R6::R6Class(
   classname = "SetClientDHParamsRequest",
   public = list(

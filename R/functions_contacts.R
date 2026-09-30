@@ -1,18 +1,8 @@
-#  AcceptContactRequest
-# 
-#  R6 representation of the TL request: AcceptContactRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id): create new request
-#  - resolve(client, utils): resolve id into input_user using client and utils
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): read from reader and return new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title AcceptContactRequest
+#' @description Telegram API request \code{contacts.acceptContact} (constructor \code{#f831a20f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AcceptContactRequest <- R6::R6Class(
   "AcceptContactRequest",
   inherit = TLRequest,
@@ -81,182 +71,93 @@ AcceptContactRequest$from_reader <- function(reader) {
 }
 
 
-#  AddContactRequest
-# 
-#  R6 representation of the TL request: AddContactRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id, first_name, last_name, phone, add_phone_privacy_exception = NULL): create new request
-#  - resolve(client, utils): resolve id into input_user using client and utils
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): read from reader and return new instance
-#  @export
-#  @noRd
-#  @noRd
-AddContactRequest <- R6::R6Class(
-  "AddContactRequest",
+#' @title AddContactRequest
+#' @description Telegram API request \code{contacts.addContact} (constructor \code{#d9ba2e54}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+AddContactRequest <- R6::R6Class("AddContactRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID Constructor identifier for this TL object.
-    CONSTRUCTOR_ID = 0xe8f463d0,
-    #  @field SUBCLASS_OF_ID Subclass identifier for this TL object.
+    CONSTRUCTOR_ID = 0xd9ba2e54,
     SUBCLASS_OF_ID = 0x8af52aac,
-    #  @field id Field.
-    id = NULL,
-    #  @field first_name Field.
-    first_name = NULL,
-    #  @field last_name Field.
-    last_name = NULL,
-    #  @field phone Field.
-    phone = NULL,
-    #  @field add_phone_privacy_exception Field.
     add_phone_privacy_exception = NULL,
-
-    #  @description Initialize AddContactRequest
-    # 
-    #  @param id input user object or identifier
-    #  @param first_name character
-    #  @param last_name character
-    #  @param phone character
-    #  @param add_phone_privacy_exception logical or NULL
-    initialize = function(id, first_name, last_name, phone, add_phone_privacy_exception = NULL) {
+    id = NULL,
+    first_name = NULL,
+    last_name = NULL,
+    phone = NULL,
+    note = NULL,
+    initialize = function(add_phone_privacy_exception = NULL, id, first_name, last_name, phone, note = NULL) {
+      self$add_phone_privacy_exception <- add_phone_privacy_exception
       self$id <- id
-      self$first_name <- as.character(first_name)
-      self$last_name <- as.character(last_name)
-      self$phone <- as.character(phone)
-      if (!is.null(add_phone_privacy_exception)) self$add_phone_privacy_exception <- as.logical(add_phone_privacy_exception) else self$add_phone_privacy_exception <- NULL
+      self$first_name <- first_name
+      self$last_name <- last_name
+      self$phone <- phone
+      self$note <- note
     },
-
-    #  Resolve entities using client and utils
-    # 
-    #  Replaces `id` with utils$get_input_user(client$get_input_entity(id))
-    #  @param client client object with method get_input_entity()
-    #  @param utils utils object with method get_input_user()
     resolve = function(client, utils) {
-      entity <- client$get_input_entity(self$id)
-      self$id <- utils$get_input_user(entity)
-      invisible(NULL)
+      if (!is.null(self$id)) self$id <- tryCatch(utils$get_input_user(client$get_input_entity(self$id)), error = function(e) self$id)
+      invisible(self)
     },
-
-    #  Convert to list
-    #  @return list
-    to_list = function() {
-      id_repr <- if (!is.null(self$id) && is.function(self$id$to_list)) self$id$to_list() else self$id
+    to_dict = function() {
       list(
         `_` = "AddContactRequest",
-        id = id_repr,
-        first_name = self$first_name,
-        last_name = self$last_name,
-        phone = self$phone,
-        add_phone_privacy_exception = self$add_phone_privacy_exception
+        "add_phone_privacy_exception" = if (inherits(self$add_phone_privacy_exception, "TLObject")) self$add_phone_privacy_exception$to_dict() else self$add_phone_privacy_exception,
+        "id" = if (inherits(self$id, "TLObject")) self$id$to_dict() else self$id,
+        "first_name" = if (inherits(self$first_name, "TLObject")) self$first_name$to_dict() else self$first_name,
+        "last_name" = if (inherits(self$last_name, "TLObject")) self$last_name$to_dict() else self$last_name,
+        "phone" = if (inherits(self$phone, "TLObject")) self$phone$to_dict() else self$phone,
+        "note" = if (inherits(self$note, "TLObject")) self$note$to_dict() else self$note
       )
     },
-
-    #  Serialize to bytes (raw vector)
-    #  @return raw
+    to_list = function() {
+      list(
+        `_` = "AddContactRequest",
+        "add_phone_privacy_exception" = if (inherits(self$add_phone_privacy_exception, "TLObject")) self$add_phone_privacy_exception$to_dict() else self$add_phone_privacy_exception,
+        "id" = if (inherits(self$id, "TLObject")) self$id$to_dict() else self$id,
+        "first_name" = if (inherits(self$first_name, "TLObject")) self$first_name$to_dict() else self$first_name,
+        "last_name" = if (inherits(self$last_name, "TLObject")) self$last_name$to_dict() else self$last_name,
+        "phone" = if (inherits(self$phone, "TLObject")) self$phone$to_dict() else self$phone,
+        "note" = if (inherits(self$note, "TLObject")) self$note$to_dict() else self$note
+      )
+    },
     to_bytes = function() {
-      # little-endian of 0xe8f463d0 -> 0xd0 0x63 0xf4 0xe8
-      prefix <- as.raw(c(0xd0, 0x63, 0xf4, 0xe8))
-      flags_val <- 0L
-      if (!is.null(self$add_phone_privacy_exception) && isTRUE(self$add_phone_privacy_exception)) flags_val <- bitwOr(flags_val, 1L)
-      flags_raw <- private$int_to_le_raw(as.integer(flags_val), size = 4L)
-
-      id_bytes <- NULL
-      if (!is.null(self$id) && is.function(self$id$to_bytes)) {
-        id_bytes <- self$id$to_bytes()
-      } else if (!is.null(self$id) && is.raw(self$id)) {
-        id_bytes <- self$id
-      } else {
-        stop("id must provide to_bytes() or be a raw vector")
-      }
-
-      first_name_bytes <- private$serialize_string_tl(self$first_name)
-      last_name_bytes <- private$serialize_string_tl(self$last_name)
-      phone_bytes <- private$serialize_string_tl(self$phone)
-
-      c(prefix, flags_raw, id_bytes, first_name_bytes, last_name_bytes, phone_bytes)
-    }
+      flags <- 0L
+      if (isTRUE(self$add_phone_privacy_exception)) flags <- bitwOr(flags, 1L)
+      if (!is.null(self$note)) flags <- bitwOr(flags, 2L)
+      c(
+        as.raw(c(0x54, 0x2e, 0xba, 0xd9)),
+        pack("<I", flags),
+        self$id$bytes(),
+        serialize_bytes(self$first_name),
+        serialize_bytes(self$last_name),
+        serialize_bytes(self$phone),
+        if (!is.null(self$note)) self$note$bytes() else raw(0)
+      )
+    },
+    serialize = function() self$to_bytes()
   ),
   private = list(
-    #  Convert integer to little-endian raw vector of given size (bytes)
-    int_to_le_raw = function(x, size = 4L) {
-      xi <- as.integer(x)
-      v <- raw(size)
-      for (i in seq_len(size)) {
-        v[i] <- as.raw(bitwAnd(bitwShiftR(xi, 8L * (i - 1L)), 0xff))
-      }
-      v
-    },
-
-    #  Serialize an R string to TL string bytes (per Telegram TL encoding)
-    serialize_string_tl = function(s) {
-      if (is.null(s)) {
-        return(raw(0))
-      }
-      sb <- charToRaw(enc2utf8(as.character(s)))
-      ln <- length(sb)
-      if (ln < 254L) {
-        header <- as.raw(ln)
-        payload <- sb
-        total <- 1 + ln
-      } else {
-        header <- as.raw(c(
-          254L,
-          as.raw(bitwAnd(ln, 0xff)),
-          as.raw(bitwAnd(bitwShiftR(ln, 8L), 0xff)),
-          as.raw(bitwAnd(bitwShiftR(ln, 16L), 0xff))
-        ))
-        payload <- sb
-        total <- 4 + ln
-      }
-      pad_len <- (4L - (total %% 4L)) %% 4L
-      padding <- if (pad_len > 0L) as.raw(rep(0, pad_len)) else raw(0)
-      c(header, payload, padding)
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$add_phone_privacy_exception <- bitwAnd(flags, 1L) != 0
+      self$id <- reader$tgread_object()
+      self$first_name <- reader$tgread_string()
+      self$last_name <- reader$tgread_string()
+      self$phone <- reader$tgread_string()
+      self$note <- if (bitwAnd(flags, 2L) != 0) reader$tgread_object() else NULL
+      self
     }
   ),
-  active = list(),
-  class = TRUE
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# Create AddContactRequest from reader
-# @name AddContactRequest_from_reader
-#
-# @param reader object with methods read_int(), tgread_object(), tgread_string()
-# @return AddContactRequest
-AddContactRequest$from_reader <- function(reader) {
-  flagsVal <- reader$read_int()
-  addPhonePrivacyExceptionFlag <- bitwAnd(flagsVal, 1L) != 0L
-  id_val <- reader$tgread_object()
-  firstNameVal <- reader$tgread_string()
-  lastNameVal <- reader$tgread_string()
-  phoneVal <- reader$tgread_string()
-  AddContactRequest$new(
-    id = id_val,
-    first_name = firstNameVal,
-    last_name = lastNameVal,
-    phone = phoneVal,
-    add_phone_privacy_exception = addPhonePrivacyExceptionFlag
-  )
-}
-
-
-#  BlockRequest
-# 
-#  R6 representation of the TL request: BlockRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id, my_stories_from = NULL): create new request
-#  - resolve(client, utils): resolve id into input_peer using client and utils
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title BlockRequest
+#' @description Telegram API request \code{contacts.block} (constructor \code{#2e2e8734}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 BlockRequest <- R6::R6Class(
   "BlockRequest",
   inherit = TLRequest,
@@ -355,19 +256,11 @@ BlockRequest$from_reader <- function(reader) {
 }
 
 
-#  BlockFromRepliesRequest
-# 
-#  R6 representation of the TL request: BlockFromRepliesRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(msg_id, delete_message = NULL, delete_history = NULL, report_spam = NULL): create new request
-#  - to_list(): return a list representation
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title BlockFromRepliesRequest
+#' @description Telegram API request \code{contacts.blockFromReplies} (constructor \code{#29a8962c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 BlockFromRepliesRequest <- R6::R6Class(
   "BlockFromRepliesRequest",
   inherit = TLRequest,
@@ -462,19 +355,11 @@ BlockFromRepliesRequest$from_reader <- function(reader) {
 }
 
 
-#  DeleteByPhonesRequest
-# 
-#  R6 representation of the TL request: DeleteByPhonesRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(phones): create new request where phones is a character vector
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes (constructor + vector + strings)
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteByPhonesRequest
+#' @description Telegram API request \code{contacts.deleteByPhones} (constructor \code{#1013fd9e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteByPhonesRequest <- R6::R6Class(
   "DeleteByPhonesRequest",
   inherit = TLRequest,
@@ -583,20 +468,11 @@ DeleteByPhonesRequest$from_reader <- function(reader) {
 }
 
 
-#  DeleteContactsRequest
-# 
-#  R6 representation of the TL request: DeleteContactsRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id): create new request where id is a list of input_user objects
-#  - resolve(client, utils): resolve each id element into an input_user via client and utils
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes (constructor + vector + item bytes)
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteContactsRequest
+#' @description Telegram API request \code{contacts.deleteContacts} (constructor \code{#096a0e00}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteContactsRequest <- R6::R6Class(
   "DeleteContactsRequest",
   inherit = TLRequest,
@@ -713,19 +589,11 @@ DeleteContactsRequest$from_reader <- function(reader) {
 }
 
 
-#  EditCloseFriendsRequest
-# 
-#  R6 representation of the TL request: EditCloseFriendsRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id): create new request where id is a numeric vector of 64-bit integers
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes (constructor + vector + int64 items)
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditCloseFriendsRequest
+#' @description Telegram API request \code{contacts.editCloseFriends} (constructor \code{#ba6705f0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditCloseFriendsRequest <- R6::R6Class(
   "EditCloseFriendsRequest",
   inherit = TLRequest,
@@ -827,19 +695,11 @@ EditCloseFriendsRequest$from_reader <- function(reader) {
 }
 
 
-#  ExportContactTokenRequest
-# 
-#  R6 representation of the TL request: ExportContactTokenRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(): create new request
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes
-#  @export
-#  @noRd
-#  @noRd
+#' @title ExportContactTokenRequest
+#' @description Telegram API request \code{contacts.exportContactToken} (constructor \code{#f8654027}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ExportContactTokenRequest <- R6::R6Class(
   "ExportContactTokenRequest",
   inherit = TLRequest,
@@ -880,19 +740,11 @@ ExportContactTokenRequest$from_reader <- function(reader) {
 }
 
 
-#  GetBirthdaysRequest
-# 
-#  R6 representation of the TL request: GetBirthdaysRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(): create new request
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBirthdaysRequest
+#' @description Telegram API request \code{contacts.getBirthdays} (constructor \code{#daeda864}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBirthdaysRequest <- R6::R6Class(
   "GetBirthdaysRequest",
   inherit = TLRequest,
@@ -932,19 +784,11 @@ GetBirthdaysRequest$from_reader <- function(reader) {
 }
 
 
-#  GetBlockedRequest
-# 
-#  R6 representation of the TL request: GetBlockedRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(offset, limit, my_stories_from = NULL): create new request
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBlockedRequest
+#' @description Telegram API request \code{contacts.getBlocked} (constructor \code{#9a868f80}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBlockedRequest <- R6::R6Class(
   "GetBlockedRequest",
   inherit = TLRequest,
@@ -1030,20 +874,11 @@ GetBlockedRequest$from_reader <- function(reader) {
 }
 
 
-#  GetContactIDsRequest
-# 
-#  R6 representation of the TL request: GetContactIDsRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(hash): create new request
-#  - to_list(): return list representation
-#  - to_bytes(): serialize to raw TL bytes (constructor + int64 hash)
-#  - read_result(reader): static helper to read the result vector of ints from reader
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetContactIDsRequest
+#' @description Telegram API request \code{contacts.getContactIDs} (constructor \code{#7adc669d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetContactIDsRequest <- R6::R6Class(
   "GetContactIDsRequest",
   inherit = TLRequest,
@@ -1131,19 +966,11 @@ GetContactIDsRequest$read_result <- function(reader) {
 }
 
 
-#  GetContactsRequest
-# 
-#  R6 representation of the TL request: GetContactsRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(hash): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetContactsRequest
+#' @description Telegram API request \code{contacts.getContacts} (constructor \code{#5dd69e12}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetContactsRequest <- R6::R6Class(
   "GetContactsRequest",
   inherit = TLRequest,
@@ -1209,20 +1036,11 @@ GetContactsRequest$from_reader <- function(reader) {
 }
 
 
-#  GetLocatedRequest
-# 
-#  R6 representation of the TL request: GetLocatedRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(geo_point, background = NULL, self_expires = NULL): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): read from reader and return a new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetLocatedRequest
+#' @description Telegram API request \code{contacts.getLocated} (constructor \code{#d348bc44}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetLocatedRequest <- R6::R6Class(
   "GetLocatedRequest",
   inherit = TLRequest,
@@ -1310,18 +1128,11 @@ GetLocatedRequest$from_reader <- function(reader) {
   GetLocatedRequest$new(geo_point = geo_point_val, background = background_flag, self_expires = self_expires_val)
 }
 
-#  GetSavedRequest
-# 
-#  R6 representation of the TL request: GetSavedRequest
-# 
-#  @description
-#  Methods:
-#  - initialize(): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedRequest
+#' @description Telegram API request \code{contacts.getSaved} (constructor \code{#82f1e39f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedRequest <- R6::R6Class(
   "GetSavedRequest",
   inherit = TLRequest,
@@ -1364,19 +1175,11 @@ GetSavedRequest$from_reader <- function(reader) {
 }
 
 
-#  GetSponsoredPeersRequest
-# 
-#  R6 representation of the TL request: GetSponsoredPeersRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(q): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSponsoredPeersRequest
+#' @description Telegram API request \code{contacts.getSponsoredPeers} (constructor \code{#b6c8c393}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSponsoredPeersRequest <- R6::R6Class(
   "GetSponsoredPeersRequest",
   inherit = TLRequest,
@@ -1452,18 +1255,11 @@ GetSponsoredPeersRequest$from_reader <- function(reader) {
 }
 
 
-#  GetStatusesRequest
-# 
-#  R6 representation of the TL request: GetStatusesRequest
-# 
-#  @description
-#  Methods:
-#  - initialize(): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStatusesRequest
+#' @description Telegram API request \code{contacts.getStatuses} (constructor \code{#c4a353ee}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStatusesRequest <- R6::R6Class(
   "GetStatusesRequest",
   inherit = TLRequest,
@@ -1506,20 +1302,11 @@ GetStatusesRequest$from_reader <- function(reader) {
 }
 
 
-#  GetTopPeersRequest
-# 
-#  R6 representation of the TL request: GetTopPeersRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(offset, limit, hash, ...): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): read from reader and return a new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetTopPeersRequest
+#' @description Telegram API request \code{contacts.getTopPeers} (constructor \code{#973478b6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetTopPeersRequest <- R6::R6Class(
   "GetTopPeersRequest",
   inherit = TLRequest,
@@ -1698,19 +1485,11 @@ GetTopPeersRequest$from_reader <- function(reader) {
 }
 
 
-#  ImportContactTokenRequest
-# 
-#  R6 representation of the TL request: ImportContactTokenRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(token): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ImportContactTokenRequest
+#' @description Telegram API request \code{contacts.importContactToken} (constructor \code{#13005788}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ImportContactTokenRequest <- R6::R6Class(
   "ImportContactTokenRequest",
   inherit = TLRequest,
@@ -1797,19 +1576,11 @@ ImportContactTokenRequest$from_reader <- function(reader) {
 }
 
 
-#  ImportContactsRequest
-# 
-#  R6 representation of the TL request: ImportContactsRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(contacts): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ImportContactsRequest
+#' @description Telegram API request \code{contacts.importContacts} (constructor \code{#2c800be5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ImportContactsRequest <- R6::R6Class(
   "ImportContactsRequest",
   inherit = TLRequest,
@@ -1909,18 +1680,11 @@ ImportContactsRequest$from_reader <- function(reader) {
 }
 
 
-#  ResetSavedRequest
-# 
-#  R6 representation of the TL request: ResetSavedRequest
-# 
-#  @description
-#  Methods:
-#  - initialize(): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetSavedRequest
+#' @description Telegram API request \code{contacts.resetSaved} (constructor \code{#879537f1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetSavedRequest <- R6::R6Class(
   "ResetSavedRequest",
   inherit = TLRequest,
@@ -1967,20 +1731,11 @@ ResetSavedRequest$from_reader <- function(reader) {
 }
 
 
-#  ResetTopPeerRatingRequest
-# 
-#  R6 representation of the TL request: ResetTopPeerRatingRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(category, peer): create new request
-#  - resolve(client, utils): resolve peer into input_peer using client/utils
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResetTopPeerRatingRequest
+#' @description Telegram API request \code{contacts.resetTopPeerRating} (constructor \code{#1ae373ac}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResetTopPeerRatingRequest <- R6::R6Class(
   "ResetTopPeerRatingRequest",
   inherit = TLRequest,
@@ -2071,19 +1826,11 @@ ResetTopPeerRatingRequest$from_reader <- function(reader) {
 }
 
 
-#  ResolvePhoneRequest
-# 
-#  R6 representation of the TL request: ResolvePhoneRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(phone): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResolvePhoneRequest
+#' @description Telegram API request \code{contacts.resolvePhone} (constructor \code{#8af94344}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResolvePhoneRequest <- R6::R6Class(
   "ResolvePhoneRequest",
   inherit = TLRequest,
@@ -2170,19 +1917,11 @@ ResolvePhoneRequest$from_reader <- function(reader) {
 }
 
 
-#  ResolveUsernameRequest
-# 
-#  R6 representation of the TL request: ResolveUsernameRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(username, referer = NULL): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  @export
-#  @noRd
-#  @noRd
+#' @title ResolveUsernameRequest
+#' @description Telegram API request \code{contacts.resolveUsername} (constructor \code{#725afbbc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ResolveUsernameRequest <- R6::R6Class(
   "ResolveUsernameRequest",
   inherit = TLRequest,
@@ -2279,21 +2018,11 @@ ResolveUsernameRequest$from_reader <- function(reader) {
 }
 
 
-#  SetBlockedRequest
-# 
-#  R6 representation of the TL request: SetBlockedRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id, limit, my_stories_from = NULL): create new request
-#  - resolve(client, utils): resolve id list into input_peer objects using client/utils
-#  - to_list(): return a list representation
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): class method to read from a reader and return a new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetBlockedRequest
+#' @description Telegram API request \code{contacts.setBlocked} (constructor \code{#94c65c76}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetBlockedRequest <- R6::R6Class(
   "SetBlockedRequest",
   inherit = TLRequest,
@@ -2433,20 +2162,11 @@ SetBlockedRequest$from_reader <- function(reader) {
 }
 
 
-#  ToggleTopPeersRequest
-# 
-#  R6 representation of the TL request: ToggleTopPeersRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(enabled): create new request
-#  - to_list(): return a list representation suitable for JSON/dumping
-#  - to_bytes(): return raw vector of bytes for the TL request
-#  - from_reader(reader): class method to read from a reader and return a new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleTopPeersRequest
+#' @description Telegram API request \code{contacts.toggleTopPeers} (constructor \code{#8514bdda}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleTopPeersRequest <- R6::R6Class(
   "ToggleTopPeersRequest",
   inherit = TLRequest,
@@ -2498,21 +2218,11 @@ ToggleTopPeersRequest$from_reader <- function(reader) {
 }
 
 
-#  UnblockRequest
-# 
-#  R6 representation of the TL request: UnblockRequest
-# 
-# 
-#  @description
-#  Methods:
-#  - initialize(id, my_stories_from = NULL): create new request
-#  - resolve(client, utils): resolve id into input peer using client/utils
-#  - to_list(): return a list representation
-#  - to_bytes(): return raw vector of bytes for the TL request (little-endian integer packing used)
-#  - from_reader(reader): class method to read from a reader and return a new instance
-#  @export
-#  @noRd
-#  @noRd
+#' @title UnblockRequest
+#' @description Telegram API request \code{contacts.unblock} (constructor \code{#b550d328}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UnblockRequest <- R6::R6Class(
   "UnblockRequest",
   inherit = TLRequest,

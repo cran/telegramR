@@ -1,8 +1,6 @@
-#  @title MTProxyIO
-#  @description Handles MTProxy header initialization and I/O encryption/decryption.
-#  @export
-#  @noRd
-#  @noRd
+#' @title MTProxyIO
+#' @description Handles MTProxy header initialization and I/O encryption/decryption.
+#' @noRd
 MTProxyIO <- R6::R6Class("MTProxyIO",
   public = list(
     #  @field header The MTProxy header.
@@ -106,11 +104,9 @@ MTProxyIO <- R6::R6Class("MTProxyIO",
   )
 )
 
-#  @title TcpMTProxy
-#  @description Connector for MTProxy, handling proxy connections and secret normalization.
-#  @export
-#  @noRd
-#  @noRd
+#' @title TcpMTProxy
+#' @description Connector for MTProxy, handling proxy connections and secret normalization.
+#' @noRd
 TcpMTProxy <- R6::R6Class("TcpMTProxy",
   public = list(
     #  @field secret The MTProxy secret.
@@ -194,11 +190,9 @@ TcpMTProxy <- R6::R6Class("TcpMTProxy",
   )
 )
 
-#  @title ConnectionTcpMTProxyAbridged
-#  @description Connects to an MTProxy server using the abridged protocol.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpMTProxyAbridged
+#' @description Connects to an MTProxy server using the abridged protocol.
+#' @noRd
 ConnectionTcpMTProxyAbridged <- R6::R6Class("ConnectionTcpMTProxyAbridged",
   inherit = TcpMTProxy,
   public = list(
@@ -220,11 +214,9 @@ ConnectionTcpMTProxyAbridged <- R6::R6Class("ConnectionTcpMTProxyAbridged",
   )
 )
 
-#  @title ConnectionTcpMTProxyIntermediate
-#  @description Connects to an MTProxy server using the intermediate protocol.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpMTProxyIntermediate
+#' @description Connects to an MTProxy server using the intermediate protocol.
+#' @noRd
 ConnectionTcpMTProxyIntermediate <- R6::R6Class("ConnectionTcpMTProxyIntermediate",
   inherit = TcpMTProxy,
   public = list(
@@ -246,11 +238,9 @@ ConnectionTcpMTProxyIntermediate <- R6::R6Class("ConnectionTcpMTProxyIntermediat
   )
 )
 
-#  @title ConnectionTcpMTProxyRandomizedIntermediate
-#  @description Connects to an MTProxy server using the randomized intermediate protocol.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpMTProxyRandomizedIntermediate
+#' @description Connects to an MTProxy server using the randomized intermediate protocol.
+#' @noRd
 ConnectionTcpMTProxyRandomizedIntermediate <- R6::R6Class("ConnectionTcpMTProxyRandomizedIntermediate",
   inherit = TcpMTProxy,
   public = list(

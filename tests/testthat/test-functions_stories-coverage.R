@@ -1,3 +1,5 @@
+.ctor_le <- function(cls) { x <- as.numeric(cls$public_fields$CONSTRUCTOR_ID); as.raw(c(x %% 256, (x %/% 256) %% 256, (x %/% 65536) %% 256, (x %/% 16777216) %% 256)) }
+
 # Extended coverage tests for R/functions_stories.R
 # Classes cannot be instantiated with $new() due to the `class = list(...)` R6 bug.
 # All tests use $public_methods$<method> + stories_call_method_with_self() instead.
@@ -18,7 +20,8 @@ if (!exists("stories_call_method_with_self", inherits = FALSE)) {
     list(
       to_bytes = function() bytes,
       bytes    = function() bytes,
-      to_list  = function() list("_" = "TestPeer")
+      to_list  = function() list("_" = "TestPeer"),
+      to_dict  = function() list("_" = "TestPeer")
     ),
     class = c("TestPeer", "TLObject")
   )
@@ -138,7 +141,7 @@ test_that("EditStoryRequest to_bytes starts with correct constructor", {
     EditStoryRequest$public_methods$to_bytes,
     list(peer = .sp(), id = 1L, media = NULL, media_areas = NULL,
          caption = NULL, entities = NULL, privacy_rules = NULL))
-  expect_equal(b[1:4], as.raw(c(0x46, 0xba, 0x83, 0xb5)))
+  expect_equal(b[1:4], .ctor_le(EditStoryRequest))
 })
 
 # ── ExportStoryLinkRequest ────────────────────────────────────────────────────
@@ -214,7 +217,7 @@ test_that("GetPeerMaxIDsRequest to_bytes starts with correct constructor", {
   b <- stories_call_method_with_self(
     GetPeerMaxIDsRequest$public_methods$to_bytes,
     list(id = list()))
-  expect_equal(b[1:4], as.raw(c(0xc3, 0x83, 0x59, 0x53)))
+  expect_equal(b[1:4], .ctor_le(GetPeerMaxIDsRequest))
 })
 
 # ── GetPeerStoriesRequest ─────────────────────────────────────────────────────
@@ -447,7 +450,8 @@ test_that("SendStoryRequest to_list works with minimal fields", {
   skip_on_cran()
   .media <- structure(
     list(to_bytes = function() as.raw(c(0x11)), bytes = function() as.raw(c(0x11)),
-         to_list = function() list("_" = "InputMediaEmpty")),
+         to_list = function() list("_" = "InputMediaEmpty"),
+         to_dict = function() list("_" = "InputMediaEmpty")),
     class = c("InputMediaEmpty", "TLObject"))
   result <- stories_call_method_with_self(
     SendStoryRequest$public_methods$to_list,

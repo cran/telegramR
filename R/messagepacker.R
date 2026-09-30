@@ -1,12 +1,10 @@
-#  MessagePacker R6 class
-# 
-# 
-#    bytes and generate message ids via `write_data_as_message`.
-#  @title MessagePacker
-#  @description Telegram API type MessagePacker
-#  @export
-#  @noRd
-#  @noRd
+#' MessagePacker R6 class
+#'
+#'
+#'   bytes and generate message ids via `write_data_as_message`.
+#' @title MessagePacker
+#' @description Telegram API type MessagePacker
+#' @noRd
 MessagePacker <- R6::R6Class("MessagePacker",
   public = list(
     #  @field state Field.

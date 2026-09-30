@@ -1,5 +1,5 @@
-#  @noRd
-# Write a data frame as CSV, using readr if available and base utils otherwise.
+#' Write a data frame as CSV, using readr if available and base utils otherwise.
+#' @noRd
 .write_csv_compat <- function(df, file, append = FALSE, col_names = TRUE) {
   if (requireNamespace("readr", quietly = TRUE)) {
     readr::write_csv(df, file = file, append = append, col_names = col_names)
@@ -10,7 +10,7 @@
   }
 }
 
-#  @noRd
+#' @noRd
 .telegramR_safe_to_dict <- function(x) {
   if (inherits(x, "TLObject")) {
     # Avoid calling to_dict on Message/MessageService to prevent noisy failures
@@ -503,10 +503,14 @@
     })
   } else if (is.numeric(channel)) {
     chan_id <- as.numeric(channel)[1]
-    peer <- PeerChannel$new(as.integer(chan_id))
-    ent <- tryCatch(client$get_entity(peer), error = function(e) NULL)
+    # Accept bare ids (1005640892) and marked ids (-1001005640892); ids can
+    # exceed the 32-bit integer range so keep them numeric.
+    if (chan_id < 0) chan_id <- abs(resolve_id(chan_id)[[1]])
+    ent <- tryCatch(client$get_entity(chan_id), error = function(e) NULL)
+    if (inherits(ent, "Future")) ent <- tryCatch(future::value(ent), error = function(e) NULL)
     if (is.null(ent)) {
-      ent <- tryCatch(client$get_entity(chan_id), error = function(e) NULL)
+      ent <- tryCatch(client$get_entity(PeerChannel$new(chan_id)), error = function(e) NULL)
+      if (inherits(ent, "Future")) ent <- tryCatch(future::value(ent), error = function(e) NULL)
     }
     if (is.null(ent)) {
       stop("Could not resolve channel by id. Ensure the channel is in your dialogs or provide a username.")
@@ -1487,6 +1491,19 @@ download_channel_members <- function(client, channel, limit = Inf, search = "", 
   }
 
   tbl <- if (length(rows) > 0) dplyr::bind_rows(rows) else tibble::tibble()
+  if (nrow(tbl) == 0) {
+    # A broadcast channel, or a group with "hide members", returns no rows even
+    # though the request succeeded; make that explicit rather than look empty.
+    hidden <- isTRUE(tryCatch(ent$participants_hidden, error = function(e) FALSE))
+    is_broadcast <- isTRUE(tryCatch(ent$broadcast, error = function(e) FALSE))
+    if (hidden || is_broadcast) {
+      message("download_channel_members: no members returned. This channel hides its ",
+              "member list (broadcast channels expose members only to admins).")
+    } else {
+      message("download_channel_members: no members returned (the group may be empty ",
+              "or its members are hidden).")
+    }
+  }
   if (!isTRUE(include_channel)) {
     tbl$channel_id <- NULL
     tbl$channel_username <- NULL

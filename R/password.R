@@ -1,7 +1,8 @@
-#  @title Check Prime and Generator with Detailed Checks
-#  @description Checks if the prime and generator are good with detailed validation, including bit length, primality, and specific modular conditions.
-#  @param prime An integer representing the prime number.
-#  @param g An integer representing the generator.
+#' @title Check Prime and Generator with Detailed Checks
+#' @description Checks if the prime and generator are good with detailed validation, including bit length, primality, and specific modular conditions.
+#' @param prime An integer representing the prime number.
+#' @param g An integer representing the generator.
+#' @noRd
 check_prime_and_good_check <- function(prime, g) {
   good_prime_bits_count <- 2048
   prime_big <- gmp::as.bigz(prime)
@@ -51,8 +52,9 @@ check_prime_and_good_check <- function(prime, g) {
   # Else it's good
 }
 
-#  Known good prime constant for Telegram cryptographic operations
-#  @keywords internal
+#' Known good prime constant for Telegram cryptographic operations
+#' @keywords internal
+#' @noRd
 good_prime <- as.raw(c(
   0xC7, 0x1C, 0xAE, 0xB9, 0xC6, 0xB1, 0xC9, 0x04, 0x8E, 0x6C, 0x52, 0x2F, 0x70, 0xF1, 0x3F, 0x73,
   0x98, 0x0D, 0x40, 0x23, 0x8E, 0x3E, 0x21, 0xC1, 0x49, 0x34, 0xD0, 0x37, 0x56, 0x3D, 0x93, 0x0F,
@@ -72,10 +74,11 @@ good_prime <- as.raw(c(
   0x6F, 0x4F, 0xAD, 0xF0, 0x34, 0xB1, 0x04, 0x03, 0x11, 0x9C, 0xD8, 0xE3, 0xB9, 0x2F, 0xCC, 0x5B
 ))
 
-#  @title Check Prime and Generator
-#  @description Checks if the prime bytes match a known good prime and validates the generator, or performs detailed checks if not matching.
-#  @param prime_bytes A raw vector representing the prime in bytes.
-#  @param g An integer representing the generator.
+#' @title Check Prime and Generator
+#' @description Checks if the prime bytes match a known good prime and validates the generator, or performs detailed checks if not matching.
+#' @param prime_bytes A raw vector representing the prime in bytes.
+#' @param g An integer representing the generator.
+#' @noRd
 check_prime_and_good <- function(prime_bytes, g) {
   if (identical(good_prime, prime_bytes)) {
     if (g %in% c(3, 4, 5, 7)) {
@@ -85,13 +88,11 @@ check_prime_and_good <- function(prime_bytes, g) {
   check_prime_and_good_check(openssl::bignum(prime_bytes, hex = FALSE), g)
 }
 
-#  @title PasswordKdf Class
-#  @description An R6 class for handling password key derivation functions (KDF) as per Telegram's specifications.
-#  This class provides utility methods for checking modular exponentiation, XOR operations, PBKDF2 hashing,
-#  and computing password hashes and digests.
-#  @export
-#  @noRd
-#  @noRd
+#' @title PasswordKdf Class
+#' @description An R6 class for handling password key derivation functions (KDF) as per Telegram's specifications.
+#' This class provides utility methods for checking modular exponentiation, XOR operations, PBKDF2 hashing,
+#' and computing password hashes and digests.
+#' @noRd
 PasswordKdf <- R6::R6Class(
   "PasswordKdf",
   public = list(
@@ -254,10 +255,11 @@ PasswordKdf <- R6::R6Class(
 )
 
 
-#  Compute check
-#  @param request An object of type ReqPqMulti or ReqPq.
-#  @param password A string representing the password.
-#  @return An object of type InputCheckPasswordSRP.
+#' Compute check
+#' @param request An object of type ReqPqMulti or ReqPq.
+#' @param password A string representing the password.
+#' @return An object of type InputCheckPasswordSRP.
+#' @noRd
 compute_check <- function(request, password) {
   algo <- request$current_algo
   if (!inherits(algo, "PasswordKdfAlgoSHA256SHA256PBKDF2HMACSHA512iter100000SHA256ModPow")) {

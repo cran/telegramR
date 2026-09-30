@@ -1,13 +1,8 @@
-#  GetBroadcastStatsRequest
-# 
-#  R6 class representing a GetBroadcastStatsRequest TLRequest.
-# 
-# 
-#  @title GetBroadcastStatsRequest
-#  @description Telegram API type GetBroadcastStatsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBroadcastStatsRequest
+#' @description Telegram API request \code{stats.getBroadcastStats} (constructor \code{#ab42441a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBroadcastStatsRequest <- R6::R6Class(
   "GetBroadcastStatsRequest",
   inherit = TLRequest,
@@ -72,16 +67,11 @@ GetBroadcastStatsRequest <- R6::R6Class(
 )
 
 
-#  GetMegagroupStatsRequest
-# 
-#  R6 class representing a GetMegagroupStatsRequest TLRequest.
-# 
-# 
-#  @title GetMegagroupStatsRequest
-#  @description Telegram API type GetMegagroupStatsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMegagroupStatsRequest
+#' @description Telegram API request \code{stats.getMegagroupStats} (constructor \code{#dcdf8607}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMegagroupStatsRequest <- R6::R6Class(
   "GetMegagroupStatsRequest",
   inherit = TLRequest,
@@ -146,16 +136,11 @@ GetMegagroupStatsRequest <- R6::R6Class(
 )
 
 
-#  GetMessagePublicForwardsRequest
-# 
-#  R6 class representing a GetMessagePublicForwardsRequest TLRequest.
-# 
-# 
-#  @title GetMessagePublicForwardsRequest
-#  @description Telegram API type GetMessagePublicForwardsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessagePublicForwardsRequest
+#' @description Telegram API request \code{stats.getMessagePublicForwards} (constructor \code{#5f150144}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessagePublicForwardsRequest <- R6::R6Class(
   "GetMessagePublicForwardsRequest",
   inherit = TLRequest,
@@ -239,16 +224,11 @@ GetMessagePublicForwardsRequest <- R6::R6Class(
 )
 
 
-#  GetMessageStatsRequest
-# 
-#  R6 class representing a GetMessageStatsRequest TLRequest.
-# 
-# 
-#  @title GetMessageStatsRequest
-#  @description Telegram API type GetMessageStatsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessageStatsRequest
+#' @description Telegram API request \code{stats.getMessageStats} (constructor \code{#b6e0a3f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessageStatsRequest <- R6::R6Class(
   "GetMessageStatsRequest",
   inherit = TLRequest,
@@ -319,16 +299,11 @@ GetMessageStatsRequest <- R6::R6Class(
   )
 )
 
-#  GetStoryPublicForwardsRequest
-# 
-#  R6 class representing a GetStoryPublicForwardsRequest TLRequest.
-# 
-# 
-#  @title GetStoryPublicForwardsRequest
-#  @description Telegram API type GetStoryPublicForwardsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStoryPublicForwardsRequest
+#' @description Telegram API request \code{stats.getStoryPublicForwards} (constructor \code{#a6437ef6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStoryPublicForwardsRequest <- R6::R6Class(
   "GetStoryPublicForwardsRequest",
   inherit = TLRequest,
@@ -412,16 +387,11 @@ GetStoryPublicForwardsRequest <- R6::R6Class(
 )
 
 
-#  GetStoryStatsRequest
-# 
-#  R6 class representing a GetStoryStatsRequest TLRequest.
-# 
-# 
-#  @title GetStoryStatsRequest
-#  @description Telegram API type GetStoryStatsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStoryStatsRequest
+#' @description Telegram API request \code{stats.getStoryStats} (constructor \code{#374fef40}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStoryStatsRequest <- R6::R6Class(
   "GetStoryStatsRequest",
   inherit = TLRequest,
@@ -492,84 +462,57 @@ GetStoryStatsRequest <- R6::R6Class(
   )
 )
 
-#  LoadAsyncGraphRequest
-# 
-#  R6 class representing a LoadAsyncGraphRequest TLRequest.
-# 
-# 
-#  @title LoadAsyncGraphRequest
-#  @description Telegram API type LoadAsyncGraphRequest
-#  @export
-#  @noRd
-#  @noRd
-LoadAsyncGraphRequest <- R6::R6Class(
-  "LoadAsyncGraphRequest",
+#' @title LoadAsyncGraphRequest
+#' @description Telegram API request \code{stats.loadAsyncGraph} (constructor \code{#621d5fa0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+LoadAsyncGraphRequest <- R6::R6Class("LoadAsyncGraphRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID Constructor identifier for this TL object.
-    CONSTRUCTOR_ID = 0xa05f1d62,
-    #  @field SUBCLASS_OF_ID Subclass identifier for this TL object.
+    CONSTRUCTOR_ID = 0x621d5fa0,
     SUBCLASS_OF_ID = 0x9b903153,
-    #  @field token Field.
     token = NULL,
-    #  @field x Field.
     x = NULL,
-
-    #  @description Initializes a new LoadAsyncGraphRequest.
-    #  @param token character token
-    #  @param x integer64 or numeric; optional x
     initialize = function(token, x = NULL) {
-      self$token <- as.character(token)
-      self$x <- if (!is.null(x)) as.numeric(x) else NULL
+      self$token <- token
+      self$x <- x
     },
-
-    #  @description Initialize a new LoadAsyncGraphRequest.
-    #  @return List representing the request.
+    to_dict = function() {
+      list(
+        `_` = "LoadAsyncGraphRequest",
+        "token" = if (inherits(self$token, "TLObject")) self$token$to_dict() else self$token,
+        "x" = if (inherits(self$x, "TLObject")) self$x$to_dict() else self$x
+      )
+    },
     to_list = function() {
       list(
         `_` = "LoadAsyncGraphRequest",
-        token = self$token,
-        x = self$x
+        "token" = if (inherits(self$token, "TLObject")) self$token$to_dict() else self$token,
+        "x" = if (inherits(self$x, "TLObject")) self$x$to_dict() else self$x
       )
     },
-
-    #  @description Convert to a plain list (like to_dict)
-    #  @return A list representing the request.
     to_bytes = function() {
-      con <- rawConnection(raw(), "r+")
-      on.exit(close(con))
-      # constructor bytes: 0xa0 0x5f 0x1d 0x62
-      writeBin(as.raw(c(0xa0, 0x5f, 0x1d, 0x62)), con)
-      flags <- as.integer(ifelse(is.null(self$x) || identical(self$x, FALSE), 0L, 1L))
-      writeBin(flags, con, size = 4, endian = "little")
-      # serialize token using parent helper serialize_bytes if available
-      if (!is.null(self$serialize_bytes)) {
-        writeBin(self$serialize_bytes(self$token), con)
-      } else {
-        # fallback: write string length + bytes (UTF-8) similar to tg serialization
-        token_raw <- charToRaw(enc2utf8(self$token))
-        writeBin(as.integer(length(token_raw)), con, size = 4, endian = "little")
-        writeBin(token_raw, con)
-      }
-      if (!is.null(self$x)) {
-        # write 8-byte little-endian integer (may be written as double)
-        writeBin(as.numeric(self$x), con, size = 8, endian = "little")
-      }
-      rawConnectionValue(con)
+      flags <- 0L
+      if (!is.null(self$x)) flags <- bitwOr(flags, 1L)
+      c(
+        as.raw(c(0xa0, 0x5f, 0x1d, 0x62)),
+        pack("<I", flags),
+        serialize_bytes(self$token),
+        if (!is.null(self$x)) packInt64(self$x) else raw(0)
+      )
     },
-
-    #  @description Serialize to raw bytes (relies on token serialization and helper utils in parent)
-    #  @param reader A reader object to read the serialized data.
-    #  @return A raw vector representing the serialized request.
+    serialize = function() self$to_bytes()
+  ),
+  private = list(
     from_reader = function(reader) {
       flags <- reader$read_int()
-      token_val <- reader$tgread_string()
-      if (bitwAnd(flags, 1L) != 0L) {
-        x_val <- reader$read_long()
-      } else {
-        x_val <- NULL
-      }
-      LoadAsyncGraphRequest$new(token = token_val, x = x_val)
+      self$token <- reader$tgread_string()
+      self$x <- if (bitwAnd(flags, 1L) != 0) reader$read_long() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
+

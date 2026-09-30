@@ -1,10 +1,11 @@
-#  Escape HTML special characters.
-# 
-#  Replaces ampersands, angle brackets, and double quotes with their corresponding HTML entities.
-# 
-#  @param x A character vector containing text to escape.
-# 
-#  @return A character vector with HTML-sensitive characters converted to their entity equivalents.
+#' Escape HTML special characters.
+#'
+#' Replaces ampersands, angle brackets, and double quotes with their corresponding HTML entities.
+#'
+#' @param x A character vector containing text to escape.
+#'
+#' @return A character vector with HTML-sensitive characters converted to their entity equivalents.
+#' @noRd
 escape_html <- function(x) {
   x <- gsub("&", "&amp;", x, fixed = TRUE)
   x <- gsub("<", "&lt;", x, fixed = TRUE)
@@ -13,14 +14,15 @@ escape_html <- function(x) {
   x
 }
 
-#  Construct a formatted entity descriptor for Telegram messages.
-# 
-#  @param type Character string identifying the entity type (e.g., `"bold"`, `"italic"`).
-#  @param offset Integer position within the message where the entity starts.
-#  @param length Integer length of the entity span within the message; defaults to `0`.
-#  @param ... Additional named fields to append to the entity descriptor.
-# 
-#  @return A named list containing the entity metadata, including any extra fields supplied.
+#' Construct a formatted entity descriptor for Telegram messages.
+#'
+#' @param type Character string identifying the entity type (e.g., `"bold"`, `"italic"`).
+#' @param offset Integer position within the message where the entity starts.
+#' @param length Integer length of the entity span within the message; defaults to `0`.
+#' @param ... Additional named fields to append to the entity descriptor.
+#'
+#' @return A named list containing the entity metadata, including any extra fields supplied.
+#' @noRd
 make_entity <- function(type, offset, length = 0, ...) {
   e <- list(type = type, offset = as.integer(offset), length = as.integer(length))
   extra <- list(...)
@@ -28,21 +30,18 @@ make_entity <- function(type, offset, length = 0, ...) {
   e
 }
 
-#  @details
-#    Traverses the HTML node tree, tracking active tags and their metadata to
-#    construct Telegram message entities (bold, italic, underline, strike,
-#    blockquote, code, preformatted, links, custom emoji). Maintains accumulated
-#    text while adjusting entity offsets and lengths, handling special cases such
-#    as language hints in `<pre><code>` blocks and anchored URLs.
-#  @note Wraps the provided fragment in a `<div>` before parsing to satisfy
-#    `xml2::read_html`, and automatically finalizes open entities as tags close.
-#  @title HTMLToTelegramParser
-#  @description Walks an HTML fragment and builds a plain text string and a list of
-#  telegram-style message entities.
-#  @importFrom xml2 read_html xml_find_first xml_contents xml_type xml_text xml_name xml_attrs
-#  @export
-#  @noRd
-#  @noRd
+#' @details
+#'   Traverses the HTML node tree, tracking active tags and their metadata to
+#'   construct Telegram message entities (bold, italic, underline, strike,
+#'   blockquote, code, preformatted, links, custom emoji). Maintains accumulated
+#'   text while adjusting entity offsets and lengths, handling special cases such
+#'   as language hints in `<pre><code>` blocks and anchored URLs.
+#' @note Wraps the provided fragment in a `<div>` before parsing to satisfy
+#'   `xml2::read_html`, and automatically finalizes open entities as tags close.
+#' @title HTMLToTelegramParser
+#' @description Walks an HTML fragment and builds a plain text string and a list of
+#' telegram-style message entities.
+#' @noRd
 HTMLToTelegramParser <- R6::R6Class(
   "HTMLToTelegramParser",
   public = list(
@@ -278,11 +277,11 @@ HTMLToTelegramParser <- R6::R6Class(
   )
 )
 
-#  Parse HTML into plain text and telegram-style entities
-# 
-#  @param html character(1) HTML fragment
-#  @return named list with elements \code{text} and \code{entities}
-#  @export
+#' Parse HTML into plain text and telegram-style entities
+#'
+#' @param html character(1) HTML fragment
+#' @return named list with elements \code{text} and \code{entities}
+#' @noRd
 parse_html_to_telegram <- function(html) {
   if (is.null(html) || !nzchar(html)) {
     return(list(text = html, entities = list()))
@@ -298,12 +297,12 @@ parse_html_to_telegram <- function(html) {
   list(text = parser$text, entities = ents)
 }
 
-#  Unparse plain text and entities back to HTML
-# 
-#  @param text character(1) plain text
-#  @param entities list of entity lists as produced by \code{parse_html_to_telegram}
-#  @return character(1) HTML string
-#  @export
+#' Unparse plain text and entities back to HTML
+#'
+#' @param text character(1) plain text
+#' @param entities list of entity lists as produced by \code{parse_html_to_telegram}
+#' @return character(1) HTML string
+#' @noRd
 unparse_telegram_to_html <- function(text, entities) {
   if (is.null(text) || !nzchar(text)) {
     return(text)

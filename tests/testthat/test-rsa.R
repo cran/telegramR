@@ -1,5 +1,3 @@
-require(openssl)
-require(digest)
 
 # Test for get_byte_array
 test_that("get_byte_array converts integer to byte array correctly", {

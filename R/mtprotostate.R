@@ -1,5 +1,3 @@
-#  @importFrom digest digest
-#  @importFrom stringr str_sub
 NULL
 #  Constants
 MAX_RECENT_MSG_IDS <- 500
@@ -7,16 +5,14 @@ MSG_TOO_NEW_DELTA <- 30
 MSG_TOO_OLD_DELTA <- 300
 MAX_CONSECUTIVE_IGNORED <- 10
 
-#  Opaque Request Class
-# 
-#  Wraps a serialized request into a type that can be serialized again.
-# 
-#  @param data Raw vector containing the serialized request
-#  @title OpaqueRequest
-#  @description Telegram API type OpaqueRequest
-#  @export
-#  @noRd
-#  @noRd
+#' Opaque Request Class
+#'
+#' Wraps a serialized request into a type that can be serialized again.
+#'
+#' @param data Raw vector containing the serialized request
+#' @title OpaqueRequest
+#' @description Telegram API type OpaqueRequest
+#' @noRd
 OpaqueRequest <- R6::R6Class("OpaqueRequest",
   public = list(
     #  @field data Raw vector of serialized request data
@@ -36,9 +32,10 @@ OpaqueRequest <- R6::R6Class("OpaqueRequest",
   )
 )
 
-#  Unpack a 64-bit integer from a raw vector (little-endian)
-#  @param raw_vector A raw vector containing the 64-bit integer
-#  @return The unpacked 64-bit integer as a numeric value
+#' Unpack a 64-bit integer from a raw vector (little-endian)
+#' @param raw_vector A raw vector containing the 64-bit integer
+#' @return The unpacked 64-bit integer as a numeric value
+#' @noRd
 unpackInt64 <- function(raw_vector) {
   if (length(raw_vector) != 8) {
     stop("Invalid input: raw_vector must be exactly 8 bytes long")
@@ -46,10 +43,10 @@ unpackInt64 <- function(raw_vector) {
   unpack_int64(raw_vector)
 }
 
-#  Pack a 64-bit integer (little-endian) into a raw vector
-#  @param value Numeric 64-bit integer (non-NA)
-#  @return Raw vector of length 8 (little-endian)
-#  @export
+#' Pack a 64-bit integer (little-endian) into a raw vector
+#' @param value Numeric 64-bit integer (non-NA)
+#' @return Raw vector of length 8 (little-endian)
+#' @noRd
 packInt64 <- function(value) {
   if (length(value) != 1 || is.na(value)) {
     stop("Invalid input: value must be a single, non-NA number")
@@ -61,13 +58,11 @@ packInt64 <- function(value) {
   pack_int64(value)
 }
 
-#  MTProto protocol state management
-# 
-#  @title MTProtoState
-#  @description Telegram API type MTProtoState
-#  @export
-#  @noRd
-#  @noRd
+#' MTProto protocol state management
+#'
+#' @title MTProtoState
+#' @description Telegram API type MTProtoState
+#' @noRd
 MTProtoState <- R6::R6Class("MTProtoState",
   public = list(
     #  @field auth_key Authentication key for encryption
@@ -452,11 +447,11 @@ MTProtoState <- R6::R6Class("MTProtoState",
   )
 )
 
-#  Double-Ended Queue Implementation
-# 
-#  @description Simple implementation of a deque with max length
-#  @param maxlen Maximum length of the deque
-#  @export
+#' Double-Ended Queue Implementation
+#'
+#' @description Simple implementation of a deque with max length
+#' @param maxlen Maximum length of the deque
+#' @noRd
 deque <- function(maxlen) {
   R6::R6Class("Deque",
     public = list(
@@ -482,18 +477,18 @@ deque <- function(maxlen) {
   )$new(maxlen)
 }
 
-#  Pack random bytes into a raw vector
-#  @param n Number of random bytes to generate
-#  @return Raw vector of random bytes
-#  @export
+#' Pack random bytes into a raw vector
+#' @param n Number of random bytes to generate
+#' @return Raw vector of random bytes
+#' @noRd
 packRandomBytes <- function(n) {
   # raw(x) creates a raw vector of length x; we need actual bytes
   as.raw(sample(0:255, n, replace = TRUE))
 }
 
-#  Generate random 64-bit value bytes (little-endian)
-#  @return Raw(8) random bytes
-#  @export
+#' Generate random 64-bit value bytes (little-endian)
+#' @return Raw(8) random bytes
+#' @noRd
 packRandomLong <- function() {
   # Return 8 random bytes directly; callers can use unpackInt64 if needed
   packRandomBytes(8)

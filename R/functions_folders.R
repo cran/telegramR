@@ -1,13 +1,8 @@
-#  EditPeerFoldersRequest R6 class
-# 
-#  Represents the TL request EditPeerFoldersRequest.
-# 
-#  @return An R6 object of class EditPeerFoldersRequest
-#  @title EditPeerFoldersRequest
-#  @description Telegram API type EditPeerFoldersRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditPeerFoldersRequest
+#' @description Telegram API request \code{folders.editPeerFolders} (constructor \code{#6847d0ab}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditPeerFoldersRequest <- R6::R6Class(
   "EditPeerFoldersRequest",
   public = list(

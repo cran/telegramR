@@ -1,5 +1,4 @@
-#  @noRd
-#  @noRd
+#' @noRd
 EntityCache <- R6::R6Class(
   "EntityCache",
   public = list(

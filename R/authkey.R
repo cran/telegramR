@@ -1,11 +1,9 @@
-#  AuthKey Class
-# 
-# 
-#  @title AuthKey
-#  @description Telegram API type AuthKey
-#  @export
-#  @noRd
-#  @noRd
+#' AuthKey Class
+#'
+#'
+#' @title AuthKey
+#' @description Telegram API type AuthKey
+#' @noRd
 AuthKey <- R6::R6Class(
   "AuthKey",
   public = list(
@@ -40,8 +38,8 @@ AuthKey <- R6::R6Class(
       stopifnot(is.raw(new_nonce), length(new_nonce) == 32)
       new_nonce <- as.raw(new_nonce)
       data <- c(
-        new_nonce, writeBin(as.integer(number), raw(), size = 8, endian = "little"),
-        writeBin(as.integer(self$aux_hash), raw(), size = 8, endian = "little")
+        new_nonce, packInt64(number),
+        packInt64(self$aux_hash)
       )
       hash <- sha1(data)
       return(sum(as.integer(hash[5:20]) * 256^(seq_along(hash[5:20]) - 1)))

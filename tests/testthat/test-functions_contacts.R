@@ -2,7 +2,8 @@ MockTLObject <- R6::R6Class("MockTLObject",
   inherit = TLObject,
   public = list(
     to_bytes = function() as.raw(c(1, 2, 3, 4)),
-    to_list = function() list("_" = "MockTLObject")
+    to_list = function() list("_" = "MockTLObject"),
+    to_dict = function() list("_" = "MockTLObject")
   )
 )
 
@@ -44,8 +45,8 @@ test_that("AddContactRequest works correctly", {
 
   bytes <- req$to_bytes()
   expect_true(is.raw(bytes))
-  # constructor id: 0xe8f463d0 -> d0 63 f4 e8
-  expect_equal(bytes[1:4], as.raw(c(0xd0, 0x63, 0xf4, 0xe8)))
+  x <- as.numeric(AddContactRequest$public_fields$CONSTRUCTOR_ID)
+  expect_equal(bytes[1:4], as.raw(c(x%%256,(x%/%256)%%256,(x%/%65536)%%256,(x%/%16777216)%%256)))
 })
 
 test_that("BlockRequest works correctly", {

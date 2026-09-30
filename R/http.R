@@ -1,12 +1,10 @@
 #  Constant for SSL Port
 SSL_PORT <- 443
 
-#  @title HTTP Packet Codec Class
-#  @description
-#  This class implements the HTTP packet codec for encoding and decoding packets.
-#  @export
-#  @noRd
-#  @noRd
+#' @title HTTP Packet Codec Class
+#' @description
+#' This class implements the HTTP packet codec for encoding and decoding packets.
+#' @noRd
 HttpPacketCodec <- R6::R6Class("HttpPacketCodec",
   inherit = PacketCodec,
   public = list(
@@ -70,13 +68,11 @@ HttpPacketCodec <- R6::R6Class("HttpPacketCodec",
   )
 )
 
-#  HTTP Connection Class
-# 
-#  @title ConnectionHttp
-#  @description Telegram API type ConnectionHttp
-#  @export
-#  @noRd
-#  @noRd
+#' HTTP Connection Class
+#'
+#' @title ConnectionHttp
+#' @description Telegram API type ConnectionHttp
+#' @noRd
 ConnectionHttp <- R6::R6Class("ConnectionHttp",
   inherit = Connection,
   public = list(

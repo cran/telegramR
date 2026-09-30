@@ -1,10 +1,8 @@
-#  @title AESModeCTR
-#  @description A wrapper around AES CTR mode with custom IV using the `digest` library.
-#  This class provides methods to encrypt and decrypt data using AES CTR mode.
-#  It initializes with a key and a 16-byte initialization vector (IV).
-#  @export
-#  @noRd
-#  @noRd
+#' @title AESModeCTR
+#' @description A wrapper around AES CTR mode with custom IV using the `digest` library.
+#' This class provides methods to encrypt and decrypt data using AES CTR mode.
+#' It initializes with a key and a 16-byte initialization vector (IV).
+#' @noRd
 AESModeCTR <- R6::R6Class(
   "AESModeCTR",
   public = list(

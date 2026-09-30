@@ -1,25 +1,26 @@
-#  Simple markdown parser which does not support nesting.
-# 
-#  This file provides lightweight parsing and unparsing utilities for a
-#  subset of markdown-like delimiters. It is intended primarily for use
-#  within the package and attempts to handle Unicode surrogate pairs
-#  (e.g. emojis) correctly via helper functions:
-#  \code{add_surrogate}, \code{del_surrogate}, \code{within_surrogate},
-#  and \code{strip_text}.
-# 
-#  The parser recognizes a small set of delimiters and converts them into
-#  TL-style message entities. It also supports inline URLs of the form
-#  \code{[text](url)} producing \code{MessageEntityTextUrl} entries.
-# 
-#  Note: This parser deliberately does not support nested formatting.
-#  Default mapping of delimiter strings to entity types.
-# 
-#  Keys are the literal delimiter sequences as they appear in text and
-#  values are the corresponding entity class names used by the system.
-#  @examples
-#  \donttest{
-#  DEFAULT_DELIMITERS[["**"]]
-#  }
+#' Simple markdown parser which does not support nesting.
+#'
+#' This file provides lightweight parsing and unparsing utilities for a
+#' subset of markdown-like delimiters. It is intended primarily for use
+#' within the package and attempts to handle Unicode surrogate pairs
+#' (e.g. emojis) correctly via helper functions:
+#' \code{add_surrogate}, \code{del_surrogate}, \code{within_surrogate},
+#' and \code{strip_text}.
+#'
+#' The parser recognizes a small set of delimiters and converts them into
+#' TL-style message entities. It also supports inline URLs of the form
+#' \code{[text](url)} producing \code{MessageEntityTextUrl} entries.
+#'
+#' Note: This parser deliberately does not support nested formatting.
+#' Default mapping of delimiter strings to entity types.
+#'
+#' Keys are the literal delimiter sequences as they appear in text and
+#' values are the corresponding entity class names used by the system.
+#' @examples
+#' \donttest{
+#' DEFAULT_DELIMITERS[["**"]]
+#' }
+#' @noRd
 DEFAULT_DELIMITERS <- list(
   "**" = "MessageEntityBold",
   "__" = "MessageEntityItalic",
@@ -35,16 +36,17 @@ DEFAULT_URL_RE <- "\\[([^]]*?)\\]\\(([\\s\\S]*?)\\)"
 #  Default URL format used by unparse (deprecated in some flows).
 DEFAULT_URL_FORMAT <- "[%s](%s)"
 
-#  Construct an entity list with a class attribute.
-# 
-#  Each entity is a list with at least \code{offset} (0-based) and
-#  \code{length}. Additional named fields may be provided via \dots.
-# 
-#  @param type Character scalar; class name to assign to the entity.
-#  @param offset Integer; 0-based offset of the entity in text.
-#  @param length Integer; length of the entity in characters.
-#  @param ... Additional named fields to include in the returned list.
-#  @return A list representing the entity, with class set to \code{type}.
+#' Construct an entity list with a class attribute.
+#'
+#' Each entity is a list with at least \code{offset} (0-based) and
+#' \code{length}. Additional named fields may be provided via \dots.
+#'
+#' @param type Character scalar; class name to assign to the entity.
+#' @param offset Integer; 0-based offset of the entity in text.
+#' @param length Integer; length of the entity in characters.
+#' @param ... Additional named fields to include in the returned list.
+#' @return A list representing the entity, with class set to \code{type}.
+#' @noRd
 make_entity <- function(type, offset, length, ...) {
   e <- list(offset = offset, length = length)
   extra <- list(...)
@@ -55,27 +57,28 @@ make_entity <- function(type, offset, length, ...) {
   e
 }
 
-#  Parse a text string into plain message text and entities.
-# 
-#  The parser scans the input \code{message} and converts recognized
-#  delimiters (bold, italic, code, strike, pre) and inline links into a
-#  list of entity objects while removing delimiter characters from the
-#  returned text. Processing is surrogate-aware to avoid splitting
-#  multi-codepoint graphemes (e.g. emojis).
-# 
-#  Limitations:
-#  - Nested formatting is not supported.
-#  - Only the supplied set of \code{delimiters} are recognized.
-# 
-#  @param message Character scalar; the input text to parse.
-#  @param delimiters Optional named list mapping delimiter strings to
-#    entity type names. If \code{NULL}, \code{DEFAULT_DELIMITERS} is used.
-#  @param url_re Optional regular expression used to detect inline URLs.
-#    If \code{NULL}, \code{DEFAULT_URL_RE} is used. Can be a string or
-#    any object coercible to character.
-#  @return A list with elements:
-#    \item{message}{The processed plain text with delimiter characters removed.}
-#    \item{entities}{A list of entity objects produced by \code{make_entity}.}
+#' Parse a text string into plain message text and entities.
+#'
+#' The parser scans the input \code{message} and converts recognized
+#' delimiters (bold, italic, code, strike, pre) and inline links into a
+#' list of entity objects while removing delimiter characters from the
+#' returned text. Processing is surrogate-aware to avoid splitting
+#' multi-codepoint graphemes (e.g. emojis).
+#'
+#' Limitations:
+#' - Nested formatting is not supported.
+#' - Only the supplied set of \code{delimiters} are recognized.
+#'
+#' @param message Character scalar; the input text to parse.
+#' @param delimiters Optional named list mapping delimiter strings to
+#'   entity type names. If \code{NULL}, \code{DEFAULT_DELIMITERS} is used.
+#' @param url_re Optional regular expression used to detect inline URLs.
+#'   If \code{NULL}, \code{DEFAULT_URL_RE} is used. Can be a string or
+#'   any object coercible to character.
+#' @return A list with elements:
+#'   \item{message}{The processed plain text with delimiter characters removed.}
+#'   \item{entities}{A list of entity objects produced by \code{make_entity}.}
+#' @noRd
 parse <- function(message, delimiters = NULL, url_re = NULL) {
   if (is.null(message) || message == "") {
     return(list(message = message, entities = list()))
@@ -216,23 +219,24 @@ parse <- function(message, delimiters = NULL, url_re = NULL) {
   return(list(message = out_msg, entities = result))
 }
 
-#  Convert text and entities back to a delimited markdown-like string.
-# 
-#  Given a plain \code{text} and a list of entity objects (as produced by
-#  \code{parse} or by other code), this function reinserts delimiter
-#  sequences and inline URL markup to produce a string resembling the
-#  original markdown. The routine is surrogate-aware and attempts to
-#  place delimiters outside surrogate pairs.
-# 
-#  @param text Character scalar; plain text without delimiters.
-#  @param entities List of entity objects. Each object should have
-#    \code{offset} (0-based) and \code{length} fields and a class name
-#    identifying its type.
-#  @param delimiters Optional named list mapping delimiter strings to
-#    entity type names (same shape as \code{DEFAULT_DELIMITERS}).
-#    If \code{NULL}, \code{DEFAULT_DELIMITERS} is used.
-#  @param url_fmt Deprecated; present for historical compatibility.
-#  @return A character scalar with delimiters and URL markup reinserted.
+#' Convert text and entities back to a delimited markdown-like string.
+#'
+#' Given a plain \code{text} and a list of entity objects (as produced by
+#' \code{parse} or by other code), this function reinserts delimiter
+#' sequences and inline URL markup to produce a string resembling the
+#' original markdown. The routine is surrogate-aware and attempts to
+#' place delimiters outside surrogate pairs.
+#'
+#' @param text Character scalar; plain text without delimiters.
+#' @param entities List of entity objects. Each object should have
+#'   \code{offset} (0-based) and \code{length} fields and a class name
+#'   identifying its type.
+#' @param delimiters Optional named list mapping delimiter strings to
+#'   entity type names (same shape as \code{DEFAULT_DELIMITERS}).
+#'   If \code{NULL}, \code{DEFAULT_DELIMITERS} is used.
+#' @param url_fmt Deprecated; present for historical compatibility.
+#' @return A character scalar with delimiters and URL markup reinserted.
+#' @noRd
 unparse <- function(text, entities, delimiters = NULL, url_fmt = NULL) {
   if (is.null(text) || text == "" || length(entities) == 0) {
     return(text)

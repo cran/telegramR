@@ -1,13 +1,8 @@
-#  AcceptCallRequest R6 class
-# 
-#  Represents AcceptCallRequest TLRequest.
-# 
-# 
-#  @title AcceptCallRequest
-#  @description Telegram API type AcceptCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title AcceptCallRequest
+#' @description Telegram API request \code{phone.acceptCall} (constructor \code{#3bd2b4a0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AcceptCallRequest <- R6::R6Class(
   "AcceptCallRequest",
   public = list(
@@ -97,15 +92,11 @@ AcceptCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  CheckGroupCallRequest R6 class
-# 
-# 
-# 
-#  @title CheckGroupCallRequest
-#  @description Telegram API type CheckGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckGroupCallRequest
+#' @description Telegram API request \code{phone.checkGroupCall} (constructor \code{#b59cf977}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckGroupCallRequest <- R6::R6Class(
   "CheckGroupCallRequest",
   public = list(
@@ -199,16 +190,11 @@ CheckGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  ConfirmCallRequest R6 class
-# 
-#  Represents ConfirmCallRequest TLRequest.
-# 
-# 
-#  @title ConfirmCallRequest
-#  @description Telegram API type ConfirmCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConfirmCallRequest
+#' @description Telegram API request \code{phone.confirmCall} (constructor \code{#2efe1722}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ConfirmCallRequest <- R6::R6Class(
   "ConfirmCallRequest",
   public = list(
@@ -306,16 +292,11 @@ ConfirmCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  CreateConferenceCallRequest R6 class
-# 
-#  Represents CreateConferenceCallRequest TLRequest.
-# 
-# 
-#  @title CreateConferenceCallRequest
-#  @description Telegram API type CreateConferenceCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateConferenceCallRequest
+#' @description Telegram API request \code{phone.createConferenceCall} (constructor \code{#7d0444bb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateConferenceCallRequest <- R6::R6Class(
   "CreateConferenceCallRequest",
   public = list(
@@ -471,16 +452,11 @@ CreateConferenceCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  CreateGroupCallRequest R6 class
-# 
-#  Represents CreateGroupCallRequest TLRequest.
-# 
-# 
-#  @title CreateGroupCallRequest
-#  @description Telegram API type CreateGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateGroupCallRequest
+#' @description Telegram API request \code{phone.createGroupCall} (constructor \code{#48cdc6d8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateGroupCallRequest <- R6::R6Class(
   "CreateGroupCallRequest",
   public = list(
@@ -610,16 +586,11 @@ CreateGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  DeclineConferenceCallInviteRequest R6 class
-# 
-#  Represents DeclineConferenceCallInviteRequest TLRequest.
-# 
-# 
-#  @title DeclineConferenceCallInviteRequest
-#  @description Telegram API type DeclineConferenceCallInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeclineConferenceCallInviteRequest
+#' @description Telegram API request \code{phone.declineConferenceCallInvite} (constructor \code{#3c479971}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeclineConferenceCallInviteRequest <- R6::R6Class(
   "DeclineConferenceCallInviteRequest",
   public = list(
@@ -670,16 +641,11 @@ DeclineConferenceCallInviteRequest$set("public", "from_reader", function(reader)
 })
 
 
-#  DeleteConferenceCallParticipantsRequest R6 class
-# 
-#  Represents DeleteConferenceCallParticipantsRequest TLRequest.
-# 
-# 
-#  @title DeleteConferenceCallParticipantsRequest
-#  @description Telegram API type DeleteConferenceCallParticipantsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteConferenceCallParticipantsRequest
+#' @description Telegram API request \code{phone.deleteConferenceCallParticipants} (constructor \code{#8ca60525}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteConferenceCallParticipantsRequest <- R6::R6Class(
   "DeleteConferenceCallParticipantsRequest",
   public = list(
@@ -810,16 +776,11 @@ DeleteConferenceCallParticipantsRequest$set("public", "from_reader", function(re
 })
 
 
-#  DiscardCallRequest R6 class
-# 
-#  Represents DiscardCallRequest TLRequest.
-# 
-# 
-#  @title DiscardCallRequest
-#  @description Telegram API type DiscardCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DiscardCallRequest
+#' @description Telegram API request \code{phone.discardCall} (constructor \code{#b2cbc1c0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DiscardCallRequest <- R6::R6Class(
   "DiscardCallRequest",
   public = list(
@@ -917,16 +878,11 @@ DiscardCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  DiscardGroupCallRequest R6 class
-# 
-#  Represents DiscardGroupCallRequest TLRequest.
-# 
-# 
-#  @title DiscardGroupCallRequest
-#  @description Telegram API type DiscardGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DiscardGroupCallRequest
+#' @description Telegram API request \code{phone.discardGroupCall} (constructor \code{#7a777135}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DiscardGroupCallRequest <- R6::R6Class(
   "DiscardGroupCallRequest",
   public = list(
@@ -996,16 +952,11 @@ DiscardGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  EditGroupCallParticipantRequest R6 class
-# 
-#  Represents EditGroupCallParticipantRequest TLRequest.
-# 
-# 
-#  @title EditGroupCallParticipantRequest
-#  @description Telegram API type EditGroupCallParticipantRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditGroupCallParticipantRequest
+#' @description Telegram API request \code{phone.editGroupCallParticipant} (constructor \code{#a5273abf}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditGroupCallParticipantRequest <- R6::R6Class(
   "EditGroupCallParticipantRequest",
   public = list(
@@ -1165,16 +1116,11 @@ EditGroupCallParticipantRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  EditGroupCallTitleRequest R6 class
-# 
-#  Represents EditGroupCallTitleRequest TLRequest.
-# 
-# 
-#  @title EditGroupCallTitleRequest
-#  @description Telegram API type EditGroupCallTitleRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditGroupCallTitleRequest
+#' @description Telegram API request \code{phone.editGroupCallTitle} (constructor \code{#1ca6ac0a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditGroupCallTitleRequest <- R6::R6Class(
   "EditGroupCallTitleRequest",
   public = list(
@@ -1256,16 +1202,11 @@ EditGroupCallTitleRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  ExportGroupCallInviteRequest R6 class
-# 
-#  Represents ExportGroupCallInviteRequest TLRequest.
-# 
-# 
-#  @title ExportGroupCallInviteRequest
-#  @description Telegram API type ExportGroupCallInviteRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ExportGroupCallInviteRequest
+#' @description Telegram API request \code{phone.exportGroupCallInvite} (constructor \code{#e6aa647f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ExportGroupCallInviteRequest <- R6::R6Class(
   "ExportGroupCallInviteRequest",
   public = list(
@@ -1346,11 +1287,11 @@ ExportGroupCallInviteRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  @title GetCallConfigRequest R6 class
-#  @description Represents GetCallConfigRequest TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCallConfigRequest
+#' @description Telegram API request \code{phone.getCallConfig} (constructor \code{#55451fa9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCallConfigRequest <- R6::R6Class(
   "GetCallConfigRequest",
   public = list(
@@ -1383,16 +1324,11 @@ GetCallConfigRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetGroupCallRequest R6 class
-# 
-#  Represents GetGroupCallRequest TLRequest.
-# 
-# 
-#  @title GetGroupCallRequest
-#  @description Telegram API type GetGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupCallRequest
+#' @description Telegram API request \code{phone.getGroupCall} (constructor \code{#041845db}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupCallRequest <- R6::R6Class(
   "GetGroupCallRequest",
   public = list(
@@ -1470,16 +1406,11 @@ GetGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetGroupCallChainBlocksRequest R6 class
-# 
-#  Represents GetGroupCallChainBlocksRequest TLRequest.
-# 
-# 
-#  @title GetGroupCallChainBlocksRequest
-#  @description Telegram API type GetGroupCallChainBlocksRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupCallChainBlocksRequest
+#' @description Telegram API request \code{phone.getGroupCallChainBlocks} (constructor \code{#ee9f88a6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupCallChainBlocksRequest <- R6::R6Class(
   "GetGroupCallChainBlocksRequest",
   public = list(
@@ -1571,16 +1502,11 @@ GetGroupCallChainBlocksRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetGroupCallJoinAsRequest R6 class
-# 
-#  Represents GetGroupCallJoinAsRequest TLRequest.
-# 
-# 
-#  @title GetGroupCallJoinAsRequest
-#  @description Telegram API type GetGroupCallJoinAsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupCallJoinAsRequest
+#' @description Telegram API request \code{phone.getGroupCallJoinAs} (constructor \code{#ef7c213a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupCallJoinAsRequest <- R6::R6Class(
   "GetGroupCallJoinAsRequest",
   public = list(
@@ -1650,16 +1576,11 @@ GetGroupCallJoinAsRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetGroupCallStreamChannelsRequest R6 class
-# 
-#  Represents GetGroupCallStreamChannelsRequest TLRequest.
-# 
-# 
-#  @title GetGroupCallStreamChannelsRequest
-#  @description Telegram API type GetGroupCallStreamChannelsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupCallStreamChannelsRequest
+#' @description Telegram API request \code{phone.getGroupCallStreamChannels} (constructor \code{#1ab21940}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupCallStreamChannelsRequest <- R6::R6Class(
   "GetGroupCallStreamChannelsRequest",
   public = list(
@@ -1729,16 +1650,11 @@ GetGroupCallStreamChannelsRequest$set("public", "from_reader", function(reader) 
 })
 
 
-#  GetGroupCallStreamRtmpUrlRequest R6 class
-# 
-#  Represents GetGroupCallStreamRtmpUrlRequest TLRequest.
-# 
-# 
-#  @title GetGroupCallStreamRtmpUrlRequest
-#  @description Telegram API type GetGroupCallStreamRtmpUrlRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupCallStreamRtmpUrlRequest
+#' @description Telegram API request \code{phone.getGroupCallStreamRtmpUrl} (constructor \code{#5af4c73a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupCallStreamRtmpUrlRequest <- R6::R6Class(
   "GetGroupCallStreamRtmpUrlRequest",
   public = list(
@@ -1816,16 +1732,11 @@ GetGroupCallStreamRtmpUrlRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  GetGroupParticipantsRequest R6 class
-# 
-#  Represents GetGroupParticipantsRequest TLRequest.
-# 
-# 
-#  @title GetGroupParticipantsRequest
-#  @description Telegram API type GetGroupParticipantsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGroupParticipantsRequest
+#' @description Telegram API request \code{phone.getGroupParticipants} (constructor \code{#c558d8ab}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGroupParticipantsRequest <- R6::R6Class(
   "GetGroupParticipantsRequest",
   public = list(
@@ -1973,16 +1884,11 @@ GetGroupParticipantsRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  InviteConferenceCallParticipantRequest R6 class
-# 
-#  Represents InviteConferenceCallParticipantRequest TLRequest.
-# 
-# 
-#  @title InviteConferenceCallParticipantRequest
-#  @description Telegram API type InviteConferenceCallParticipantRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title InviteConferenceCallParticipantRequest
+#' @description Telegram API request \code{phone.inviteConferenceCallParticipant} (constructor \code{#bcf22685}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InviteConferenceCallParticipantRequest <- R6::R6Class(
   "InviteConferenceCallParticipantRequest",
   public = list(
@@ -2077,16 +1983,11 @@ InviteConferenceCallParticipantRequest$set("public", "from_reader", function(rea
 })
 
 
-#  InviteToGroupCallRequest R6 class
-# 
-#  Represents InviteToGroupCallRequest TLRequest.
-# 
-# 
-#  @title InviteToGroupCallRequest
-#  @description Telegram API type InviteToGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title InviteToGroupCallRequest
+#' @description Telegram API request \code{phone.inviteToGroupCall} (constructor \code{#7b393160}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InviteToGroupCallRequest <- R6::R6Class(
   "InviteToGroupCallRequest",
   public = list(
@@ -2192,16 +2093,11 @@ InviteToGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  JoinGroupCallRequest R6 class
-# 
-#  Represents JoinGroupCallRequest TLRequest.
-# 
-# 
-#  @title JoinGroupCallRequest
-#  @description Telegram API type JoinGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title JoinGroupCallRequest
+#' @description Telegram API request \code{phone.joinGroupCall} (constructor \code{#8fb53057}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 JoinGroupCallRequest <- R6::R6Class(
   "JoinGroupCallRequest",
   public = list(
@@ -2405,16 +2301,11 @@ JoinGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  JoinGroupCallPresentationRequest R6 class
-# 
-#  Represents JoinGroupCallPresentationRequest TLRequest.
-# 
-# 
-#  @title JoinGroupCallPresentationRequest
-#  @description Telegram API type JoinGroupCallPresentationRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title JoinGroupCallPresentationRequest
+#' @description Telegram API request \code{phone.joinGroupCallPresentation} (constructor \code{#cbea6bc4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 JoinGroupCallPresentationRequest <- R6::R6Class(
   "JoinGroupCallPresentationRequest",
   public = list(
@@ -2497,16 +2388,11 @@ JoinGroupCallPresentationRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  LeaveGroupCallRequest R6 class
-# 
-#  Represents LeaveGroupCallRequest TLRequest.
-# 
-# 
-#  @title LeaveGroupCallRequest
-#  @description Telegram API type LeaveGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title LeaveGroupCallRequest
+#' @description Telegram API request \code{phone.leaveGroupCall} (constructor \code{#500377f9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 LeaveGroupCallRequest <- R6::R6Class(
   "LeaveGroupCallRequest",
   public = list(
@@ -2584,16 +2470,11 @@ LeaveGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  LeaveGroupCallPresentationRequest R6 class
-# 
-#  Represents LeaveGroupCallPresentationRequest TLRequest.
-# 
-# 
-#  @title LeaveGroupCallPresentationRequest
-#  @description Telegram API type LeaveGroupCallPresentationRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title LeaveGroupCallPresentationRequest
+#' @description Telegram API request \code{phone.leaveGroupCallPresentation} (constructor \code{#1c50d144}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 LeaveGroupCallPresentationRequest <- R6::R6Class(
   "LeaveGroupCallPresentationRequest",
   public = list(
@@ -2663,16 +2544,11 @@ LeaveGroupCallPresentationRequest$set("public", "from_reader", function(reader) 
 })
 
 
-#  ReceivedCallRequest R6 class
-# 
-#  Represents ReceivedCallRequest TLRequest.
-# 
-# 
-#  @title ReceivedCallRequest
-#  @description Telegram API type ReceivedCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReceivedCallRequest
+#' @description Telegram API request \code{phone.receivedCall} (constructor \code{#17d54f61}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReceivedCallRequest <- R6::R6Class(
   "ReceivedCallRequest",
   public = list(
@@ -2742,16 +2618,11 @@ ReceivedCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  RequestCallRequest R6 class
-# 
-#  Represents RequestCallRequest TLRequest.
-# 
-# 
-#  @title RequestCallRequest
-#  @description Telegram API type RequestCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestCallRequest
+#' @description Telegram API request \code{phone.requestCall} (constructor \code{#42ff96ed}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestCallRequest <- R6::R6Class(
   "RequestCallRequest",
   public = list(
@@ -2880,16 +2751,11 @@ RequestCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  SaveCallDebugRequest R6 class
-# 
-#  Represents SaveCallDebugRequest TLRequest.
-# 
-# 
-#  @title SaveCallDebugRequest
-#  @description Telegram API type SaveCallDebugRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveCallDebugRequest
+#' @description Telegram API request \code{phone.saveCallDebug} (constructor \code{#277add7e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveCallDebugRequest <- R6::R6Class(
   "SaveCallDebugRequest",
   public = list(
@@ -2972,16 +2838,11 @@ SaveCallDebugRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  SaveCallLogRequest R6 class
-# 
-#  Represents SaveCallLogRequest TLRequest.
-# 
-# 
-#  @title SaveCallLogRequest
-#  @description Telegram API type SaveCallLogRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveCallLogRequest
+#' @description Telegram API request \code{phone.saveCallLog} (constructor \code{#41248786}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveCallLogRequest <- R6::R6Class(
   "SaveCallLogRequest",
   public = list(
@@ -3064,16 +2925,11 @@ SaveCallLogRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  SaveDefaultGroupCallJoinAsRequest R6 class
-# 
-#  Represents SaveDefaultGroupCallJoinAsRequest TLRequest.
-# 
-# 
-#  @title SaveDefaultGroupCallJoinAsRequest
-#  @description Telegram API type SaveDefaultGroupCallJoinAsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveDefaultGroupCallJoinAsRequest
+#' @description Telegram API request \code{phone.saveDefaultGroupCallJoinAs} (constructor \code{#575e1f8c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveDefaultGroupCallJoinAsRequest <- R6::R6Class(
   "SaveDefaultGroupCallJoinAsRequest",
   public = list(
@@ -3160,16 +3016,11 @@ SaveDefaultGroupCallJoinAsRequest$set("public", "from_reader", function(reader) 
 })
 
 
-#  SendConferenceCallBroadcastRequest R6 class
-# 
-#  Represents SendConferenceCallBroadcastRequest TLRequest.
-# 
-# 
-#  @title SendConferenceCallBroadcastRequest
-#  @description Telegram API type SendConferenceCallBroadcastRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendConferenceCallBroadcastRequest
+#' @description Telegram API request \code{phone.sendConferenceCallBroadcast} (constructor \code{#c6701900}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendConferenceCallBroadcastRequest <- R6::R6Class(
   "SendConferenceCallBroadcastRequest",
   public = list(
@@ -3259,16 +3110,11 @@ SendConferenceCallBroadcastRequest$set("public", "from_reader", function(reader)
 })
 
 
-#  SendSignalingDataRequest R6 class
-# 
-#  Represents SendSignalingDataRequest TLRequest.
-# 
-# 
-#  @title SendSignalingDataRequest
-#  @description Telegram API type SendSignalingDataRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendSignalingDataRequest
+#' @description Telegram API request \code{phone.sendSignalingData} (constructor \code{#ff7a9383}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendSignalingDataRequest <- R6::R6Class(
   "SendSignalingDataRequest",
   public = list(
@@ -3345,16 +3191,11 @@ SendSignalingDataRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  SetCallRatingRequest R6 class
-# 
-#  Represents SetCallRatingRequest TLRequest.
-# 
-# 
-#  @title SetCallRatingRequest
-#  @description Telegram API type SetCallRatingRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetCallRatingRequest
+#' @description Telegram API request \code{phone.setCallRating} (constructor \code{#59ead627}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetCallRatingRequest <- R6::R6Class(
   "SetCallRatingRequest",
   public = list(
@@ -3454,16 +3295,11 @@ SetCallRatingRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  StartScheduledGroupCallRequest R6 class
-# 
-#  Represents StartScheduledGroupCallRequest TLRequest.
-# 
-# 
-#  @title StartScheduledGroupCallRequest
-#  @description Telegram API type StartScheduledGroupCallRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title StartScheduledGroupCallRequest
+#' @description Telegram API request \code{phone.startScheduledGroupCall} (constructor \code{#5680e342}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 StartScheduledGroupCallRequest <- R6::R6Class(
   "StartScheduledGroupCallRequest",
   public = list(
@@ -3532,16 +3368,11 @@ StartScheduledGroupCallRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  ToggleGroupCallRecordRequest R6 class
-# 
-#  Represents ToggleGroupCallRecordRequest TLRequest.
-# 
-# 
-#  @title ToggleGroupCallRecordRequest
-#  @description Telegram API type ToggleGroupCallRecordRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleGroupCallRecordRequest
+#' @description Telegram API request \code{phone.toggleGroupCallRecord} (constructor \code{#f128c708}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleGroupCallRecordRequest <- R6::R6Class(
   "ToggleGroupCallRecordRequest",
   public = list(
@@ -3683,16 +3514,11 @@ int_to_raw_le <- function(x, width = 4L) {
 bool_true_token <- as.raw(c(0xb5L, 0x75L, 0x72L, 0x99L))
 bool_false_token <- as.raw(c(0x37L, 0x97L, 0x79L, 0xbcL))
 
-#  ToggleGroupCallSettingsRequest R6 class
-# 
-#  Represents ToggleGroupCallSettingsRequest TLRequest.
-# 
-# 
-#  @title ToggleGroupCallSettingsRequest
-#  @description Telegram API type ToggleGroupCallSettingsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleGroupCallSettingsRequest
+#' @description Telegram API request \code{phone.toggleGroupCallSettings} (constructor \code{#974392f2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleGroupCallSettingsRequest <- R6::R6Class(
   "ToggleGroupCallSettingsRequest",
   public = list(
@@ -3790,16 +3616,11 @@ ToggleGroupCallSettingsRequest$set("public", "from_reader", function(reader) {
 })
 
 
-#  ToggleGroupCallStartSubscriptionRequest R6 class
-# 
-#  Represents ToggleGroupCallStartSubscriptionRequest TLRequest.
-# 
-# 
-#  @title ToggleGroupCallStartSubscriptionRequest
-#  @description Telegram API type ToggleGroupCallStartSubscriptionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleGroupCallStartSubscriptionRequest
+#' @description Telegram API request \code{phone.toggleGroupCallStartSubscription} (constructor \code{#219c34e6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleGroupCallStartSubscriptionRequest <- R6::R6Class(
   "ToggleGroupCallStartSubscriptionRequest",
   public = list(

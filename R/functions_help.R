@@ -1,12 +1,8 @@
-#  AcceptTermsOfServiceRequest R6 class
-# 
-#  Accept terms of service (help.TermsOfService). Serializes a DataJSON id.
-# 
-#  @title AcceptTermsOfServiceRequest
-#  @description Telegram API type AcceptTermsOfServiceRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title AcceptTermsOfServiceRequest
+#' @description Telegram API request \code{help.acceptTermsOfService} (constructor \code{#ee72f79a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AcceptTermsOfServiceRequest <- R6::R6Class(
   "AcceptTermsOfServiceRequest",
   public = list(
@@ -64,15 +60,11 @@ AcceptTermsOfServiceRequest$from_reader <- function(reader) {
 }
 
 
-#  DismissSuggestionRequest R6 class
-# 
-#  Dismiss a suggestion for a peer with an associated suggestion string.
-# 
-#  @title DismissSuggestionRequest
-#  @description Telegram API type DismissSuggestionRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title DismissSuggestionRequest
+#' @description Telegram API request \code{help.dismissSuggestion} (constructor \code{#f50dbaa1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DismissSuggestionRequest <- R6::R6Class(
   "DismissSuggestionRequest",
   public = list(
@@ -160,16 +152,11 @@ DismissSuggestionRequest$from_reader <- function(reader) {
 }
 
 
-#  EditUserInfoRequest R6 class
-# 
-#  Edit user info (help.UserInfo). Serializes an input user, a message and a list
-#  of message entities.
-# 
-#  @title EditUserInfoRequest
-#  @description Telegram API type EditUserInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditUserInfoRequest
+#' @description Telegram API request \code{help.editUserInfo} (constructor \code{#66b91b70}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditUserInfoRequest <- R6::R6Class(
   "EditUserInfoRequest",
   public = list(
@@ -296,15 +283,11 @@ EditUserInfoRequest$from_reader <- function(reader) {
 }
 
 
-#  GetAppConfigRequest R6 class
-# 
-#  Request to get app configuration (possibly not modified).
-# 
-#  @title GetAppConfigRequest
-#  @description Telegram API type GetAppConfigRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAppConfigRequest
+#' @description Telegram API request \code{help.getAppConfig} (constructor \code{#61e3f854}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAppConfigRequest <- R6::R6Class(
   "GetAppConfigRequest",
   public = list(
@@ -351,15 +334,11 @@ GetAppConfigRequest$from_reader <- function(reader) {
 }
 
 
-#  GetAppUpdateRequest R6 class
-# 
-#  Request to get app update info.
-# 
-#  @title GetAppUpdateRequest
-#  @description Telegram API type GetAppUpdateRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAppUpdateRequest
+#' @description Telegram API request \code{help.getAppUpdate} (constructor \code{#522d5a7d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAppUpdateRequest <- R6::R6Class(
   "GetAppUpdateRequest",
   public = list(
@@ -421,15 +400,11 @@ GetAppUpdateRequest$from_reader <- function(reader) {
 }
 
 
-#  GetCdnConfigRequest R6 class
-# 
-#  Request to get CDN configuration.
-# 
-#  @title GetCdnConfigRequest
-#  @description Telegram API type GetCdnConfigRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCdnConfigRequest
+#' @description Telegram API request \code{help.getCdnConfig} (constructor \code{#52029342}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCdnConfigRequest <- R6::R6Class(
   "GetCdnConfigRequest",
   public = list(
@@ -470,15 +445,11 @@ GetCdnConfigRequest$from_reader <- function(reader) {
 }
 
 
-#  GetConfigRequest R6 class
-# 
-#  Request to get configuration.
-# 
-#  @title GetConfigRequest
-#  @description Telegram API type GetConfigRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetConfigRequest
+#' @description Telegram API request \code{help.getConfig} (constructor \code{#c4f9186b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetConfigRequest <- R6::R6Class(
   "GetConfigRequest",
   public = list(
@@ -520,15 +491,11 @@ GetConfigRequest$from_reader <- function(reader) {
 }
 
 
-#  GetCountriesListRequest R6 class
-# 
-#  Request to get the list of countries (possibly not modified).
-# 
-#  @title GetCountriesListRequest
-#  @description Telegram API type GetCountriesListRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCountriesListRequest
+#' @description Telegram API request \code{help.getCountriesList} (constructor \code{#735787a8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCountriesListRequest <- R6::R6Class(
   "GetCountriesListRequest",
   public = list(
@@ -597,15 +564,11 @@ GetCountriesListRequest$from_reader <- function(reader) {
 }
 
 
-#  GetDeepLinkInfoRequest R6 class
-# 
-#  Request to get deep link info.
-# 
-#  @title GetDeepLinkInfoRequest
-#  @description Telegram API type GetDeepLinkInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDeepLinkInfoRequest
+#' @description Telegram API request \code{help.getDeepLinkInfo} (constructor \code{#3fedc75f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDeepLinkInfoRequest <- R6::R6Class(
   "GetDeepLinkInfoRequest",
   public = list(
@@ -667,15 +630,11 @@ GetDeepLinkInfoRequest$from_reader <- function(reader) {
 }
 
 
-#  GetInviteTextRequest R6 class
-# 
-#  Request to get invite text.
-# 
-#  @title GetInviteTextRequest
-#  @description Telegram API type GetInviteTextRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetInviteTextRequest
+#' @description Telegram API request \code{help.getInviteText} (constructor \code{#4d392343}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetInviteTextRequest <- R6::R6Class(
   "GetInviteTextRequest",
   public = list(
@@ -717,15 +676,11 @@ GetInviteTextRequest$from_reader <- function(reader) {
 }
 
 
-#  GetNearestDcRequest R6 class
-# 
-#  Request to get the nearest data-center info.
-# 
-#  @title GetNearestDcRequest
-#  @description Telegram API type GetNearestDcRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetNearestDcRequest
+#' @description Telegram API request \code{help.getNearestDc} (constructor \code{#1fb33026}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetNearestDcRequest <- R6::R6Class(
   "GetNearestDcRequest",
   public = list(
@@ -766,15 +721,11 @@ GetNearestDcRequest$from_reader <- function(reader) {
 }
 
 
-#  GetPassportConfigRequest R6 class
-# 
-#  Request to get passport configuration (possibly not modified).
-# 
-#  @title GetPassportConfigRequest
-#  @description Telegram API type GetPassportConfigRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPassportConfigRequest
+#' @description Telegram API request \code{help.getPassportConfig} (constructor \code{#c661ad08}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPassportConfigRequest <- R6::R6Class(
   "GetPassportConfigRequest",
   public = list(
@@ -822,15 +773,11 @@ GetPassportConfigRequest$from_reader <- function(reader) {
 }
 
 
-#  GetPeerColorsRequest R6 class
-# 
-#  Request to get peer colors (possibly not modified).
-# 
-#  @title GetPeerColorsRequest
-#  @description Telegram API type GetPeerColorsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPeerColorsRequest
+#' @description Telegram API request \code{help.getPeerColors} (constructor \code{#da80f42f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPeerColorsRequest <- R6::R6Class(
   "GetPeerColorsRequest",
   public = list(
@@ -877,15 +824,11 @@ GetPeerColorsRequest$from_reader <- function(reader) {
 }
 
 
-#  GetPeerProfileColorsRequest R6 class
-# 
-#  Request to get peer profile colors (possibly not modified).
-# 
-#  @title GetPeerProfileColorsRequest
-#  @description Telegram API type GetPeerProfileColorsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPeerProfileColorsRequest
+#' @description Telegram API request \code{help.getPeerProfileColors} (constructor \code{#abcfa9fd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPeerProfileColorsRequest <- R6::R6Class(
   "GetPeerProfileColorsRequest",
   public = list(
@@ -932,15 +875,11 @@ GetPeerProfileColorsRequest$from_reader <- function(reader) {
 }
 
 
-#  GetPremiumPromoRequest R6 class
-# 
-#  Request to get premium promotion info.
-# 
-#  @title GetPremiumPromoRequest
-#  @description Telegram API type GetPremiumPromoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPremiumPromoRequest
+#' @description Telegram API request \code{help.getPremiumPromo} (constructor \code{#b81b93d4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPremiumPromoRequest <- R6::R6Class(
   "GetPremiumPromoRequest",
   public = list(
@@ -982,15 +921,11 @@ GetPremiumPromoRequest$from_reader <- function(reader) {
 }
 
 
-#  GetPromoDataRequest R6 class
-# 
-#  Request to get promo data.
-# 
-#  @title GetPromoDataRequest
-#  @description Telegram API type GetPromoDataRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPromoDataRequest
+#' @description Telegram API request \code{help.getPromoData} (constructor \code{#c0977421}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPromoDataRequest <- R6::R6Class(
   "GetPromoDataRequest",
   public = list(
@@ -1032,15 +967,11 @@ GetPromoDataRequest$from_reader <- function(reader) {
 }
 
 
-#  GetRecentMeUrlsRequest R6 class
-# 
-#  Request to get recent "me" URLs with a referer string.
-# 
-#  @title GetRecentMeUrlsRequest
-#  @description Telegram API type GetRecentMeUrlsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRecentMeUrlsRequest
+#' @description Telegram API request \code{help.getRecentMeUrls} (constructor \code{#3dc0f114}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRecentMeUrlsRequest <- R6::R6Class(
   "GetRecentMeUrlsRequest",
   public = list(
@@ -1103,15 +1034,11 @@ GetRecentMeUrlsRequest$from_reader <- function(reader) {
 }
 
 
-#  GetSupportRequest R6 class
-# 
-#  Request to get support information.
-# 
-#  @title GetSupportRequest
-#  @description Telegram API type GetSupportRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSupportRequest
+#' @description Telegram API request \code{help.getSupport} (constructor \code{#9cdf08cd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSupportRequest <- R6::R6Class(
   "GetSupportRequest",
   public = list(
@@ -1153,15 +1080,11 @@ GetSupportRequest$from_reader <- function(reader) {
 }
 
 
-#  GetSupportNameRequest R6 class
-# 
-#  Request to get support name.
-# 
-#  @title GetSupportNameRequest
-#  @description Telegram API type GetSupportNameRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSupportNameRequest
+#' @description Telegram API request \code{help.getSupportName} (constructor \code{#d360e72c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSupportNameRequest <- R6::R6Class(
   "GetSupportNameRequest",
   public = list(
@@ -1204,15 +1127,11 @@ GetSupportNameRequest$from_reader <- function(reader) {
 }
 
 
-#  GetTermsOfServiceUpdateRequest R6 class
-# 
-#  Request to get terms of service update.
-# 
-#  @title GetTermsOfServiceUpdateRequest
-#  @description Telegram API type GetTermsOfServiceUpdateRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetTermsOfServiceUpdateRequest
+#' @description Telegram API request \code{help.getTermsOfServiceUpdate} (constructor \code{#2ca51fd1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetTermsOfServiceUpdateRequest <- R6::R6Class(
   "GetTermsOfServiceUpdateRequest",
   public = list(
@@ -1254,15 +1173,11 @@ GetTermsOfServiceUpdateRequest$from_reader <- function(reader) {
 }
 
 
-#  GetTimezonesListRequest R6 class
-# 
-#  Request to get timezones list (possibly not modified).
-# 
-#  @title GetTimezonesListRequest
-#  @description Telegram API type GetTimezonesListRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetTimezonesListRequest
+#' @description Telegram API request \code{help.getTimezonesList} (constructor \code{#49b30240}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetTimezonesListRequest <- R6::R6Class(
   "GetTimezonesListRequest",
   public = list(
@@ -1310,15 +1225,11 @@ GetTimezonesListRequest$from_reader <- function(reader) {
 }
 
 
-#  GetUserInfoRequest R6 class
-# 
-#  Request to get user info (help.UserInfo).
-# 
-#  @title GetUserInfoRequest
-#  @description Telegram API type GetUserInfoRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUserInfoRequest
+#' @description Telegram API request \code{help.getUserInfo} (constructor \code{#038a08d3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUserInfoRequest <- R6::R6Class(
   "GetUserInfoRequest",
   public = list(
@@ -1386,15 +1297,11 @@ GetUserInfoRequest$from_reader <- function(reader) {
 }
 
 
-#  HidePromoDataRequest R6 class
-# 
-#  Request to hide promo data for a peer.
-# 
-#  @title HidePromoDataRequest
-#  @description Telegram API type HidePromoDataRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title HidePromoDataRequest
+#' @description Telegram API request \code{help.hidePromoData} (constructor \code{#1e251c95}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 HidePromoDataRequest <- R6::R6Class(
   "HidePromoDataRequest",
   public = list(
@@ -1459,15 +1366,11 @@ HidePromoDataRequest$from_reader <- function(reader) {
 }
 
 
-#  SaveAppLogRequest R6 class
-# 
-#  Request to save application log events.
-# 
-#  @title SaveAppLogRequest
-#  @description Telegram API type SaveAppLogRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveAppLogRequest
+#' @description Telegram API request \code{help.saveAppLog} (constructor \code{#6f02f748}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveAppLogRequest <- R6::R6Class(
   "SaveAppLogRequest",
   public = list(
@@ -1543,15 +1446,11 @@ SaveAppLogRequest$from_reader <- function(reader) {
 }
 
 
-#  SetBotUpdatesStatusRequest R6 class
-# 
-#  Notify server of bot updates status.
-# 
-#  @title SetBotUpdatesStatusRequest
-#  @description Telegram API type SetBotUpdatesStatusRequest
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetBotUpdatesStatusRequest
+#' @description Telegram API request \code{help.setBotUpdatesStatus} (constructor \code{#ec22cfcd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetBotUpdatesStatusRequest <- R6::R6Class(
   "SetBotUpdatesStatusRequest",
   public = list(

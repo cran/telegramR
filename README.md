@@ -1,6 +1,8 @@
 # telegramR <a href="https://romankyrychenko.github.io/telegramR/"><img src="man/figures/logo.png" align="right" height="139" alt="telegramR website" /></a>
 
 <!-- badges: start -->
+[![CRAN status](https://www.r-pkg.org/badges/version/telegramR)](https://CRAN.R-project.org/package=telegramR)
+[![CRAN downloads](https://cranlogs.r-pkg.org/badges/telegramR)](https://CRAN.R-project.org/package=telegramR)
 [![R-CMD-check](https://github.com/RomanKyrychenko/telegramR/actions/workflows/R-CMD-check.yaml/badge.svg)](https://github.com/RomanKyrychenko/telegramR/actions/workflows/R-CMD-check.yaml)
 [![Codecov test coverage](https://codecov.io/gh/RomanKyrychenko/telegramR/graph/badge.svg)](https://app.codecov.io/gh/RomanKyrychenko/telegramR)
 <!-- badges: end -->
@@ -9,7 +11,7 @@
 
 **Install**
 
-From CRAN (once accepted):
+From CRAN:
 
 ```r
 install.packages("telegramR")

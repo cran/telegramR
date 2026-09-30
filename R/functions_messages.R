@@ -1,8 +1,8 @@
-#  @title AcceptEncryptionRequest
-#  @description Represents a request to accept encryption. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title AcceptEncryptionRequest
+#' @description Telegram API request \code{messages.acceptEncryption} (constructor \code{#3dbc0415}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AcceptEncryptionRequest <- R6::R6Class(
   "AcceptEncryptionRequest",
   inherit = TLRequest,
@@ -65,107 +65,103 @@ AcceptEncryptionRequest$fromReader <- function(reader) {
   AcceptEncryptionRequest$new(peer = peer, gB = gB, keyFingerprint = keyFingerprint)
 }
 
-#  @title AcceptUrlAuthRequest
-#  @description Represents a request to accept URL auth. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-AcceptUrlAuthRequest <- R6::R6Class(
-  "AcceptUrlAuthRequest",
+#' @title AcceptUrlAuthRequest
+#' @description Telegram API request \code{messages.acceptUrlAuth} (constructor \code{#67a3f0de}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+AcceptUrlAuthRequest <- R6::R6Class("AcceptUrlAuthRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xb12c7125,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x67a3f0de,
     SUBCLASS_OF_ID = 0x7765cb1e,
-    #  @field writeAllowed Field.
     writeAllowed = NULL,
-    #  @field peer Field.
+    share_phone_number = NULL,
     peer = NULL,
-    #  @field msgId Field.
     msgId = NULL,
-    #  @field buttonId Field.
     buttonId = NULL,
-    #  @field url Field.
     url = NULL,
-
-    #  @description Initialize the AcceptUrlAuthRequest object.
-    #  @param writeAllowed Whether write is allowed (optional).
-    #  @param peer The input peer (optional).
-    #  @param msgId The message ID (optional).
-    #  @param buttonId The button ID (optional).
-    #  @param url The URL (optional).
-    initialize = function(writeAllowed = NULL, peer = NULL, msgId = NULL, buttonId = NULL, url = NULL) {
+    match_code = NULL,
+    initialize = function(writeAllowed = NULL, share_phone_number = NULL, peer = NULL, msgId = NULL, buttonId = NULL, url = NULL, match_code = NULL) {
       self$writeAllowed <- writeAllowed
+      self$share_phone_number <- share_phone_number
       self$peer <- peer
       self$msgId <- msgId
       self$buttonId <- buttonId
       self$url <- url
+      self$match_code <- match_code
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      if (!is.null(self$peer)) {
-        self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "AcceptUrlAuthRequest",
-        "write_allowed" = self$writeAllowed,
+        `_` = "AcceptUrlAuthRequest",
+        "write_allowed" = if (inherits(self$writeAllowed, "TLObject")) self$writeAllowed$toDict() else self$writeAllowed,
+        "share_phone_number" = if (inherits(self$share_phone_number, "TLObject")) self$share_phone_number$toDict() else self$share_phone_number,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "msg_id" = self$msgId,
-        "button_id" = self$buttonId,
-        "url" = self$url
+        "msg_id" = if (inherits(self$msgId, "TLObject")) self$msgId$toDict() else self$msgId,
+        "button_id" = if (inherits(self$buttonId, "TLObject")) self$buttonId$toDict() else self$buttonId,
+        "url" = if (inherits(self$url, "TLObject")) self$url$toDict() else self$url,
+        "match_code" = if (inherits(self$match_code, "TLObject")) self$match_code$toDict() else self$match_code
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
-    bytes = function() {
-      flags <- (if (is.null(self$writeAllowed) || !self$writeAllowed) 0 else 1) |
-        (if (is.null(self$peer)) 0 else 2) |
-        (if (is.null(self$msgId)) 0 else 2) |
-        (if (is.null(self$buttonId)) 0 else 2) |
-        (if (is.null(self$url)) 0 else 4)
-      c(
-        as.raw(c(0x25, 0x71, 0x2c, 0xb1)),
-        pack("<I", flags),
-        if (is.null(self$peer)) raw(0) else self$peer$bytes(),
-        if (is.null(self$msgId)) raw(0) else pack("<i", self$msgId),
-        if (is.null(self$buttonId)) raw(0) else pack("<i", self$buttonId),
-        if (is.null(self$url)) raw(0) else self$serialize_bytes(self$url)
+    to_list = function() {
+      list(
+        `_` = "AcceptUrlAuthRequest",
+        "write_allowed" = if (inherits(self$writeAllowed, "TLObject")) self$writeAllowed$toDict() else self$writeAllowed,
+        "share_phone_number" = if (inherits(self$share_phone_number, "TLObject")) self$share_phone_number$toDict() else self$share_phone_number,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "msg_id" = if (inherits(self$msgId, "TLObject")) self$msgId$toDict() else self$msgId,
+        "button_id" = if (inherits(self$buttonId, "TLObject")) self$buttonId$toDict() else self$buttonId,
+        "url" = if (inherits(self$url, "TLObject")) self$url$toDict() else self$url,
+        "match_code" = if (inherits(self$match_code, "TLObject")) self$match_code$toDict() else self$match_code
       )
+    },
+    bytes = function() {
+      flags <- 0L
+      if (isTRUE(self$writeAllowed)) flags <- bitwOr(flags, 1L)
+      if (isTRUE(self$share_phone_number)) flags <- bitwOr(flags, 8L)
+      if (!is.null(self$peer)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$msgId)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$buttonId)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$url)) flags <- bitwOr(flags, 4L)
+      if (!is.null(self$match_code)) flags <- bitwOr(flags, 16L)
+      c(
+        as.raw(c(0xde, 0xf0, 0xa3, 0x67)),
+        pack("<I", flags),
+        if (!is.null(self$peer)) self$peer$bytes() else raw(0),
+        if (!is.null(self$msgId)) pack("<i", self$msgId) else raw(0),
+        if (!is.null(self$buttonId)) pack("<i", self$buttonId) else raw(0),
+        if (!is.null(self$url)) serialize_bytes(self$url) else raw(0),
+        if (!is.null(self$match_code)) serialize_bytes(self$match_code) else raw(0)
+      )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$writeAllowed <- bitwAnd(flags, 1L) != 0
+      self$share_phone_number <- bitwAnd(flags, 8L) != 0
+      self$peer <- if (bitwAnd(flags, 2L) != 0) reader$tgread_object() else NULL
+      self$msgId <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
+      self$buttonId <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
+      self$url <- if (bitwAnd(flags, 4L) != 0) reader$tgread_string() else NULL
+      self$match_code <- if (bitwAnd(flags, 16L) != 0) reader$tgread_string() else NULL
+      self
     }
   ),
+  class = TRUE,
   lock_objects = FALSE
 )
 
-# @title fromReader
-# @name AcceptUrlAuthRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of AcceptUrlAuthRequest.
-AcceptUrlAuthRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  writeAllowed <- bitwAnd(flags, 1) != 0
-  peer <- if (bitwAnd(flags, 2) != 0) reader$tgreadObject() else NULL
-  msgId <- if (bitwAnd(flags, 2) != 0) reader$readInt() else NULL
-  buttonId <- if (bitwAnd(flags, 2) != 0) reader$readInt() else NULL
-  url <- if (bitwAnd(flags, 4) != 0) reader$tgreadString() else NULL
-  AcceptUrlAuthRequest$new(writeAllowed = writeAllowed, peer = peer, msgId = msgId, buttonId = buttonId, url = url)
-}
-
-#  @title AddChatUserRequest
-#  @description Represents a request to add a chat user. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title AddChatUserRequest
+#' @description Telegram API request \code{messages.addChatUser} (constructor \code{#cbc6d107}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AddChatUserRequest <- R6::R6Class(
   "AddChatUserRequest",
   inherit = TLRequest,
@@ -235,13 +231,14 @@ AddChatUserRequest$fromReader <- function(reader) {
 }
 
 
-#  @title AppendTodoListRequest
-#  @description Represents a request to append a todo list. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title AppendTodoListRequest
+#' @description Telegram API request \code{messages.appendTodoList} (constructor \code{#21a61057}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 AppendTodoListRequest <- R6::R6Class(
   "AppendTodoListRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -307,11 +304,11 @@ AppendTodoListRequest$fromReader <- function(reader) {
   AppendTodoListRequest$new(peer = peer, msgId = msgId, list = list)
 }
 
-#  @title CheckChatInviteRequest
-#  @description Represents a request to check a chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckChatInviteRequest
+#' @description Telegram API request \code{messages.checkChatInvite} (constructor \code{#3eadb1bb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckChatInviteRequest <- R6::R6Class(
   "CheckChatInviteRequest",
   inherit = TLRequest,
@@ -359,13 +356,14 @@ CheckChatInviteRequest$fromReader <- function(reader) {
   CheckChatInviteRequest$new(hash = hash)
 }
 
-#  @title CheckHistoryImportRequest
-#  @description Represents a request to check history import. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckHistoryImportRequest
+#' @description Telegram API request \code{messages.checkHistoryImport} (constructor \code{#43fe19f3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckHistoryImportRequest <- R6::R6Class(
   "CheckHistoryImportRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -410,13 +408,14 @@ CheckHistoryImportRequest$fromReader <- function(reader) {
 }
 
 
-#  @title CheckHistoryImportPeerRequest
-#  @description Represents a request to check history import peer. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckHistoryImportPeerRequest
+#' @description Telegram API request \code{messages.checkHistoryImportPeer} (constructor \code{#5dc60f03}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckHistoryImportPeerRequest <- R6::R6Class(
   "CheckHistoryImportPeerRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -467,13 +466,14 @@ CheckHistoryImportPeerRequest$fromReader <- function(reader) {
   CheckHistoryImportPeerRequest$new(peer = peer)
 }
 
-#  @title CheckQuickReplyShortcutRequest
-#  @description Represents a request to check quick reply shortcut. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CheckQuickReplyShortcutRequest
+#' @description Telegram API request \code{messages.checkQuickReplyShortcut} (constructor \code{#f1d0fbd3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CheckQuickReplyShortcutRequest <- R6::R6Class(
   "CheckQuickReplyShortcutRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -517,11 +517,11 @@ CheckQuickReplyShortcutRequest$fromReader <- function(reader) {
   CheckQuickReplyShortcutRequest$new(shortcut = shortcut)
 }
 
-#  @title ClearAllDraftsRequest
-#  @description Represents a request to clear all drafts. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClearAllDraftsRequest
+#' @description Telegram API request \code{messages.clearAllDrafts} (constructor \code{#7e58ee9c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClearAllDraftsRequest <- R6::R6Class(
   "ClearAllDraftsRequest",
   inherit = TLRequest,
@@ -555,11 +555,11 @@ ClearAllDraftsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title ClearRecentReactionsRequest
-#  @description Represents a request to clear recent reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClearRecentReactionsRequest
+#' @description Telegram API request \code{messages.clearRecentReactions} (constructor \code{#9dfeefb4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClearRecentReactionsRequest <- R6::R6Class(
   "ClearRecentReactionsRequest",
   inherit = TLRequest,
@@ -592,13 +592,14 @@ ClearRecentReactionsRequest$fromReader <- function(reader) {
   ClearRecentReactionsRequest$new()
 }
 
-#  @title ClearRecentStickersRequest
-#  @description Represents a request to clear recent stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClearRecentStickersRequest
+#' @description Telegram API request \code{messages.clearRecentStickers} (constructor \code{#8999602d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClearRecentStickersRequest <- R6::R6Class(
   "ClearRecentStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -644,13 +645,14 @@ ClearRecentStickersRequest$fromReader <- function(reader) {
   ClearRecentStickersRequest$new(attached = attached)
 }
 
-#  @title ClickSponsoredMessageRequest
-#  @description Represents a request to click a sponsored message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ClickSponsoredMessageRequest
+#' @description Telegram API request \code{messages.clickSponsoredMessage} (constructor \code{#8235057e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ClickSponsoredMessageRequest <- R6::R6Class(
   "ClickSponsoredMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -712,13 +714,14 @@ ClickSponsoredMessageRequest$fromReader <- function(reader) {
 }
 
 
-#  @title CreateChatRequest
-#  @description Represents a request to create a chat. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title CreateChatRequest
+#' @description Telegram API request \code{messages.createChat} (constructor \code{#92ceddd4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 CreateChatRequest <- R6::R6Class(
   "CreateChatRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -791,13 +794,14 @@ CreateChatRequest$fromReader <- function(reader) {
   CreateChatRequest$new(users = users, title = title, ttlPeriod = ttlPeriod)
 }
 
-#  @title DeleteChatRequest
-#  @description Represents a request to delete a chat. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteChatRequest
+#' @description Telegram API request \code{messages.deleteChat} (constructor \code{#5bd0ee50}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteChatRequest <- R6::R6Class(
   "DeleteChatRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -841,13 +845,14 @@ DeleteChatRequest$fromReader <- function(reader) {
   DeleteChatRequest$new(chatId = chatId)
 }
 
-#  @title DeleteChatUserRequest
-#  @description Represents a request to delete a user from a chat. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteChatUserRequest
+#' @description Telegram API request \code{messages.deleteChatUser} (constructor \code{#a2185cab}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteChatUserRequest <- R6::R6Class(
   "DeleteChatUserRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -910,13 +915,14 @@ DeleteChatUserRequest$fromReader <- function(reader) {
 }
 
 
-#  @title DeleteExportedChatInviteRequest
-#  @description Represents a request to delete an exported chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteExportedChatInviteRequest
+#' @description Telegram API request \code{messages.deleteExportedChatInvite} (constructor \code{#d464a42b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteExportedChatInviteRequest <- R6::R6Class(
   "DeleteExportedChatInviteRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -972,13 +978,14 @@ DeleteExportedChatInviteRequest$fromReader <- function(reader) {
   DeleteExportedChatInviteRequest$new(peer = peer, link = link)
 }
 
-#  @title DeleteFactCheckRequest
-#  @description Represents a request to delete a fact check. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteFactCheckRequest
+#' @description Telegram API request \code{messages.deleteFactCheck} (constructor \code{#d1da940c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteFactCheckRequest <- R6::R6Class(
   "DeleteFactCheckRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1034,162 +1041,150 @@ DeleteFactCheckRequest$fromReader <- function(reader) {
   DeleteFactCheckRequest$new(peer = peer, msgId = msgId)
 }
 
-#  @title DeleteHistoryRequest
-#  @description Represents a request to delete history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-DeleteHistoryRequest <- R6::R6Class(
-  "DeleteHistoryRequest",
+#' @title DeleteHistoryRequest
+#' @description Telegram API request \code{messages.deleteHistory} (constructor \code{#b08f922a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+DeleteHistoryRequest <- R6::R6Class("DeleteHistoryRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0xb08f922a,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0x2c49c116,
-
-    #  @description Initialize the DeleteHistoryRequest object.
-    #  @param peer The input peer.
-    #  @param maxId The maximum ID.
-    #  @param justClear Whether to just clear (optional).
-    #  @param revoke Whether to revoke (optional).
-    #  @param minDate The minimum date (optional).
-    #  @param maxDate The maximum date (optional).
-    initialize = function(peer, maxId, justClear = NULL, revoke = NULL, minDate = NULL, maxDate = NULL) {
-      self$peer <- peer
-      self$maxId <- maxId
+    justClear = NULL,
+    revoke = NULL,
+    peer = NULL,
+    maxId = NULL,
+    minDate = NULL,
+    maxDate = NULL,
+    initialize = function(justClear = NULL, revoke = NULL, peer, maxId, minDate = NULL, maxDate = NULL) {
       self$justClear <- justClear
       self$revoke <- revoke
+      self$peer <- peer
+      self$maxId <- maxId
       self$minDate <- minDate
       self$maxDate <- maxDate
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "DeleteHistoryRequest",
+        `_` = "DeleteHistoryRequest",
+        "just_clear" = if (inherits(self$justClear, "TLObject")) self$justClear$toDict() else self$justClear,
+        "revoke" = if (inherits(self$revoke, "TLObject")) self$revoke$toDict() else self$revoke,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "max_id" = self$maxId,
-        "just_clear" = self$justClear,
-        "revoke" = self$revoke,
-        "min_date" = self$minDate,
-        "max_date" = self$maxDate
+        "max_id" = if (inherits(self$maxId, "TLObject")) self$maxId$toDict() else self$maxId,
+        "min_date" = if (inherits(self$minDate, "TLObject")) self$minDate$toDict() else self$minDate,
+        "max_date" = if (inherits(self$maxDate, "TLObject")) self$maxDate$toDict() else self$maxDate
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "DeleteHistoryRequest",
+        "just_clear" = if (inherits(self$justClear, "TLObject")) self$justClear$toDict() else self$justClear,
+        "revoke" = if (inherits(self$revoke, "TLObject")) self$revoke$toDict() else self$revoke,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "max_id" = if (inherits(self$maxId, "TLObject")) self$maxId$toDict() else self$maxId,
+        "min_date" = if (inherits(self$minDate, "TLObject")) self$minDate$toDict() else self$minDate,
+        "max_date" = if (inherits(self$maxDate, "TLObject")) self$maxDate$toDict() else self$maxDate
+      )
+    },
     bytes = function() {
-      flags <- (if (is.null(self$justClear) || !self$justClear) 0 else 1) |
-        (if (is.null(self$revoke) || !self$revoke) 0 else 2) |
-        (if (is.null(self$minDate)) 0 else 4) |
-        (if (is.null(self$maxDate)) 0 else 8)
+      flags <- 0L
+      if (isTRUE(self$justClear)) flags <- bitwOr(flags, 1L)
+      if (isTRUE(self$revoke)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$minDate)) flags <- bitwOr(flags, 4L)
+      if (!is.null(self$maxDate)) flags <- bitwOr(flags, 8L)
       c(
         as.raw(c(0x2a, 0x92, 0x8f, 0xb0)),
         pack("<I", flags),
         self$peer$bytes(),
         pack("<i", self$maxId),
-        if (is.null(self$minDate)) raw(0) else self$serialize_datetime(self$minDate),
-        if (is.null(self$maxDate)) raw(0) else self$serialize_datetime(self$maxDate)
+        if (!is.null(self$minDate)) pack("<i", self$minDate) else raw(0),
+        if (!is.null(self$maxDate)) pack("<i", self$maxDate) else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$justClear <- bitwAnd(flags, 1L) != 0
+      self$revoke <- bitwAnd(flags, 2L) != 0
+      self$peer <- reader$tgread_object()
+      self$maxId <- reader$read_int()
+      self$minDate <- if (bitwAnd(flags, 4L) != 0) reader$read_int() else NULL
+      self$maxDate <- if (bitwAnd(flags, 8L) != 0) reader$read_int() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name DeleteHistoryRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of DeleteHistoryRequest.
-DeleteHistoryRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  justClear <- bitwAnd(flags, 1) != 0
-  revoke <- bitwAnd(flags, 2) != 0
-  peer <- reader$tgreadObject()
-  maxId <- reader$readInt()
-  minDate <- if (bitwAnd(flags, 4) != 0) reader$tgreadDate() else NULL
-  maxDate <- if (bitwAnd(flags, 8) != 0) reader$tgreadDate() else NULL
-  DeleteHistoryRequest$new(peer = peer, maxId = maxId, justClear = justClear, revoke = revoke, minDate = minDate, maxDate = maxDate)
-}
-
-
-#  @title DeleteMessagesRequest
-#  @description Represents a request to delete messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-DeleteMessagesRequest <- R6::R6Class(
-  "DeleteMessagesRequest",
+#' @title DeleteMessagesRequest
+#' @description Telegram API request \code{messages.deleteMessages} (constructor \code{#e58e95d2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+DeleteMessagesRequest <- R6::R6Class("DeleteMessagesRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0xe58e95d2,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xced3c06e,
-
-    #  @description Initialize the DeleteMessagesRequest object.
-    #  @param id The list of message IDs.
-    #  @param revoke Whether to revoke the messages (optional).
-    initialize = function(id, revoke = NULL) {
-      self$id <- id
+    revoke = NULL,
+    id = NULL,
+    initialize = function(revoke = NULL, id) {
       self$revoke <- revoke
+      self$id <- id
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "DeleteMessagesRequest",
-        "id" = if (is.null(self$id)) list() else self$id,
-        "revoke" = self$revoke
+        `_` = "DeleteMessagesRequest",
+        "revoke" = if (inherits(self$revoke, "TLObject")) self$revoke$toDict() else self$revoke,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "DeleteMessagesRequest",
+        "revoke" = if (inherits(self$revoke, "TLObject")) self$revoke$toDict() else self$revoke,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
+      )
+    },
     bytes = function() {
-      flags <- (0L | (if (is.null(self$revoke) || !self$revoke) 0L else 1L))
+      flags <- 0L
+      if (isTRUE(self$revoke)) flags <- bitwOr(flags, 1L)
       c(
         as.raw(c(0xd2, 0x95, 0x8e, 0xe5)),
         pack("<I", flags),
-        as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), do.call(c, lapply(self$id, function(x) pack("<i", x)))
+        c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), if (length(self$id) > 0) do.call(c, lapply(self$id, function(x) pack("<i", x))) else raw(0))
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$revoke <- bitwAnd(flags, 1L) != 0
+      self$id <- { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_int()) else list() }
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name DeleteMessagesRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of DeleteMessagesRequest.
-DeleteMessagesRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  revoke <- bitwAnd(flags, 1) != 0
-  reader$readInt()
-  id <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$readInt()
-    id <- c(id, x)
-  }
-  DeleteMessagesRequest$new(id = id, revoke = revoke)
-}
-
-#  @title DeletePhoneCallHistoryRequest
-#  @description Represents a request to delete phone call history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeletePhoneCallHistoryRequest
+#' @description Telegram API request \code{messages.deletePhoneCallHistory} (constructor \code{#f9cbe409}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeletePhoneCallHistoryRequest <- R6::R6Class(
   "DeletePhoneCallHistoryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1235,13 +1230,14 @@ DeletePhoneCallHistoryRequest$fromReader <- function(reader) {
   DeletePhoneCallHistoryRequest$new(revoke = revoke)
 }
 
-#  @title DeleteQuickReplyMessagesRequest
-#  @description Represents a request to delete quick reply messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteQuickReplyMessagesRequest
+#' @description Telegram API request \code{messages.deleteQuickReplyMessages} (constructor \code{#e105e910}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteQuickReplyMessagesRequest <- R6::R6Class(
   "DeleteQuickReplyMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1296,13 +1292,14 @@ DeleteQuickReplyMessagesRequest$fromReader <- function(reader) {
 }
 
 
-#  @title DeleteQuickReplyShortcutRequest
-#  @description Represents a request to delete a quick reply shortcut. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteQuickReplyShortcutRequest
+#' @description Telegram API request \code{messages.deleteQuickReplyShortcut} (constructor \code{#3cc04740}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteQuickReplyShortcutRequest <- R6::R6Class(
   "DeleteQuickReplyShortcutRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1346,13 +1343,14 @@ DeleteQuickReplyShortcutRequest$fromReader <- function(reader) {
   DeleteQuickReplyShortcutRequest$new(shortcutId = shortcutId)
 }
 
-#  @title DeleteRevokedExportedChatInvitesRequest
-#  @description Represents a request to delete revoked exported chat invites. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteRevokedExportedChatInvitesRequest
+#' @description Telegram API request \code{messages.deleteRevokedExportedChatInvites} (constructor \code{#56987bd5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteRevokedExportedChatInvitesRequest <- R6::R6Class(
   "DeleteRevokedExportedChatInvitesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1409,13 +1407,14 @@ DeleteRevokedExportedChatInvitesRequest$fromReader <- function(reader) {
   DeleteRevokedExportedChatInvitesRequest$new(peer = peer, adminId = adminId)
 }
 
-#  @title DeleteSavedHistoryRequest
-#  @description Represents a request to delete saved history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteSavedHistoryRequest
+#' @description Telegram API request \code{messages.deleteSavedHistory} (constructor \code{#4dc5085f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteSavedHistoryRequest <- R6::R6Class(
   "DeleteSavedHistoryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1495,13 +1494,14 @@ DeleteSavedHistoryRequest$fromReader <- function(reader) {
 }
 
 
-#  @title DeleteScheduledMessagesRequest
-#  @description Represents a request to delete scheduled messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DeleteScheduledMessagesRequest
+#' @description Telegram API request \code{messages.deleteScheduledMessages} (constructor \code{#59ae2b16}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DeleteScheduledMessagesRequest <- R6::R6Class(
   "DeleteScheduledMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1562,13 +1562,14 @@ DeleteScheduledMessagesRequest$fromReader <- function(reader) {
   DeleteScheduledMessagesRequest$new(peer = peer, id = id)
 }
 
-#  @title DiscardEncryptionRequest
-#  @description Represents a request to discard encryption. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title DiscardEncryptionRequest
+#' @description Telegram API request \code{messages.discardEncryption} (constructor \code{#f393aea0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 DiscardEncryptionRequest <- R6::R6Class(
   "DiscardEncryptionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1618,13 +1619,14 @@ DiscardEncryptionRequest$fromReader <- function(reader) {
   DiscardEncryptionRequest$new(chatId = chatId, deleteHistory = deleteHistory)
 }
 
-#  @title EditChatAboutRequest
-#  @description Represents a request to edit chat about. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditChatAboutRequest
+#' @description Telegram API request \code{messages.editChatAbout} (constructor \code{#def60797}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditChatAboutRequest <- R6::R6Class(
   "EditChatAboutRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1681,13 +1683,14 @@ EditChatAboutRequest$fromReader <- function(reader) {
 }
 
 
-#  @title EditChatAdminRequest
-#  @description Represents a request to edit chat admin. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditChatAdminRequest
+#' @description Telegram API request \code{messages.editChatAdmin} (constructor \code{#a85bd1c2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditChatAdminRequest <- R6::R6Class(
   "EditChatAdminRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1748,13 +1751,14 @@ EditChatAdminRequest$fromReader <- function(reader) {
   EditChatAdminRequest$new(chatId = chatId, userId = userId, isAdmin = isAdmin)
 }
 
-#  @title EditChatDefaultBannedRightsRequest
-#  @description Represents a request to edit chat default banned rights. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditChatDefaultBannedRightsRequest
+#' @description Telegram API request \code{messages.editChatDefaultBannedRights} (constructor \code{#a5866b41}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditChatDefaultBannedRightsRequest <- R6::R6Class(
   "EditChatDefaultBannedRightsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1810,13 +1814,14 @@ EditChatDefaultBannedRightsRequest$fromReader <- function(reader) {
   EditChatDefaultBannedRightsRequest$new(peer = peer, bannedRights = bannedRights)
 }
 
-#  @title EditChatPhotoRequest
-#  @description Represents a request to edit chat photo. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditChatPhotoRequest
+#' @description Telegram API request \code{messages.editChatPhoto} (constructor \code{#35ddd674}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditChatPhotoRequest <- R6::R6Class(
   "EditChatPhotoRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1873,13 +1878,14 @@ EditChatPhotoRequest$fromReader <- function(reader) {
 }
 
 
-#  @title EditChatTitleRequest
-#  @description Represents a request to edit a chat title. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditChatTitleRequest
+#' @description Telegram API request \code{messages.editChatTitle} (constructor \code{#73783ffd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditChatTitleRequest <- R6::R6Class(
   "EditChatTitleRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -1928,13 +1934,14 @@ EditChatTitleRequest$fromReader <- function(reader) {
   EditChatTitleRequest$new(chatId = chatId, title = title)
 }
 
-#  @title EditExportedChatInviteRequest
-#  @description Represents a request to edit an exported chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditExportedChatInviteRequest
+#' @description Telegram API request \code{messages.editExportedChatInvite} (constructor \code{#bdca2f75}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditExportedChatInviteRequest <- R6::R6Class(
   "EditExportedChatInviteRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2021,13 +2028,14 @@ EditExportedChatInviteRequest$fromReader <- function(reader) {
   EditExportedChatInviteRequest$new(peer = peer, link = link, revoked = revoked, expireDate = expireDate, usageLimit = usageLimit, requestNeeded = requestNeeded, title = title)
 }
 
-#  @title EditFactCheckRequest
-#  @description Represents a request to edit a fact check. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditFactCheckRequest
+#' @description Telegram API request \code{messages.editFactCheck} (constructor \code{#0589ee75}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditFactCheckRequest <- R6::R6Class(
   "EditFactCheckRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2089,232 +2097,236 @@ EditFactCheckRequest$fromReader <- function(reader) {
 }
 
 
-#  @title EditInlineBotMessageRequest
-#  @description Represents a request to edit an inline bot message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-EditInlineBotMessageRequest <- R6::R6Class(
-  "EditInlineBotMessageRequest",
+#' @title EditInlineBotMessageRequest
+#' @description Telegram API request \code{messages.editInlineBotMessage} (constructor \code{#a423bb51}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+EditInlineBotMessageRequest <- R6::R6Class("EditInlineBotMessageRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x83557dba,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xa423bb51,
     SUBCLASS_OF_ID = 0xf5b399ac,
-
-    #  @description Initialize the EditInlineBotMessageRequest object.
-    #  @param id The input bot inline message ID.
-    #  @param noWebpage Whether to disable webpage preview (optional).
-    #  @param invertMedia Whether to invert media (optional).
-    #  @param message The message text (optional).
-    #  @param media The input media (optional).
-    #  @param replyMarkup The reply markup (optional).
-    #  @param entities The message entities (optional).
-    initialize = function(id, noWebpage = NULL, invertMedia = NULL, message = NULL, media = NULL, replyMarkup = NULL, entities = NULL) {
-      self$id <- id
+    noWebpage = NULL,
+    invertMedia = NULL,
+    id = NULL,
+    message = NULL,
+    media = NULL,
+    replyMarkup = NULL,
+    entities = NULL,
+    rich_message = NULL,
+    initialize = function(noWebpage = NULL, invertMedia = NULL, id, message = NULL, media = NULL, replyMarkup = NULL, entities = NULL, rich_message = NULL) {
       self$noWebpage <- noWebpage
       self$invertMedia <- invertMedia
+      self$id <- id
       self$message <- message
       self$media <- media
       self$replyMarkup <- replyMarkup
       self$entities <- entities
+      self$rich_message <- rich_message
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      if (!is.null(self$media)) {
-        self$media <- utils$getInputMedia(self$media)
-      }
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "EditInlineBotMessageRequest",
+        `_` = "EditInlineBotMessageRequest",
+        "no_webpage" = if (inherits(self$noWebpage, "TLObject")) self$noWebpage$toDict() else self$noWebpage,
+        "invert_media" = if (inherits(self$invertMedia, "TLObject")) self$invertMedia$toDict() else self$invertMedia,
         "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
-        "no_webpage" = self$noWebpage,
-        "invert_media" = self$invertMedia,
-        "message" = self$message,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message,
         "media" = if (inherits(self$media, "TLObject")) self$media$toDict() else self$media,
         "reply_markup" = if (inherits(self$replyMarkup, "TLObject")) self$replyMarkup$toDict() else self$replyMarkup,
-        "entities" = if (is.null(self$entities)) list() else lapply(self$entities, function(x) if (inherits(x, "TLObject")) x$toDict() else x)
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$toDict() else self$entities,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$toDict() else self$rich_message
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "EditInlineBotMessageRequest",
+        "no_webpage" = if (inherits(self$noWebpage, "TLObject")) self$noWebpage$toDict() else self$noWebpage,
+        "invert_media" = if (inherits(self$invertMedia, "TLObject")) self$invertMedia$toDict() else self$invertMedia,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message,
+        "media" = if (inherits(self$media, "TLObject")) self$media$toDict() else self$media,
+        "reply_markup" = if (inherits(self$replyMarkup, "TLObject")) self$replyMarkup$toDict() else self$replyMarkup,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$toDict() else self$entities,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$toDict() else self$rich_message
+      )
+    },
     bytes = function() {
-      flags <- (if (is.null(self$noWebpage) || !self$noWebpage) 0 else 2) |
-        (if (is.null(self$invertMedia) || !self$invertMedia) 0 else 65536) |
-        (if (is.null(self$message)) 0 else 2048) |
-        (if (is.null(self$media)) 0 else 16384) |
-        (if (is.null(self$replyMarkup)) 0 else 4) |
-        (if (is.null(self$entities)) 0 else 8)
+      flags <- 0L
+      if (isTRUE(self$noWebpage)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$invertMedia)) flags <- bitwOr(flags, 65536L)
+      if (!is.null(self$message)) flags <- bitwOr(flags, 2048L)
+      if (!is.null(self$media)) flags <- bitwOr(flags, 16384L)
+      if (!is.null(self$replyMarkup)) flags <- bitwOr(flags, 4L)
+      if (!is.null(self$entities)) flags <- bitwOr(flags, 8L)
+      if (!is.null(self$rich_message)) flags <- bitwOr(flags, 8388608L)
       c(
-        as.raw(c(0xba, 0x7d, 0x55, 0x83)),
+        as.raw(c(0x51, 0xbb, 0x23, 0xa4)),
         pack("<I", flags),
         self$id$bytes(),
-        if (is.null(self$message)) raw(0) else self$serialize_bytes(self$message),
-        if (is.null(self$media)) raw(0) else self$media$bytes(),
-        if (is.null(self$replyMarkup)) raw(0) else self$replyMarkup$bytes(),
-        if (is.null(self$entities)) raw(0) else c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$entities)), do.call(c, lapply(self$entities, function(x) x$bytes())))
+        if (!is.null(self$message)) serialize_bytes(self$message) else raw(0),
+        if (!is.null(self$media)) self$media$bytes() else raw(0),
+        if (!is.null(self$replyMarkup)) self$replyMarkup$bytes() else raw(0),
+        if (!is.null(self$entities)) .telegramR_tl_vector(self$entities) else raw(0),
+        if (!is.null(self$rich_message)) self$rich_message$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$noWebpage <- bitwAnd(flags, 2L) != 0
+      self$invertMedia <- bitwAnd(flags, 65536L) != 0
+      self$id <- reader$tgread_object()
+      self$message <- if (bitwAnd(flags, 2048L) != 0) reader$tgread_string() else NULL
+      self$media <- if (bitwAnd(flags, 16384L) != 0) reader$tgread_object() else NULL
+      self$replyMarkup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
+      self$entities <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$rich_message <- if (bitwAnd(flags, 8388608L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name EditInlineBotMessageRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of EditInlineBotMessageRequest.
-EditInlineBotMessageRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  noWebpage <- bitwAnd(flags, 2) != 0
-  invertMedia <- bitwAnd(flags, 65536) != 0
-  id <- reader$tgreadObject()
-  message <- if (bitwAnd(flags, 2048) != 0) reader$tgreadString() else NULL
-  media <- if (bitwAnd(flags, 16384) != 0) reader$tgreadObject() else NULL
-  replyMarkup <- if (bitwAnd(flags, 4) != 0) reader$tgreadObject() else NULL
-  entities <- if (bitwAnd(flags, 8) != 0) {
-    reader$readInt()
-    lapply(1:reader$readInt(), function(i) reader$tgreadObject())
-  } else {
-    NULL
-  }
-  EditInlineBotMessageRequest$new(id = id, noWebpage = noWebpage, invertMedia = invertMedia, message = message, media = media, replyMarkup = replyMarkup, entities = entities)
-}
-
-#  @title EditMessageRequest
-#  @description Represents a request to edit a message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-EditMessageRequest <- R6::R6Class(
-  "EditMessageRequest",
+#' @title EditMessageRequest
+#' @description Telegram API request \code{messages.editMessage} (constructor \code{#b106e66c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+EditMessageRequest <- R6::R6Class("EditMessageRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xdfd14005,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xb106e66c,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the EditMessageRequest object.
-    #  @param peer The input peer.
-    #  @param id The message ID.
-    #  @param noWebpage Whether to disable webpage preview (optional).
-    #  @param invertMedia Whether to invert media (optional).
-    #  @param message The message text (optional).
-    #  @param media The input media (optional).
-    #  @param replyMarkup The reply markup (optional).
-    #  @param entities The message entities (optional).
-    #  @param scheduleDate The schedule date (optional).
-    #  @param quickReplyShortcutId The quick reply shortcut ID (optional).
-    initialize = function(peer, id, noWebpage = NULL, invertMedia = NULL, message = NULL, media = NULL, replyMarkup = NULL, entities = NULL, scheduleDate = NULL, quickReplyShortcutId = NULL) {
-      self$peer <- peer
-      self$id <- id
+    noWebpage = NULL,
+    invertMedia = NULL,
+    peer = NULL,
+    id = NULL,
+    message = NULL,
+    media = NULL,
+    replyMarkup = NULL,
+    entities = NULL,
+    scheduleDate = NULL,
+    schedule_repeat_period = NULL,
+    quickReplyShortcutId = NULL,
+    rich_message = NULL,
+    initialize = function(noWebpage = NULL, invertMedia = NULL, peer, id, message = NULL, media = NULL, replyMarkup = NULL, entities = NULL, scheduleDate = NULL, schedule_repeat_period = NULL, quickReplyShortcutId = NULL, rich_message = NULL) {
       self$noWebpage <- noWebpage
       self$invertMedia <- invertMedia
+      self$peer <- peer
+      self$id <- id
       self$message <- message
       self$media <- media
       self$replyMarkup <- replyMarkup
       self$entities <- entities
       self$scheduleDate <- scheduleDate
+      self$schedule_repeat_period <- schedule_repeat_period
       self$quickReplyShortcutId <- quickReplyShortcutId
+      self$rich_message <- rich_message
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
-      if (!is.null(self$media)) {
-        self$media <- utils$getInputMedia(self$media)
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "EditMessageRequest",
+        `_` = "EditMessageRequest",
+        "no_webpage" = if (inherits(self$noWebpage, "TLObject")) self$noWebpage$toDict() else self$noWebpage,
+        "invert_media" = if (inherits(self$invertMedia, "TLObject")) self$invertMedia$toDict() else self$invertMedia,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "id" = self$id,
-        "no_webpage" = self$noWebpage,
-        "invert_media" = self$invertMedia,
-        "message" = self$message,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message,
         "media" = if (inherits(self$media, "TLObject")) self$media$toDict() else self$media,
         "reply_markup" = if (inherits(self$replyMarkup, "TLObject")) self$replyMarkup$toDict() else self$replyMarkup,
-        "entities" = if (is.null(self$entities)) list() else lapply(self$entities, function(x) if (inherits(x, "TLObject")) x$toDict() else x),
-        "schedule_date" = self$scheduleDate,
-        "quick_reply_shortcut_id" = self$quickReplyShortcutId
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$toDict() else self$entities,
+        "schedule_date" = if (inherits(self$scheduleDate, "TLObject")) self$scheduleDate$toDict() else self$scheduleDate,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$toDict() else self$schedule_repeat_period,
+        "quick_reply_shortcut_id" = if (inherits(self$quickReplyShortcutId, "TLObject")) self$quickReplyShortcutId$toDict() else self$quickReplyShortcutId,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$toDict() else self$rich_message
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "EditMessageRequest",
+        "no_webpage" = if (inherits(self$noWebpage, "TLObject")) self$noWebpage$toDict() else self$noWebpage,
+        "invert_media" = if (inherits(self$invertMedia, "TLObject")) self$invertMedia$toDict() else self$invertMedia,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message,
+        "media" = if (inherits(self$media, "TLObject")) self$media$toDict() else self$media,
+        "reply_markup" = if (inherits(self$replyMarkup, "TLObject")) self$replyMarkup$toDict() else self$replyMarkup,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$toDict() else self$entities,
+        "schedule_date" = if (inherits(self$scheduleDate, "TLObject")) self$scheduleDate$toDict() else self$scheduleDate,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$toDict() else self$schedule_repeat_period,
+        "quick_reply_shortcut_id" = if (inherits(self$quickReplyShortcutId, "TLObject")) self$quickReplyShortcutId$toDict() else self$quickReplyShortcutId,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$toDict() else self$rich_message
+      )
+    },
     bytes = function() {
-      flags <- (if (is.null(self$noWebpage) || !self$noWebpage) 0 else 2) |
-        (if (is.null(self$invertMedia) || !self$invertMedia) 0 else 65536) |
-        (if (is.null(self$message)) 0 else 2048) |
-        (if (is.null(self$media)) 0 else 16384) |
-        (if (is.null(self$replyMarkup)) 0 else 4) |
-        (if (is.null(self$entities)) 0 else 8) |
-        (if (is.null(self$scheduleDate)) 0 else 32768) |
-        (if (is.null(self$quickReplyShortcutId)) 0 else 131072)
+      flags <- 0L
+      if (isTRUE(self$noWebpage)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$invertMedia)) flags <- bitwOr(flags, 65536L)
+      if (!is.null(self$message)) flags <- bitwOr(flags, 2048L)
+      if (!is.null(self$media)) flags <- bitwOr(flags, 16384L)
+      if (!is.null(self$replyMarkup)) flags <- bitwOr(flags, 4L)
+      if (!is.null(self$entities)) flags <- bitwOr(flags, 8L)
+      if (!is.null(self$scheduleDate)) flags <- bitwOr(flags, 32768L)
+      if (!is.null(self$schedule_repeat_period)) flags <- bitwOr(flags, 262144L)
+      if (!is.null(self$quickReplyShortcutId)) flags <- bitwOr(flags, 131072L)
+      if (!is.null(self$rich_message)) flags <- bitwOr(flags, 8388608L)
       c(
-        as.raw(c(0x05, 0x40, 0xd1, 0xdf)),
+        as.raw(c(0x6c, 0xe6, 0x06, 0xb1)),
         pack("<I", flags),
         self$peer$bytes(),
         pack("<i", self$id),
-        if (is.null(self$message)) raw(0) else self$serialize_bytes(self$message),
-        if (is.null(self$media)) raw(0) else self$media$bytes(),
-        if (is.null(self$replyMarkup)) raw(0) else self$replyMarkup$bytes(),
-        if (is.null(self$entities)) raw(0) else c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$entities)), do.call(c, lapply(self$entities, function(x) x$bytes()))),
-        if (is.null(self$scheduleDate)) raw(0) else self$serialize_datetime(self$scheduleDate),
-        if (is.null(self$quickReplyShortcutId)) raw(0) else pack("<i", self$quickReplyShortcutId)
+        if (!is.null(self$message)) serialize_bytes(self$message) else raw(0),
+        if (!is.null(self$media)) self$media$bytes() else raw(0),
+        if (!is.null(self$replyMarkup)) self$replyMarkup$bytes() else raw(0),
+        if (!is.null(self$entities)) .telegramR_tl_vector(self$entities) else raw(0),
+        if (!is.null(self$scheduleDate)) pack("<i", self$scheduleDate) else raw(0),
+        if (!is.null(self$schedule_repeat_period)) pack("<i", self$schedule_repeat_period) else raw(0),
+        if (!is.null(self$quickReplyShortcutId)) pack("<i", self$quickReplyShortcutId) else raw(0),
+        if (!is.null(self$rich_message)) self$rich_message$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$noWebpage <- bitwAnd(flags, 2L) != 0
+      self$invertMedia <- bitwAnd(flags, 65536L) != 0
+      self$peer <- reader$tgread_object()
+      self$id <- reader$read_int()
+      self$message <- if (bitwAnd(flags, 2048L) != 0) reader$tgread_string() else NULL
+      self$media <- if (bitwAnd(flags, 16384L) != 0) reader$tgread_object() else NULL
+      self$replyMarkup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
+      self$entities <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$scheduleDate <- if (bitwAnd(flags, 32768L) != 0) reader$read_int() else NULL
+      self$schedule_repeat_period <- if (bitwAnd(flags, 262144L) != 0) reader$read_int() else NULL
+      self$quickReplyShortcutId <- if (bitwAnd(flags, 131072L) != 0) reader$read_int() else NULL
+      self$rich_message <- if (bitwAnd(flags, 8388608L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name EditMessageRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of EditMessageRequest.
-EditMessageRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  noWebpage <- bitwAnd(flags, 2) != 0
-  invertMedia <- bitwAnd(flags, 65536) != 0
-  peer <- reader$tgreadObject()
-  id <- reader$readInt()
-  message <- if (bitwAnd(flags, 2048) != 0) reader$tgreadString() else NULL
-  media <- if (bitwAnd(flags, 16384) != 0) reader$tgreadObject() else NULL
-  replyMarkup <- if (bitwAnd(flags, 4) != 0) reader$tgreadObject() else NULL
-  entities <- if (bitwAnd(flags, 8) != 0) {
-    reader$readInt()
-    lapply(1:reader$readInt(), function(i) reader$tgreadObject())
-  } else {
-    NULL
-  }
-  scheduleDate <- if (bitwAnd(flags, 32768) != 0) reader$tgreadDate() else NULL
-  quickReplyShortcutId <- if (bitwAnd(flags, 131072) != 0) reader$readInt() else NULL
-  EditMessageRequest$new(peer = peer, id = id, noWebpage = noWebpage, invertMedia = invertMedia, message = message, media = media, replyMarkup = replyMarkup, entities = entities, scheduleDate = scheduleDate, quickReplyShortcutId = quickReplyShortcutId)
-}
-
-
-#  @title EditQuickReplyShortcutRequest
-#  @description Represents a request to edit a quick reply shortcut. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title EditQuickReplyShortcutRequest
+#' @description Telegram API request \code{messages.editQuickReplyShortcut} (constructor \code{#5c003cef}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 EditQuickReplyShortcutRequest <- R6::R6Class(
   "EditQuickReplyShortcutRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2363,13 +2375,14 @@ EditQuickReplyShortcutRequest$fromReader <- function(reader) {
   EditQuickReplyShortcutRequest$new(shortcutId = shortcutId, shortcut = shortcut)
 }
 
-#  @title ExportChatInviteRequest
-#  @description Represents a request to export a chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ExportChatInviteRequest
+#' @description Telegram API request \code{messages.exportChatInvite} (constructor \code{#a455de90}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ExportChatInviteRequest <- R6::R6Class(
   "ExportChatInviteRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2457,13 +2470,14 @@ ExportChatInviteRequest$fromReader <- function(reader) {
 }
 
 
-#  @title FaveStickerRequest
-#  @description Represents a request to fave or unfave a sticker. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title FaveStickerRequest
+#' @description Telegram API request \code{messages.faveSticker} (constructor \code{#b9ffc55b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 FaveStickerRequest <- R6::R6Class(
   "FaveStickerRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2519,44 +2533,39 @@ FaveStickerRequest$fromReader <- function(reader) {
   FaveStickerRequest$new(id = id, unfave = unfave)
 }
 
-#  @title ForwardMessagesRequest
-#  @description Represents a request to forward messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ForwardMessagesRequest <- R6::R6Class(
-  "ForwardMessagesRequest",
+#' @title ForwardMessagesRequest
+#' @description Telegram API request \code{messages.forwardMessages} (constructor \code{#13704a7c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ForwardMessagesRequest <- R6::R6Class("ForwardMessagesRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x978928ca,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x13704a7c,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the ForwardMessagesRequest object.
-    #  @param fromPeer The input peer to forward from.
-    #  @param id The list of message IDs.
-    #  @param toPeer The input peer to forward to.
-    #  @param silent Whether to send silently (optional).
-    #  @param background Whether to send in background (optional).
-    #  @param withMyScore Whether to include my score (optional).
-    #  @param dropAuthor Whether to drop author (optional).
-    #  @param dropMediaCaptions Whether to drop media captions (optional).
-    #  @param noforwards Whether to disable forwards (optional).
-    #  @param allowPaidFloodskip Whether to allow paid flood skip (optional).
-    #  @param randomId The list of random IDs (optional).
-    #  @param topMsgId The top message ID (optional).
-    #  @param replyTo The reply to (optional).
-    #  @param scheduleDate The schedule date (optional).
-    #  @param sendAs The send as peer (optional).
-    #  @param quickReplyShortcut The quick reply shortcut (optional).
-    #  @param videoTimestamp The video timestamp (optional).
-    #  @param allowPaidStars The allow paid stars (optional).
-    #  @param suggestedPost The suggested post (optional).
-    initialize = function(fromPeer, id, toPeer, silent = NULL, background = NULL, withMyScore = NULL, dropAuthor = NULL, dropMediaCaptions = NULL, noforwards = NULL, allowPaidFloodskip = NULL, randomId = NULL, topMsgId = NULL, replyTo = NULL, scheduleDate = NULL, sendAs = NULL, quickReplyShortcut = NULL, videoTimestamp = NULL, allowPaidStars = NULL, suggestedPost = NULL) {
-      self$fromPeer <- fromPeer
-      self$id <- id
-      self$toPeer <- toPeer
+    silent = NULL,
+    background = NULL,
+    withMyScore = NULL,
+    dropAuthor = NULL,
+    dropMediaCaptions = NULL,
+    noforwards = NULL,
+    allowPaidFloodskip = NULL,
+    from_ephemeral = NULL,
+    fromPeer = NULL,
+    id = NULL,
+    randomId = NULL,
+    toPeer = NULL,
+    topMsgId = NULL,
+    replyTo = NULL,
+    scheduleDate = NULL,
+    schedule_repeat_period = NULL,
+    sendAs = NULL,
+    quickReplyShortcut = NULL,
+    effect = NULL,
+    videoTimestamp = NULL,
+    allowPaidStars = NULL,
+    suggestedPost = NULL,
+    initialize = function(silent = NULL, background = NULL, withMyScore = NULL, dropAuthor = NULL, dropMediaCaptions = NULL, noforwards = NULL, allowPaidFloodskip = NULL, from_ephemeral = NULL, fromPeer, id, randomId, toPeer, topMsgId = NULL, replyTo = NULL, scheduleDate = NULL, schedule_repeat_period = NULL, sendAs = NULL, quickReplyShortcut = NULL, effect = NULL, videoTimestamp = NULL, allowPaidStars = NULL, suggestedPost = NULL) {
       self$silent <- silent
       self$background <- background
       self$withMyScore <- withMyScore
@@ -2564,146 +2573,163 @@ ForwardMessagesRequest <- R6::R6Class(
       self$dropMediaCaptions <- dropMediaCaptions
       self$noforwards <- noforwards
       self$allowPaidFloodskip <- allowPaidFloodskip
+      self$from_ephemeral <- from_ephemeral
+      self$fromPeer <- fromPeer
+      self$id <- id
       self$randomId <- randomId
-      if (is.null(self$randomId)) {
-        # Generate random IDs similar to Python
-        self$randomId <- replicate(length(id), {
-          # In R, use runif or similar; approximating int.from_bytes(os.urandom(8), 'big', signed=True)
-          as.integer(runif(1, min = -2^63, max = 2^63 - 1))
-        })
-      }
+      self$toPeer <- toPeer
       self$topMsgId <- topMsgId
       self$replyTo <- replyTo
       self$scheduleDate <- scheduleDate
+      self$schedule_repeat_period <- schedule_repeat_period
       self$sendAs <- sendAs
       self$quickReplyShortcut <- quickReplyShortcut
+      self$effect <- effect
       self$videoTimestamp <- videoTimestamp
       self$allowPaidStars <- allowPaidStars
       self$suggestedPost <- suggestedPost
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$fromPeer <- utils$getInputPeer(client$getInputEntity(self$fromPeer))
-      self$toPeer <- utils$getInputPeer(client$getInputEntity(self$toPeer))
-      if (!is.null(self$sendAs)) {
-        self$sendAs <- utils$getInputPeer(client$getInputEntity(self$sendAs))
-      }
+      if (!is.null(self$fromPeer)) self$fromPeer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$fromPeer)), error = function(e) self$fromPeer)
+      if (!is.null(self$toPeer)) self$toPeer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$toPeer)), error = function(e) self$toPeer)
+      if (!is.null(self$sendAs)) self$sendAs <- tryCatch(utils$get_input_peer(client$get_input_entity(self$sendAs)), error = function(e) self$sendAs)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "ForwardMessagesRequest",
+        `_` = "ForwardMessagesRequest",
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$toDict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$toDict() else self$background,
+        "with_my_score" = if (inherits(self$withMyScore, "TLObject")) self$withMyScore$toDict() else self$withMyScore,
+        "drop_author" = if (inherits(self$dropAuthor, "TLObject")) self$dropAuthor$toDict() else self$dropAuthor,
+        "drop_media_captions" = if (inherits(self$dropMediaCaptions, "TLObject")) self$dropMediaCaptions$toDict() else self$dropMediaCaptions,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$toDict() else self$noforwards,
+        "allow_paid_floodskip" = if (inherits(self$allowPaidFloodskip, "TLObject")) self$allowPaidFloodskip$toDict() else self$allowPaidFloodskip,
+        "from_ephemeral" = if (inherits(self$from_ephemeral, "TLObject")) self$from_ephemeral$toDict() else self$from_ephemeral,
         "from_peer" = if (inherits(self$fromPeer, "TLObject")) self$fromPeer$toDict() else self$fromPeer,
-        "id" = if (is.null(self$id)) list() else self$id,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "random_id" = if (inherits(self$randomId, "TLObject")) self$randomId$toDict() else self$randomId,
         "to_peer" = if (inherits(self$toPeer, "TLObject")) self$toPeer$toDict() else self$toPeer,
-        "silent" = self$silent,
-        "background" = self$background,
-        "with_my_score" = self$withMyScore,
-        "drop_author" = self$dropAuthor,
-        "drop_media_captions" = self$dropMediaCaptions,
-        "noforwards" = self$noforwards,
-        "allow_paid_floodskip" = self$allowPaidFloodskip,
-        "random_id" = if (is.null(self$randomId)) list() else self$randomId,
-        "top_msg_id" = self$topMsgId,
+        "top_msg_id" = if (inherits(self$topMsgId, "TLObject")) self$topMsgId$toDict() else self$topMsgId,
         "reply_to" = if (inherits(self$replyTo, "TLObject")) self$replyTo$toDict() else self$replyTo,
-        "schedule_date" = self$scheduleDate,
+        "schedule_date" = if (inherits(self$scheduleDate, "TLObject")) self$scheduleDate$toDict() else self$scheduleDate,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$toDict() else self$schedule_repeat_period,
         "send_as" = if (inherits(self$sendAs, "TLObject")) self$sendAs$toDict() else self$sendAs,
         "quick_reply_shortcut" = if (inherits(self$quickReplyShortcut, "TLObject")) self$quickReplyShortcut$toDict() else self$quickReplyShortcut,
-        "video_timestamp" = self$videoTimestamp,
-        "allow_paid_stars" = self$allowPaidStars,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$toDict() else self$effect,
+        "video_timestamp" = if (inherits(self$videoTimestamp, "TLObject")) self$videoTimestamp$toDict() else self$videoTimestamp,
+        "allow_paid_stars" = if (inherits(self$allowPaidStars, "TLObject")) self$allowPaidStars$toDict() else self$allowPaidStars,
         "suggested_post" = if (inherits(self$suggestedPost, "TLObject")) self$suggestedPost$toDict() else self$suggestedPost
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ForwardMessagesRequest",
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$toDict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$toDict() else self$background,
+        "with_my_score" = if (inherits(self$withMyScore, "TLObject")) self$withMyScore$toDict() else self$withMyScore,
+        "drop_author" = if (inherits(self$dropAuthor, "TLObject")) self$dropAuthor$toDict() else self$dropAuthor,
+        "drop_media_captions" = if (inherits(self$dropMediaCaptions, "TLObject")) self$dropMediaCaptions$toDict() else self$dropMediaCaptions,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$toDict() else self$noforwards,
+        "allow_paid_floodskip" = if (inherits(self$allowPaidFloodskip, "TLObject")) self$allowPaidFloodskip$toDict() else self$allowPaidFloodskip,
+        "from_ephemeral" = if (inherits(self$from_ephemeral, "TLObject")) self$from_ephemeral$toDict() else self$from_ephemeral,
+        "from_peer" = if (inherits(self$fromPeer, "TLObject")) self$fromPeer$toDict() else self$fromPeer,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "random_id" = if (inherits(self$randomId, "TLObject")) self$randomId$toDict() else self$randomId,
+        "to_peer" = if (inherits(self$toPeer, "TLObject")) self$toPeer$toDict() else self$toPeer,
+        "top_msg_id" = if (inherits(self$topMsgId, "TLObject")) self$topMsgId$toDict() else self$topMsgId,
+        "reply_to" = if (inherits(self$replyTo, "TLObject")) self$replyTo$toDict() else self$replyTo,
+        "schedule_date" = if (inherits(self$scheduleDate, "TLObject")) self$scheduleDate$toDict() else self$scheduleDate,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$toDict() else self$schedule_repeat_period,
+        "send_as" = if (inherits(self$sendAs, "TLObject")) self$sendAs$toDict() else self$sendAs,
+        "quick_reply_shortcut" = if (inherits(self$quickReplyShortcut, "TLObject")) self$quickReplyShortcut$toDict() else self$quickReplyShortcut,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$toDict() else self$effect,
+        "video_timestamp" = if (inherits(self$videoTimestamp, "TLObject")) self$videoTimestamp$toDict() else self$videoTimestamp,
+        "allow_paid_stars" = if (inherits(self$allowPaidStars, "TLObject")) self$allowPaidStars$toDict() else self$allowPaidStars,
+        "suggested_post" = if (inherits(self$suggestedPost, "TLObject")) self$suggestedPost$toDict() else self$suggestedPost
+      )
+    },
     bytes = function() {
-      flags <- (if (is.null(self$silent) || !self$silent) 0 else 32) |
-        (if (is.null(self$background) || !self$background) 0 else 64) |
-        (if (is.null(self$withMyScore) || !self$withMyScore) 0 else 256) |
-        (if (is.null(self$dropAuthor) || !self$dropAuthor) 0 else 2048) |
-        (if (is.null(self$dropMediaCaptions) || !self$dropMediaCaptions) 0 else 4096) |
-        (if (is.null(self$noforwards) || !self$noforwards) 0 else 16384) |
-        (if (is.null(self$allowPaidFloodskip) || !self$allowPaidFloodskip) 0 else 524288) |
-        (if (is.null(self$topMsgId)) 0 else 512) |
-        (if (is.null(self$replyTo)) 0 else 4194304) |
-        (if (is.null(self$scheduleDate)) 0 else 1024) |
-        (if (is.null(self$sendAs)) 0 else 8192) |
-        (if (is.null(self$quickReplyShortcut)) 0 else 131072) |
-        (if (is.null(self$videoTimestamp)) 0 else 1048576) |
-        (if (is.null(self$allowPaidStars)) 0 else 2097152) |
-        (if (is.null(self$suggestedPost)) 0 else 8388608)
+      flags <- 0L
+      if (isTRUE(self$silent)) flags <- bitwOr(flags, 32L)
+      if (isTRUE(self$background)) flags <- bitwOr(flags, 64L)
+      if (isTRUE(self$withMyScore)) flags <- bitwOr(flags, 256L)
+      if (isTRUE(self$dropAuthor)) flags <- bitwOr(flags, 2048L)
+      if (isTRUE(self$dropMediaCaptions)) flags <- bitwOr(flags, 4096L)
+      if (isTRUE(self$noforwards)) flags <- bitwOr(flags, 16384L)
+      if (isTRUE(self$allowPaidFloodskip)) flags <- bitwOr(flags, 524288L)
+      if (isTRUE(self$from_ephemeral)) flags <- bitwOr(flags, 33554432L)
+      if (!is.null(self$topMsgId)) flags <- bitwOr(flags, 512L)
+      if (!is.null(self$replyTo)) flags <- bitwOr(flags, 4194304L)
+      if (!is.null(self$scheduleDate)) flags <- bitwOr(flags, 1024L)
+      if (!is.null(self$schedule_repeat_period)) flags <- bitwOr(flags, 16777216L)
+      if (!is.null(self$sendAs)) flags <- bitwOr(flags, 8192L)
+      if (!is.null(self$quickReplyShortcut)) flags <- bitwOr(flags, 131072L)
+      if (!is.null(self$effect)) flags <- bitwOr(flags, 262144L)
+      if (!is.null(self$videoTimestamp)) flags <- bitwOr(flags, 1048576L)
+      if (!is.null(self$allowPaidStars)) flags <- bitwOr(flags, 2097152L)
+      if (!is.null(self$suggestedPost)) flags <- bitwOr(flags, 8388608L)
       c(
-        as.raw(c(0xca, 0x28, 0x89, 0x97)),
+        as.raw(c(0x7c, 0x4a, 0x70, 0x13)),
         pack("<I", flags),
         self$fromPeer$bytes(),
-        as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), do.call(c, lapply(self$id, function(x) pack("<i", x))),
-        as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$randomId)), do.call(c, lapply(self$randomId, function(x) pack("<q", x))),
+        c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), if (length(self$id) > 0) do.call(c, lapply(self$id, function(x) pack("<i", x))) else raw(0)),
+        c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$randomId)), if (length(self$randomId) > 0) do.call(c, lapply(self$randomId, function(x) packInt64(x))) else raw(0)),
         self$toPeer$bytes(),
-        if (is.null(self$topMsgId)) raw(0) else pack("<i", self$topMsgId),
-        if (is.null(self$replyTo)) raw(0) else self$replyTo$bytes(),
-        if (is.null(self$scheduleDate)) raw(0) else self$serialize_datetime(self$scheduleDate),
-        if (is.null(self$sendAs)) raw(0) else self$sendAs$bytes(),
-        if (is.null(self$quickReplyShortcut)) raw(0) else self$quickReplyShortcut$bytes(),
-        if (is.null(self$videoTimestamp)) raw(0) else pack("<i", self$videoTimestamp),
-        if (is.null(self$allowPaidStars)) raw(0) else pack("<q", self$allowPaidStars),
-        if (is.null(self$suggestedPost)) raw(0) else self$suggestedPost$bytes()
+        if (!is.null(self$topMsgId)) pack("<i", self$topMsgId) else raw(0),
+        if (!is.null(self$replyTo)) self$replyTo$bytes() else raw(0),
+        if (!is.null(self$scheduleDate)) pack("<i", self$scheduleDate) else raw(0),
+        if (!is.null(self$schedule_repeat_period)) pack("<i", self$schedule_repeat_period) else raw(0),
+        if (!is.null(self$sendAs)) self$sendAs$bytes() else raw(0),
+        if (!is.null(self$quickReplyShortcut)) self$quickReplyShortcut$bytes() else raw(0),
+        if (!is.null(self$effect)) packInt64(self$effect) else raw(0),
+        if (!is.null(self$videoTimestamp)) pack("<i", self$videoTimestamp) else raw(0),
+        if (!is.null(self$allowPaidStars)) packInt64(self$allowPaidStars) else raw(0),
+        if (!is.null(self$suggestedPost)) self$suggestedPost$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$silent <- bitwAnd(flags, 32L) != 0
+      self$background <- bitwAnd(flags, 64L) != 0
+      self$withMyScore <- bitwAnd(flags, 256L) != 0
+      self$dropAuthor <- bitwAnd(flags, 2048L) != 0
+      self$dropMediaCaptions <- bitwAnd(flags, 4096L) != 0
+      self$noforwards <- bitwAnd(flags, 16384L) != 0
+      self$allowPaidFloodskip <- bitwAnd(flags, 524288L) != 0
+      self$from_ephemeral <- bitwAnd(flags, 33554432L) != 0
+      self$fromPeer <- reader$tgread_object()
+      self$id <- { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_int()) else list() }
+      self$randomId <- { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_long()) else list() }
+      self$toPeer <- reader$tgread_object()
+      self$topMsgId <- if (bitwAnd(flags, 512L) != 0) reader$read_int() else NULL
+      self$replyTo <- if (bitwAnd(flags, 4194304L) != 0) reader$tgread_object() else NULL
+      self$scheduleDate <- if (bitwAnd(flags, 1024L) != 0) reader$read_int() else NULL
+      self$schedule_repeat_period <- if (bitwAnd(flags, 16777216L) != 0) reader$read_int() else NULL
+      self$sendAs <- if (bitwAnd(flags, 8192L) != 0) reader$tgread_object() else NULL
+      self$quickReplyShortcut <- if (bitwAnd(flags, 131072L) != 0) reader$tgread_object() else NULL
+      self$effect <- if (bitwAnd(flags, 262144L) != 0) reader$read_long() else NULL
+      self$videoTimestamp <- if (bitwAnd(flags, 1048576L) != 0) reader$read_int() else NULL
+      self$allowPaidStars <- if (bitwAnd(flags, 2097152L) != 0) reader$read_long() else NULL
+      self$suggestedPost <- if (bitwAnd(flags, 8388608L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name ForwardMessagesRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ForwardMessagesRequest.
-ForwardMessagesRequest$fromReader <- function(reader) {
-  flags <- reader$readInt()
-  silent <- bitwAnd(flags, 32) != 0
-  background <- bitwAnd(flags, 64) != 0
-  withMyScore <- bitwAnd(flags, 256) != 0
-  dropAuthor <- bitwAnd(flags, 2048) != 0
-  dropMediaCaptions <- bitwAnd(flags, 4096) != 0
-  noforwards <- bitwAnd(flags, 16384) != 0
-  allowPaidFloodskip <- bitwAnd(flags, 524288) != 0
-  fromPeer <- reader$tgreadObject()
-  reader$readInt()
-  id <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$readInt()
-    id <- c(id, x)
-  }
-  reader$readInt()
-  randomId <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$readLong()
-    randomId <- c(randomId, x)
-  }
-  toPeer <- reader$tgreadObject()
-  topMsgId <- if (bitwAnd(flags, 512) != 0) reader$readInt() else NULL
-  replyTo <- if (bitwAnd(flags, 4194304) != 0) reader$tgreadObject() else NULL
-  scheduleDate <- if (bitwAnd(flags, 1024) != 0) reader$tgreadDate() else NULL
-  sendAs <- if (bitwAnd(flags, 8192) != 0) reader$tgreadObject() else NULL
-  quickReplyShortcut <- if (bitwAnd(flags, 131072) != 0) reader$tgreadObject() else NULL
-  videoTimestamp <- if (bitwAnd(flags, 1048576) != 0) reader$readInt() else NULL
-  allowPaidStars <- if (bitwAnd(flags, 2097152) != 0) reader$readLong() else NULL
-  suggestedPost <- if (bitwAnd(flags, 8388608) != 0) reader$tgreadObject() else NULL
-  ForwardMessagesRequest$new(fromPeer = fromPeer, id = id, toPeer = toPeer, silent = silent, background = background, withMyScore = withMyScore, dropAuthor = dropAuthor, dropMediaCaptions = dropMediaCaptions, noforwards = noforwards, allowPaidFloodskip = allowPaidFloodskip, randomId = randomId, topMsgId = topMsgId, replyTo = replyTo, scheduleDate = scheduleDate, sendAs = sendAs, quickReplyShortcut = quickReplyShortcut, videoTimestamp = videoTimestamp, allowPaidStars = allowPaidStars, suggestedPost = suggestedPost)
-}
-
-#  @title GetAdminsWithInvitesRequest
-#  @description Represents a request to get admins with invites. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAdminsWithInvitesRequest
+#' @description Telegram API request \code{messages.getAdminsWithInvites} (constructor \code{#3920e6ef}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAdminsWithInvitesRequest <- R6::R6Class(
   "GetAdminsWithInvitesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2754,11 +2780,11 @@ GetAdminsWithInvitesRequest$fromReader <- function(reader) {
   GetAdminsWithInvitesRequest$new(peer = peer)
 }
 
-#  @title GetAllDraftsRequest
-#  @description Represents a request to get all drafts. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAllDraftsRequest
+#' @description Telegram API request \code{messages.getAllDrafts} (constructor \code{#6a3f8d65}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAllDraftsRequest <- R6::R6Class(
   "GetAllDraftsRequest",
   inherit = TLRequest,
@@ -2791,11 +2817,11 @@ GetAllDraftsRequest$fromReader <- function(reader) {
   GetAllDraftsRequest$new()
 }
 
-#  @title GetAllStickersRequest
-#  @description Represents a request to get all stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAllStickersRequest
+#' @description Telegram API request \code{messages.getAllStickers} (constructor \code{#b8a0a1a8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAllStickersRequest <- R6::R6Class(
   "GetAllStickersRequest",
   inherit = TLRequest,
@@ -2843,13 +2869,14 @@ GetAllStickersRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetArchivedStickersRequest
-#  @description Represents a request to get archived stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetArchivedStickersRequest
+#' @description Telegram API request \code{messages.getArchivedStickers} (constructor \code{#57f17692}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetArchivedStickersRequest <- R6::R6Class(
   "GetArchivedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2912,13 +2939,14 @@ GetArchivedStickersRequest$fromReader <- function(reader) {
   GetArchivedStickersRequest$new(offsetId = offsetId, limit = limit, masks = masks, emojis = emojis)
 }
 
-#  @title GetAttachMenuBotRequest
-#  @description Represents a request to get attach menu bot. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAttachMenuBotRequest
+#' @description Telegram API request \code{messages.getAttachMenuBot} (constructor \code{#77216192}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAttachMenuBotRequest <- R6::R6Class(
   "GetAttachMenuBotRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -2969,11 +2997,11 @@ GetAttachMenuBotRequest$fromReader <- function(reader) {
   GetAttachMenuBotRequest$new(bot = bot)
 }
 
-#  @title GetAttachMenuBotsRequest
-#  @description Represents a request to get attach menu bots. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAttachMenuBotsRequest
+#' @description Telegram API request \code{messages.getAttachMenuBots} (constructor \code{#16fcc2cb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAttachMenuBotsRequest <- R6::R6Class(
   "GetAttachMenuBotsRequest",
   inherit = TLRequest,
@@ -3020,13 +3048,14 @@ GetAttachMenuBotsRequest$fromReader <- function(reader) {
   GetAttachMenuBotsRequest$new(hash = hash)
 }
 
-#  @title GetAttachedStickersRequest
-#  @description Represents a request to get attached stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAttachedStickersRequest
+#' @description Telegram API request \code{messages.getAttachedStickers} (constructor \code{#cc5b67cc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAttachedStickersRequest <- R6::R6Class(
   "GetAttachedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3071,13 +3100,14 @@ GetAttachedStickersRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetAvailableEffectsRequest
-#  @description Represents a request to get available effects. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAvailableEffectsRequest
+#' @description Telegram API request \code{messages.getAvailableEffects} (constructor \code{#dea20a39}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAvailableEffectsRequest <- R6::R6Class(
   "GetAvailableEffectsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3104,7 +3134,7 @@ GetAvailableEffectsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xde, 0xa2, 0x0a, 0x39)),
+        as.raw(c(0x39, 0x0a, 0xa2, 0xde)),
         pack("<i", self$hash)
       )
     }
@@ -3121,13 +3151,14 @@ GetAvailableEffectsRequest$fromReader <- function(reader) {
   GetAvailableEffectsRequest$new(hash = hash)
 }
 
-#  @title GetAvailableReactionsRequest
-#  @description Represents a request to get available reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetAvailableReactionsRequest
+#' @description Telegram API request \code{messages.getAvailableReactions} (constructor \code{#18dea0ac}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetAvailableReactionsRequest <- R6::R6Class(
   "GetAvailableReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3154,7 +3185,7 @@ GetAvailableReactionsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x18, 0xde, 0xa0, 0xac)),
+        as.raw(c(0xac, 0xa0, 0xde, 0x18)),
         pack("<i", self$hash)
       )
     }
@@ -3171,13 +3202,14 @@ GetAvailableReactionsRequest$fromReader <- function(reader) {
   GetAvailableReactionsRequest$new(hash = hash)
 }
 
-#  @title GetBotAppRequest
-#  @description Represents a request to get bot app. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBotAppRequest
+#' @description Telegram API request \code{messages.getBotApp} (constructor \code{#34fdc5c3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBotAppRequest <- R6::R6Class(
   "GetBotAppRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3207,7 +3239,7 @@ GetBotAppRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x34, 0xfd, 0xc5, 0xc3)),
+        as.raw(c(0xc3, 0xc5, 0xfd, 0x34)),
         self$app$bytes(),
         pack("<q", self$hash)
       )
@@ -3226,13 +3258,14 @@ GetBotAppRequest$fromReader <- function(reader) {
   GetBotAppRequest$new(app = app, hash = hash)
 }
 
-#  @title GetBotCallbackAnswerRequest
-#  @description Represents a request to get bot callback answer. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetBotCallbackAnswerRequest
+#' @description Telegram API request \code{messages.getBotCallbackAnswer} (constructor \code{#9342ca07}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetBotCallbackAnswerRequest <- R6::R6Class(
   "GetBotCallbackAnswerRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3281,7 +3314,7 @@ GetBotCallbackAnswerRequest <- R6::R6Class(
         (if (is.null(self$data) || !length(self$data)) 0 else 1) |
         (if (is.null(self$password)) 0 else 4)
       c(
-        as.raw(c(0x93, 0x42, 0xca, 0x07)),
+        as.raw(c(0x07, 0xca, 0x42, 0x93)),
         pack("<I", flags),
         self$peer$bytes(),
         pack("<i", self$msgId),
@@ -3308,13 +3341,14 @@ GetBotCallbackAnswerRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetChatInviteImportersRequest
-#  @description Represents a request to get chat invite importers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChatInviteImportersRequest
+#' @description Telegram API request \code{messages.getChatInviteImporters} (constructor \code{#df04dd4e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChatInviteImportersRequest <- R6::R6Class(
   "GetChatInviteImportersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3374,7 +3408,7 @@ GetChatInviteImportersRequest <- R6::R6Class(
         (if (is.null(self$link) || !nchar(self$link)) 0 else 2) |
         (if (is.null(self$q) || !nchar(self$q)) 0 else 4)
       c(
-        as.raw(c(0xdf, 0x04, 0xdd, 0x4e)),
+        as.raw(c(0x4e, 0xdd, 0x04, 0xdf)),
         pack("<I", flags),
         self$peer$bytes(),
         if (is.null(self$link) || !nchar(self$link)) raw(0) else self$serialize_bytes(self$link),
@@ -3405,13 +3439,14 @@ GetChatInviteImportersRequest$fromReader <- function(reader) {
   GetChatInviteImportersRequest$new(peer = peer, offsetDate = offsetDate, offsetUser = offsetUser, limit = limit, requested = requested, subscriptionExpired = subscriptionExpired, link = link, q = q)
 }
 
-#  @title GetChatsRequest
-#  @description Represents a request to get chats. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetChatsRequest
+#' @description Telegram API request \code{messages.getChats} (constructor \code{#49e9528f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetChatsRequest <- R6::R6Class(
   "GetChatsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3438,7 +3473,7 @@ GetChatsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x49, 0xe9, 0x52, 0x8f)),
+        as.raw(c(0x8f, 0x52, 0xe9, 0x49)),
         as.raw(c(0x1c, 0xb5, 0xc4, 0x15)),
         pack("<i", length(self$id)),
         do.call(c, lapply(self$id, function(x) pack("<q", x)))
@@ -3462,13 +3497,14 @@ GetChatsRequest$fromReader <- function(reader) {
   GetChatsRequest$new(id = id)
 }
 
-#  @title GetCommonChatsRequest
-#  @description Represents a request to get common chats. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCommonChatsRequest
+#' @description Telegram API request \code{messages.getCommonChats} (constructor \code{#e40ca104}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCommonChatsRequest <- R6::R6Class(
   "GetCommonChatsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3508,7 +3544,7 @@ GetCommonChatsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xe4, 0x0c, 0xa1, 0x04)),
+        as.raw(c(0x04, 0xa1, 0x0c, 0xe4)),
         self$userId$bytes(),
         pack("<q", self$maxId),
         pack("<i", self$limit)
@@ -3530,13 +3566,14 @@ GetCommonChatsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetCustomEmojiDocumentsRequest
-#  @description Represents a request to get custom emoji documents. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetCustomEmojiDocumentsRequest
+#' @description Telegram API request \code{messages.getCustomEmojiDocuments} (constructor \code{#d9ab0f54}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetCustomEmojiDocumentsRequest <- R6::R6Class(
   "GetCustomEmojiDocumentsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3563,7 +3600,7 @@ GetCustomEmojiDocumentsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xd9, 0xab, 0x0f, 0x54)),
+        as.raw(c(0x54, 0x0f, 0xab, 0xd9)),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
         pack("<i", length(self$documentId)),
         do.call(c, lapply(self$documentId, function(x) pack("<q", x)))
@@ -3587,11 +3624,11 @@ GetCustomEmojiDocumentsRequest$fromReader <- function(reader) {
   GetCustomEmojiDocumentsRequest$new(documentId = documentId)
 }
 
-#  @title GetDefaultHistoryTTLRequest
-#  @description Represents a request to get default history TTL. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultHistoryTTLRequest
+#' @description Telegram API request \code{messages.getDefaultHistoryTTL} (constructor \code{#658b7188}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultHistoryTTLRequest <- R6::R6Class(
   "GetDefaultHistoryTTLRequest",
   inherit = TLRequest,
@@ -3610,7 +3647,7 @@ GetDefaultHistoryTTLRequest <- R6::R6Class(
     #  @description Serialize the object to bytes.
     #  @return A raw vector of bytes.
     bytes = function() {
-      as.raw(c(0x65, 0x8b, 0x71, 0x88))
+      as.raw(c(0x88, 0x71, 0x8b, 0x65))
     }
   )
 )
@@ -3624,13 +3661,14 @@ GetDefaultHistoryTTLRequest$fromReader <- function(reader) {
   GetDefaultHistoryTTLRequest$new()
 }
 
-#  @title GetDefaultTagReactionsRequest
-#  @description Represents a request to get default tag reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDefaultTagReactionsRequest
+#' @description Telegram API request \code{messages.getDefaultTagReactions} (constructor \code{#bdf93428}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDefaultTagReactionsRequest <- R6::R6Class(
   "GetDefaultTagReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3657,7 +3695,7 @@ GetDefaultTagReactionsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xbd, 0xf9, 0x34, 0x28)),
+        as.raw(c(0x28, 0x34, 0xf9, 0xbd)),
         pack("<q", self$hash)
       )
     }
@@ -3674,13 +3712,14 @@ GetDefaultTagReactionsRequest$fromReader <- function(reader) {
   GetDefaultTagReactionsRequest$new(hash = hash)
 }
 
-#  @title GetDhConfigRequest
-#  @description Represents a request to get DH config. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDhConfigRequest
+#' @description Telegram API request \code{messages.getDhConfig} (constructor \code{#26cf8950}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDhConfigRequest <- R6::R6Class(
   "GetDhConfigRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3710,7 +3749,7 @@ GetDhConfigRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x26, 0xcf, 0x89, 0x50)),
+        as.raw(c(0x50, 0x89, 0xcf, 0x26)),
         pack("<i", self$version),
         pack("<i", self$randomLength)
       )
@@ -3730,11 +3769,11 @@ GetDhConfigRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetDialogFiltersRequest
-#  @description Represents a request to get dialog filters. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDialogFiltersRequest
+#' @description Telegram API request \code{messages.getDialogFilters} (constructor \code{#efd48c89}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDialogFiltersRequest <- R6::R6Class(
   "GetDialogFiltersRequest",
   inherit = TLRequest,
@@ -3753,7 +3792,7 @@ GetDialogFiltersRequest <- R6::R6Class(
     #  @description Serialize the object to bytes.
     #  @return A raw vector of bytes.
     bytes = function() {
-      as.raw(c(0xef, 0xd4, 0x8c, 0x89))
+      as.raw(c(0x89, 0x8c, 0xd4, 0xef))
     }
   )
 )
@@ -3767,13 +3806,14 @@ GetDialogFiltersRequest$fromReader <- function(reader) {
   GetDialogFiltersRequest$new()
 }
 
-#  @title GetDialogUnreadMarksRequest
-#  @description Represents a request to get dialog unread marks. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDialogUnreadMarksRequest
+#' @description Telegram API request \code{messages.getDialogUnreadMarks} (constructor \code{#21202222}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDialogUnreadMarksRequest <- R6::R6Class(
   "GetDialogUnreadMarksRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3810,7 +3850,7 @@ GetDialogUnreadMarksRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$parentPeer)) 0 else 1
       c(
-        as.raw(c(0x21, 0x20, 0x22, 0x22)),
+        as.raw(c(0x22, 0x22, 0x20, 0x21)),
         pack("<I", flags),
         if (is.null(self$parentPeer)) raw(0) else self$parentPeer$bytes()
       )
@@ -3829,13 +3869,14 @@ GetDialogUnreadMarksRequest$fromReader <- function(reader) {
   GetDialogUnreadMarksRequest$new(parentPeer = parentPeer)
 }
 
-#  @title GetDialogsRequest
-#  @description Represents a request to get dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDialogsRequest
+#' @description Telegram API request \code{messages.getDialogs} (constructor \code{#a0f4cb4f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDialogsRequest <- R6::R6Class(
   "GetDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3889,7 +3930,7 @@ GetDialogsRequest <- R6::R6Class(
       flags <- (if (is.null(self$excludePinned) || !self$excludePinned) 0 else 1) |
         (if (is.null(self$folderId)) 0 else 2)
       c(
-        as.raw(c(0xa0, 0xf4, 0xcb, 0x4f)),
+        as.raw(c(0x4f, 0xcb, 0xf4, 0xa0)),
         pack("<I", flags),
         if (is.null(self$folderId)) raw(0) else pack("<i", self$folderId),
         self$serialize_datetime(self$offsetDate),
@@ -3920,13 +3961,14 @@ GetDialogsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetDiscussionMessageRequest
-#  @description Represents a request to get discussion message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDiscussionMessageRequest
+#' @description Telegram API request \code{messages.getDiscussionMessage} (constructor \code{#446972fd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDiscussionMessageRequest <- R6::R6Class(
   "GetDiscussionMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -3982,13 +4024,14 @@ GetDiscussionMessageRequest$fromReader <- function(reader) {
   GetDiscussionMessageRequest$new(peer = peer, msgId = msgId)
 }
 
-#  @title GetDocumentByHashRequest
-#  @description Represents a request to get document by hash. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetDocumentByHashRequest
+#' @description Telegram API request \code{messages.getDocumentByHash} (constructor \code{#b1f2061f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetDocumentByHashRequest <- R6::R6Class(
   "GetDocumentByHashRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4042,13 +4085,14 @@ GetDocumentByHashRequest$fromReader <- function(reader) {
   GetDocumentByHashRequest$new(sha256 = sha256, size = size, mimeType = mimeType)
 }
 
-#  @title GetEmojiGroupsRequest
-#  @description Represents a request to get emoji groups. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiGroupsRequest
+#' @description Telegram API request \code{messages.getEmojiGroups} (constructor \code{#7488ce5b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiGroupsRequest <- R6::R6Class(
   "GetEmojiGroupsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4092,13 +4136,14 @@ GetEmojiGroupsRequest$fromReader <- function(reader) {
   GetEmojiGroupsRequest$new(hash = hash)
 }
 
-#  @title GetEmojiKeywordsRequest
-#  @description Represents a request to get emoji keywords. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiKeywordsRequest
+#' @description Telegram API request \code{messages.getEmojiKeywords} (constructor \code{#35a0e062}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiKeywordsRequest <- R6::R6Class(
   "GetEmojiKeywordsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4143,13 +4188,14 @@ GetEmojiKeywordsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetEmojiKeywordsDifferenceRequest
-#  @description Represents a request to get emoji keywords difference. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiKeywordsDifferenceRequest
+#' @description Telegram API request \code{messages.getEmojiKeywordsDifference} (constructor \code{#1508b6af}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiKeywordsDifferenceRequest <- R6::R6Class(
   "GetEmojiKeywordsDifferenceRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4198,13 +4244,14 @@ GetEmojiKeywordsDifferenceRequest$fromReader <- function(reader) {
   GetEmojiKeywordsDifferenceRequest$new(langCode = langCode, fromVersion = fromVersion)
 }
 
-#  @title GetEmojiKeywordsLanguagesRequest
-#  @description Represents a request to get emoji keywords languages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiKeywordsLanguagesRequest
+#' @description Telegram API request \code{messages.getEmojiKeywordsLanguages} (constructor \code{#4e9963b2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiKeywordsLanguagesRequest <- R6::R6Class(
   "GetEmojiKeywordsLanguagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4255,13 +4302,14 @@ GetEmojiKeywordsLanguagesRequest$fromReader <- function(reader) {
   GetEmojiKeywordsLanguagesRequest$new(langCodes = langCodes)
 }
 
-#  @title GetEmojiProfilePhotoGroupsRequest
-#  @description Represents a request to get emoji profile photo groups. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiProfilePhotoGroupsRequest
+#' @description Telegram API request \code{messages.getEmojiProfilePhotoGroups} (constructor \code{#21a548f3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiProfilePhotoGroupsRequest <- R6::R6Class(
   "GetEmojiProfilePhotoGroupsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4305,13 +4353,14 @@ GetEmojiProfilePhotoGroupsRequest$fromReader <- function(reader) {
   GetEmojiProfilePhotoGroupsRequest$new(hash = hash)
 }
 
-#  @title GetEmojiStatusGroupsRequest
-#  @description Represents a request to get emoji status groups. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiStatusGroupsRequest
+#' @description Telegram API request \code{messages.getEmojiStatusGroups} (constructor \code{#2ecd56cd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiStatusGroupsRequest <- R6::R6Class(
   "GetEmojiStatusGroupsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4356,13 +4405,14 @@ GetEmojiStatusGroupsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetEmojiStickerGroupsRequest
-#  @description Represents a request to get emoji sticker groups. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiStickerGroupsRequest
+#' @description Telegram API request \code{messages.getEmojiStickerGroups} (constructor \code{#1dd840f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiStickerGroupsRequest <- R6::R6Class(
   "GetEmojiStickerGroupsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4406,13 +4456,14 @@ GetEmojiStickerGroupsRequest$fromReader <- function(reader) {
   GetEmojiStickerGroupsRequest$new(hash = hash)
 }
 
-#  @title GetEmojiStickersRequest
-#  @description Represents a request to get emoji stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiStickersRequest
+#' @description Telegram API request \code{messages.getEmojiStickers} (constructor \code{#fbfca18f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiStickersRequest <- R6::R6Class(
   "GetEmojiStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4456,13 +4507,14 @@ GetEmojiStickersRequest$fromReader <- function(reader) {
   GetEmojiStickersRequest$new(hash = hash)
 }
 
-#  @title GetEmojiURLRequest
-#  @description Represents a request to get emoji URL. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetEmojiURLRequest
+#' @description Telegram API request \code{messages.getEmojiURL} (constructor \code{#d5b10c26}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetEmojiURLRequest <- R6::R6Class(
   "GetEmojiURLRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4506,13 +4558,14 @@ GetEmojiURLRequest$fromReader <- function(reader) {
   GetEmojiURLRequest$new(langCode = langCode)
 }
 
-#  @title GetExportedChatInviteRequest
-#  @description Represents a request to get exported chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetExportedChatInviteRequest
+#' @description Telegram API request \code{messages.getExportedChatInvite} (constructor \code{#73746f5c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetExportedChatInviteRequest <- R6::R6Class(
   "GetExportedChatInviteRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4569,13 +4622,14 @@ GetExportedChatInviteRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetExportedChatInvitesRequest
-#  @description Represents a request to get exported chat invites. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetExportedChatInvitesRequest
+#' @description Telegram API request \code{messages.getExportedChatInvites} (constructor \code{#a2b5a3f6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetExportedChatInvitesRequest <- R6::R6Class(
   "GetExportedChatInvitesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4661,13 +4715,14 @@ GetExportedChatInvitesRequest$fromReader <- function(reader) {
   GetExportedChatInvitesRequest$new(peer = peer, adminId = adminId, limit = limit, revoked = revoked, offsetDate = offsetDate, offsetLink = offsetLink)
 }
 
-#  @title GetExtendedMediaRequest
-#  @description Represents a request to get extended media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetExtendedMediaRequest
+#' @description Telegram API request \code{messages.getExtendedMedia} (constructor \code{#84f80814}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetExtendedMediaRequest <- R6::R6Class(
   "GetExtendedMediaRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4730,13 +4785,14 @@ GetExtendedMediaRequest$fromReader <- function(reader) {
   GetExtendedMediaRequest$new(peer = peer, id = id)
 }
 
-#  @title GetFactCheckRequest
-#  @description Represents a request to get fact check. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFactCheckRequest
+#' @description Telegram API request \code{messages.getFactCheck} (constructor \code{#b9cdc5ee}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFactCheckRequest <- R6::R6Class(
   "GetFactCheckRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4800,13 +4856,14 @@ GetFactCheckRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetFavedStickersRequest
-#  @description Represents a request to get faved stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFavedStickersRequest
+#' @description Telegram API request \code{messages.getFavedStickers} (constructor \code{#04f1aaa9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFavedStickersRequest <- R6::R6Class(
   "GetFavedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4850,13 +4907,14 @@ GetFavedStickersRequest$fromReader <- function(reader) {
   GetFavedStickersRequest$new(hash = hash)
 }
 
-#  @title GetFeaturedEmojiStickersRequest
-#  @description Represents a request to get featured emoji stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFeaturedEmojiStickersRequest
+#' @description Telegram API request \code{messages.getFeaturedEmojiStickers} (constructor \code{#0ecf6736}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFeaturedEmojiStickersRequest <- R6::R6Class(
   "GetFeaturedEmojiStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4900,13 +4958,14 @@ GetFeaturedEmojiStickersRequest$fromReader <- function(reader) {
   GetFeaturedEmojiStickersRequest$new(hash = hash)
 }
 
-#  @title GetFeaturedStickersRequest
-#  @description Represents a request to get featured stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFeaturedStickersRequest
+#' @description Telegram API request \code{messages.getFeaturedStickers} (constructor \code{#64780b14}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFeaturedStickersRequest <- R6::R6Class(
   "GetFeaturedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -4950,13 +5009,14 @@ GetFeaturedStickersRequest$fromReader <- function(reader) {
   GetFeaturedStickersRequest$new(hash = hash)
 }
 
-#  @title GetFullChatRequest
-#  @description Represents a request to get full chat information. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetFullChatRequest
+#' @description Telegram API request \code{messages.getFullChat} (constructor \code{#aeb00b34}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetFullChatRequest <- R6::R6Class(
   "GetFullChatRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5001,13 +5061,14 @@ GetFullChatRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetGameHighScoresRequest
-#  @description Represents a request to get game high scores. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetGameHighScoresRequest
+#' @description Telegram API request \code{messages.getGameHighScores} (constructor \code{#e822649d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetGameHighScoresRequest <- R6::R6Class(
   "GetGameHighScoresRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5048,7 +5109,7 @@ GetGameHighScoresRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0x9d, 0xd2, 0x22, 0xe8)),
+        as.raw(c(0x9d, 0x64, 0x22, 0xe8)),
         self$peer$bytes(),
         pack("<i", self$id),
         self$userId$bytes()
@@ -5069,11 +5130,11 @@ GetGameHighScoresRequest$fromReader <- function(reader) {
   GetGameHighScoresRequest$new(peer = peer, id = id, userId = userId)
 }
 
-#  @title GetHistoryRequest
-#  @description Represents a request to get history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetHistoryRequest
+#' @description Telegram API request \code{messages.getHistory} (constructor \code{#4423e6c5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetHistoryRequest <- R6::R6Class(
   "GetHistoryRequest",
   inherit = TLRequest,
@@ -5162,13 +5223,14 @@ GetHistoryRequest$fromReader <- function(reader) {
   GetHistoryRequest$new(peer = peer, offsetId = offsetId, offsetDate = offsetDate, addOffset = addOffset, limit = limit, maxId = maxId, minId = minId, hash = hash)
 }
 
-#  @title GetInlineBotResultsRequest
-#  @description Represents a request to get inline bot results. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetInlineBotResultsRequest
+#' @description Telegram API request \code{messages.getInlineBotResults} (constructor \code{#514e999d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetInlineBotResultsRequest <- R6::R6Class(
   "GetInlineBotResultsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5244,13 +5306,14 @@ GetInlineBotResultsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetInlineGameHighScoresRequest
-#  @description Represents a request to get inline game high scores. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetInlineGameHighScoresRequest
+#' @description Telegram API request \code{messages.getInlineGameHighScores} (constructor \code{#0f635e1b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetInlineGameHighScoresRequest <- R6::R6Class(
   "GetInlineGameHighScoresRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5306,13 +5369,14 @@ GetInlineGameHighScoresRequest$fromReader <- function(reader) {
   GetInlineGameHighScoresRequest$new(id = id, userId = userId)
 }
 
-#  @title GetMaskStickersRequest
-#  @description Represents a request to get mask stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMaskStickersRequest
+#' @description Telegram API request \code{messages.getMaskStickers} (constructor \code{#640f82b8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMaskStickersRequest <- R6::R6Class(
   "GetMaskStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5356,13 +5420,14 @@ GetMaskStickersRequest$fromReader <- function(reader) {
   GetMaskStickersRequest$new(hash = hash)
 }
 
-#  @title GetMessageEditDataRequest
-#  @description Represents a request to get message edit data. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessageEditDataRequest
+#' @description Telegram API request \code{messages.getMessageEditData} (constructor \code{#fda68d36}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessageEditDataRequest <- R6::R6Class(
   "GetMessageEditDataRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5419,13 +5484,14 @@ GetMessageEditDataRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetMessageReactionsListRequest
-#  @description Represents a request to get message reactions list. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessageReactionsListRequest
+#' @description Telegram API request \code{messages.getMessageReactionsList} (constructor \code{#461b3f48}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessageReactionsListRequest <- R6::R6Class(
   "GetMessageReactionsListRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5499,13 +5565,14 @@ GetMessageReactionsListRequest$fromReader <- function(reader) {
   GetMessageReactionsListRequest$new(peer = peer, id = id, limit = limit, reaction = reaction, offset = offset)
 }
 
-#  @title GetMessageReadParticipantsRequest
-#  @description Represents a request to get message read participants. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessageReadParticipantsRequest
+#' @description Telegram API request \code{messages.getMessageReadParticipants} (constructor \code{#31c1c44f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessageReadParticipantsRequest <- R6::R6Class(
   "GetMessageReadParticipantsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5561,82 +5628,61 @@ GetMessageReadParticipantsRequest$fromReader <- function(reader) {
   GetMessageReadParticipantsRequest$new(peer = peer, msgId = msgId)
 }
 
-#  @title GetMessagesRequest
-#  @description Represents a request to get messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-GetMessagesRequest <- R6::R6Class(
-  "GetMessagesRequest",
+#' @title GetMessagesRequest
+#' @description Telegram API request \code{messages.getMessages} (constructor \code{#63c66506}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+GetMessagesRequest <- R6::R6Class("GetMessagesRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0x63c66506,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xd4b40b5e,
-
-    #  @description Initialize the GetMessagesRequest object.
-    #  @param id The list of input messages.
+    id = NULL,
     initialize = function(id) {
       self$id <- id
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      tmp <- list()
-      for (x in self$id) {
-        tmp <- c(tmp, list(utils$getInputMessage(x)))
-      }
-      self$id <- tmp
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "GetMessagesRequest",
-        "id" = if (is.null(self$id)) list() else lapply(self$id, function(x) if (inherits(x, "TLObject")) x$toDict() else x)
+        `_` = "GetMessagesRequest",
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "GetMessagesRequest",
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
+      )
+    },
     bytes = function() {
       c(
         as.raw(c(0x06, 0x65, 0xc6, 0x63)),
-        as.raw(c(0x1c, 0xb5, 0xc4, 0x15)),
-        pack("<i", length(self$id)),
-        do.call(c, lapply(self$id, function(x) x$bytes()))
+        .telegramR_tl_vector(self$id)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$id <- reader$tgread_vector()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name GetMessagesRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of GetMessagesRequest.
-GetMessagesRequest$fromReader <- function(reader) {
-  reader$readInt()
-  id <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$tgreadObject()
-    id <- c(id, list(x))
-  }
-  GetMessagesRequest$new(id = id)
-}
-
-
-#  @title GetMessagesReactionsRequest
-#  @description Represents a request to get messages reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessagesReactionsRequest
+#' @description Telegram API request \code{messages.getMessagesReactions} (constructor \code{#8bba90e6}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessagesReactionsRequest <- R6::R6Class(
   "GetMessagesReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5699,11 +5745,11 @@ GetMessagesReactionsRequest$fromReader <- function(reader) {
   GetMessagesReactionsRequest$new(peer = peer, id = id)
 }
 
-#  @title GetMessagesViewsRequest
-#  @description Represents a request to get messages views. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMessagesViewsRequest
+#' @description Telegram API request \code{messages.getMessagesViews} (constructor \code{#5784d3e1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMessagesViewsRequest <- R6::R6Class(
   "GetMessagesViewsRequest",
   inherit = TLRequest,
@@ -5779,13 +5825,14 @@ GetMessagesViewsRequest$fromReader <- function(reader) {
   GetMessagesViewsRequest$new(peer = peer, id = id, increment = increment)
 }
 
-#  @title GetMyStickersRequest
-#  @description Represents a request to get my stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetMyStickersRequest
+#' @description Telegram API request \code{messages.getMyStickers} (constructor \code{#d0b5e1fc}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetMyStickersRequest <- R6::R6Class(
   "GetMyStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5835,13 +5882,14 @@ GetMyStickersRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetOldFeaturedStickersRequest
-#  @description Represents a request to get old featured stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetOldFeaturedStickersRequest
+#' @description Telegram API request \code{messages.getOldFeaturedStickers} (constructor \code{#7ed094a1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetOldFeaturedStickersRequest <- R6::R6Class(
   "GetOldFeaturedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5895,13 +5943,14 @@ GetOldFeaturedStickersRequest$fromReader <- function(reader) {
   GetOldFeaturedStickersRequest$new(offset = offset, limit = limit, hash = hash)
 }
 
-#  @title GetOnlinesRequest
-#  @description Represents a request to get onlines. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetOnlinesRequest
+#' @description Telegram API request \code{messages.getOnlines} (constructor \code{#6e2be050}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetOnlinesRequest <- R6::R6Class(
   "GetOnlinesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -5952,13 +6001,14 @@ GetOnlinesRequest$fromReader <- function(reader) {
   GetOnlinesRequest$new(peer = peer)
 }
 
-#  @title GetOutboxReadDateRequest
-#  @description Represents a request to get outbox read date. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetOutboxReadDateRequest
+#' @description Telegram API request \code{messages.getOutboxReadDate} (constructor \code{#8c4bfe5d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetOutboxReadDateRequest <- R6::R6Class(
   "GetOutboxReadDateRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6014,11 +6064,11 @@ GetOutboxReadDateRequest$fromReader <- function(reader) {
   GetOutboxReadDateRequest$new(peer = peer, msgId = msgId)
 }
 
-#  @title GetPaidReactionPrivacyRequest
-#  @description Represents a request to get paid reaction privacy. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPaidReactionPrivacyRequest
+#' @description Telegram API request \code{messages.getPaidReactionPrivacy} (constructor \code{#472455aa}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPaidReactionPrivacyRequest <- R6::R6Class(
   "GetPaidReactionPrivacyRequest",
   inherit = TLRequest,
@@ -6054,13 +6104,14 @@ GetPaidReactionPrivacyRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetPeerDialogsRequest
-#  @description Represents a request to get peer dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPeerDialogsRequest
+#' @description Telegram API request \code{messages.getPeerDialogs} (constructor \code{#e470bcfd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPeerDialogsRequest <- R6::R6Class(
   "GetPeerDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6122,13 +6173,14 @@ GetPeerDialogsRequest$fromReader <- function(reader) {
   GetPeerDialogsRequest$new(peers = peers)
 }
 
-#  @title GetPeerSettingsRequest
-#  @description Represents a request to get peer settings. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPeerSettingsRequest
+#' @description Telegram API request \code{messages.getPeerSettings} (constructor \code{#efd9a6a2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPeerSettingsRequest <- R6::R6Class(
   "GetPeerSettingsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6179,13 +6231,14 @@ GetPeerSettingsRequest$fromReader <- function(reader) {
   GetPeerSettingsRequest$new(peer = peer)
 }
 
-#  @title GetPinnedDialogsRequest
-#  @description Represents a request to get pinned dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPinnedDialogsRequest
+#' @description Telegram API request \code{messages.getPinnedDialogs} (constructor \code{#d6b94df2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPinnedDialogsRequest <- R6::R6Class(
   "GetPinnedDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6229,11 +6282,11 @@ GetPinnedDialogsRequest$fromReader <- function(reader) {
   GetPinnedDialogsRequest$new(folderId = folderId)
 }
 
-#  @title GetPinnedSavedDialogsRequest
-#  @description Represents a request to get pinned saved dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPinnedSavedDialogsRequest
+#' @description Telegram API request \code{messages.getPinnedSavedDialogs} (constructor \code{#d63d94e0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPinnedSavedDialogsRequest <- R6::R6Class(
   "GetPinnedSavedDialogsRequest",
   inherit = TLRequest,
@@ -6272,75 +6325,74 @@ GetPinnedSavedDialogsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetPollResultsRequest
-#  @description Represents a request to get poll results. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-GetPollResultsRequest <- R6::R6Class(
-  "GetPollResultsRequest",
+#' @title GetPollResultsRequest
+#' @description Telegram API request \code{messages.getPollResults} (constructor \code{#eda3e33b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+GetPollResultsRequest <- R6::R6Class("GetPollResultsRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x73bb643b,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xeda3e33b,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the GetPollResultsRequest object.
-    #  @param peer The input peer.
-    #  @param msgId The message ID.
-    initialize = function(peer, msgId) {
+    peer = NULL,
+    msgId = NULL,
+    poll_hash = NULL,
+    initialize = function(peer, msgId, poll_hash) {
       self$peer <- peer
       self$msgId <- msgId
+      self$poll_hash <- poll_hash
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "GetPollResultsRequest",
+        `_` = "GetPollResultsRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "msg_id" = self$msgId
+        "msg_id" = if (inherits(self$msgId, "TLObject")) self$msgId$toDict() else self$msgId,
+        "poll_hash" = if (inherits(self$poll_hash, "TLObject")) self$poll_hash$toDict() else self$poll_hash
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "GetPollResultsRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "msg_id" = if (inherits(self$msgId, "TLObject")) self$msgId$toDict() else self$msgId,
+        "poll_hash" = if (inherits(self$poll_hash, "TLObject")) self$poll_hash$toDict() else self$poll_hash
+      )
+    },
     bytes = function() {
       c(
-        as.raw(c(0x3b, 0x64, 0xbb, 0x73)),
+        as.raw(c(0x3b, 0xe3, 0xa3, 0xed)),
         self$peer$bytes(),
-        pack("<i", self$msgId)
+        pack("<i", self$msgId),
+        packInt64(self$poll_hash)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$peer <- reader$tgread_object()
+      self$msgId <- reader$read_int()
+      self$poll_hash <- reader$read_long()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name GetPollResultsRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of GetPollResultsRequest.
-GetPollResultsRequest$fromReader <- function(reader) {
-  peer <- reader$tgreadObject()
-  msgId <- reader$readInt()
-  GetPollResultsRequest$new(peer = peer, msgId = msgId)
-}
-
-#  @title GetPollVotesRequest
-#  @description Represents a request to get poll votes. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPollVotesRequest
+#' @description Telegram API request \code{messages.getPollVotes} (constructor \code{#b86e380e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPollVotesRequest <- R6::R6Class(
   "GetPollVotesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6414,13 +6466,14 @@ GetPollVotesRequest$fromReader <- function(reader) {
   GetPollVotesRequest$new(peer = peer, id = id, limit = limit, option = option, offset = offset)
 }
 
-#  @title GetPreparedInlineMessageRequest
-#  @description Represents a request to get a prepared inline message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetPreparedInlineMessageRequest
+#' @description Telegram API request \code{messages.getPreparedInlineMessage} (constructor \code{#857ebdb8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetPreparedInlineMessageRequest <- R6::R6Class(
   "GetPreparedInlineMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6477,13 +6530,14 @@ GetPreparedInlineMessageRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetQuickRepliesRequest
-#  @description Represents a request to get quick replies. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetQuickRepliesRequest
+#' @description Telegram API request \code{messages.getQuickReplies} (constructor \code{#d483f2a8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetQuickRepliesRequest <- R6::R6Class(
   "GetQuickRepliesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6527,13 +6581,14 @@ GetQuickRepliesRequest$fromReader <- function(reader) {
   GetQuickRepliesRequest$new(hash = hash)
 }
 
-#  @title GetQuickReplyMessagesRequest
-#  @description Represents a request to get quick reply messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetQuickReplyMessagesRequest
+#' @description Telegram API request \code{messages.getQuickReplyMessages} (constructor \code{#94a495c3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetQuickReplyMessagesRequest <- R6::R6Class(
   "GetQuickReplyMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6599,13 +6654,14 @@ GetQuickReplyMessagesRequest$fromReader <- function(reader) {
   GetQuickReplyMessagesRequest$new(shortcutId = shortcutId, hash = hash, id = id)
 }
 
-#  @title GetRecentLocationsRequest
-#  @description Represents a request to get recent locations. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRecentLocationsRequest
+#' @description Telegram API request \code{messages.getRecentLocations} (constructor \code{#702a40e0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRecentLocationsRequest <- R6::R6Class(
   "GetRecentLocationsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6667,13 +6723,14 @@ GetRecentLocationsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetRecentReactionsRequest
-#  @description Represents a request to get recent reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRecentReactionsRequest
+#' @description Telegram API request \code{messages.getRecentReactions} (constructor \code{#39461db2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRecentReactionsRequest <- R6::R6Class(
   "GetRecentReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6722,13 +6779,14 @@ GetRecentReactionsRequest$fromReader <- function(reader) {
   GetRecentReactionsRequest$new(limit = limit, hash = hash)
 }
 
-#  @title GetRecentStickersRequest
-#  @description Represents a request to get recent stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRecentStickersRequest
+#' @description Telegram API request \code{messages.getRecentStickers} (constructor \code{#9da9403b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRecentStickersRequest <- R6::R6Class(
   "GetRecentStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6779,11 +6837,11 @@ GetRecentStickersRequest$fromReader <- function(reader) {
   GetRecentStickersRequest$new(hash = hash, attached = attached)
 }
 
-#  @title GetRepliesRequest
-#  @description Represents a request to get replies. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetRepliesRequest
+#' @description Telegram API request \code{messages.getReplies} (constructor \code{#22ddd30c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetRepliesRequest <- R6::R6Class(
   "GetRepliesRequest",
   inherit = TLRequest,
@@ -6877,13 +6935,14 @@ GetRepliesRequest$fromReader <- function(reader) {
   GetRepliesRequest$new(peer = peer, msgId = msgId, offsetId = offsetId, offsetDate = offsetDate, addOffset = addOffset, limit = limit, maxId = maxId, minId = minId, hash = hash)
 }
 
-#  @title GetSavedDialogsRequest
-#  @description Represents a request to get saved dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedDialogsRequest
+#' @description Telegram API request \code{messages.getSavedDialogs} (constructor \code{#1e91fc99}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedDialogsRequest <- R6::R6Class(
   "GetSavedDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -6969,13 +7028,14 @@ GetSavedDialogsRequest$fromReader <- function(reader) {
   GetSavedDialogsRequest$new(offsetDate = offsetDate, offsetId = offsetId, offsetPeer = offsetPeer, limit = limit, hash = hash, excludePinned = excludePinned, parentPeer = parentPeer)
 }
 
-#  @title GetSavedDialogsByIDRequest
-#  @description Represents a request to get saved dialogs by ID. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedDialogsByIDRequest
+#' @description Telegram API request \code{messages.getSavedDialogsByID} (constructor \code{#6f6f9c96}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedDialogsByIDRequest <- R6::R6Class(
   "GetSavedDialogsByIDRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7046,13 +7106,14 @@ GetSavedDialogsByIDRequest$fromReader <- function(reader) {
   GetSavedDialogsByIDRequest$new(ids = ids, parentPeer = parentPeer)
 }
 
-#  @title GetSavedGifsRequest
-#  @description Represents a request to get saved GIFs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedGifsRequest
+#' @description Telegram API request \code{messages.getSavedGifs} (constructor \code{#5cf09635}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedGifsRequest <- R6::R6Class(
   "GetSavedGifsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7097,13 +7158,14 @@ GetSavedGifsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetSavedHistoryRequest
-#  @description Represents a request to get saved history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedHistoryRequest
+#' @description Telegram API request \code{messages.getSavedHistory} (constructor \code{#998ab009}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedHistoryRequest <- R6::R6Class(
   "GetSavedHistoryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7165,7 +7227,7 @@ GetSavedHistoryRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$parent_peer) || !self$parent_peer) 0L else 1L
       c(
-        as.raw(c(0x99, 0x8a, 0xb0, 0x09)),
+        as.raw(c(0x09, 0xb0, 0x8a, 0x99)),
         pack("<I", flags),
         if (is.null(self$parent_peer) || !self$parent_peer) raw(0) else self$parent_peer$bytes(),
         self$peer$bytes(),
@@ -7200,13 +7262,14 @@ GetSavedHistoryRequest$fromReader <- function(reader) {
   GetSavedHistoryRequest$new(peer = peer, offset_id = offset_id, offset_date = offset_date, add_offset = add_offset, limit = limit, max_id = max_id, min_id = min_id, hash = hash, parent_peer = parent_peer)
 }
 
-#  @title GetSavedReactionTagsRequest
-#  @description Represents a request to get saved reaction tags. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSavedReactionTagsRequest
+#' @description Telegram API request \code{messages.getSavedReactionTags} (constructor \code{#3637e05b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSavedReactionTagsRequest <- R6::R6Class(
   "GetSavedReactionTagsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7267,11 +7330,11 @@ GetSavedReactionTagsRequest$fromReader <- function(reader) {
   GetSavedReactionTagsRequest$new(hash = hash, peer = peer)
 }
 
-#  @title GetScheduledHistoryRequest
-#  @description Represents a request to get scheduled history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetScheduledHistoryRequest
+#' @description Telegram API request \code{messages.getScheduledHistory} (constructor \code{#f516760b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetScheduledHistoryRequest <- R6::R6Class(
   "GetScheduledHistoryRequest",
   inherit = TLRequest,
@@ -7331,13 +7394,14 @@ GetScheduledHistoryRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetScheduledMessagesRequest
-#  @description Represents a request to get scheduled messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetScheduledMessagesRequest
+#' @description Telegram API request \code{messages.getScheduledMessages} (constructor \code{#bdbb0464}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetScheduledMessagesRequest <- R6::R6Class(
   "GetScheduledMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7374,7 +7438,7 @@ GetScheduledMessagesRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xbd, 0xbb, 0x04, 0x64)),
+        as.raw(c(0x64, 0x04, 0xbb, 0xbd)),
         self$peer$bytes(),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), sapply(self$id, function(x) pack("<i", x))
       )
@@ -7398,13 +7462,14 @@ GetScheduledMessagesRequest$fromReader <- function(reader) {
   GetScheduledMessagesRequest$new(peer = peer, id = id)
 }
 
-#  @title GetSearchCountersRequest
-#  @description Represents a request to get search counters. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSearchCountersRequest
+#' @description Telegram API request \code{messages.getSearchCounters} (constructor \code{#1bbcf300}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSearchCountersRequest <- R6::R6Class(
   "GetSearchCountersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7451,7 +7516,7 @@ GetSearchCountersRequest <- R6::R6Class(
     bytes = function() {
       flags <- (if (is.null(self$savedPeerId) || !self$savedPeerId) 0L else 4L) | (if (is.null(self$topMsgId) || !self$topMsgId) 0L else 1L)
       c(
-        as.raw(c(0x1b, 0xbc, 0xf3, 0x00)),
+        as.raw(c(0x00, 0xf3, 0xbc, 0x1b)),
         pack("<I", flags),
         self$peer$bytes(),
         if (is.null(self$savedPeerId) || !self$savedPeerId) raw(0) else self$savedPeerId$bytes(),
@@ -7481,13 +7546,14 @@ GetSearchCountersRequest$fromReader <- function(reader) {
   GetSearchCountersRequest$new(peer = peer, filters = filters, savedPeerId = savedPeerId, topMsgId = topMsgId)
 }
 
-#  @title GetSearchResultsCalendarRequest
-#  @description Represents a request to get search results calendar. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSearchResultsCalendarRequest
+#' @description Telegram API request \code{messages.getSearchResultsCalendar} (constructor \code{#6aa3f6bd}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSearchResultsCalendarRequest <- R6::R6Class(
   "GetSearchResultsCalendarRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7537,7 +7603,7 @@ GetSearchResultsCalendarRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$savedPeerId) || !self$savedPeerId) 0L else 4L
       c(
-        as.raw(c(0x6a, 0xa3, 0xf6, 0xbd)),
+        as.raw(c(0xbd, 0xf6, 0xa3, 0x6a)),
         pack("<I", flags),
         self$peer$bytes(),
         if (is.null(self$savedPeerId) || !self$savedPeerId) raw(0) else self$savedPeerId$bytes(),
@@ -7565,13 +7631,14 @@ GetSearchResultsCalendarRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetSearchResultsPositionsRequest
-#  @description Represents a request to get search results positions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSearchResultsPositionsRequest
+#' @description Telegram API request \code{messages.getSearchResultsPositions} (constructor \code{#9c7f2f10}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSearchResultsPositionsRequest <- R6::R6Class(
   "GetSearchResultsPositionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7621,7 +7688,7 @@ GetSearchResultsPositionsRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$saved_peer_id) || !self$saved_peer_id) 0L else 4L
       c(
-        as.raw(c(0x9c, 0x7f, 0x2f, 0x10)),
+        as.raw(c(0x10, 0x2f, 0x7f, 0x9c)),
         pack("<I", flags),
         self$peer$bytes(),
         if (is.null(self$saved_peer_id) || !self$saved_peer_id) raw(0) else self$saved_peer_id$bytes(),
@@ -7648,11 +7715,11 @@ GetSearchResultsPositionsRequest$fromReader <- function(reader) {
   GetSearchResultsPositionsRequest$new(peer = peer, filter = filter, offset_id = offsetId, limit = limit, saved_peer_id = savedPeerId)
 }
 
-#  @title GetSplitRangesRequest
-#  @description Represents a request to get split ranges. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSplitRangesRequest
+#' @description Telegram API request \code{messages.getSplitRanges} (constructor \code{#1cff7e08}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSplitRangesRequest <- R6::R6Class(
   "GetSplitRangesRequest",
   inherit = TLRequest,
@@ -7673,7 +7740,7 @@ GetSplitRangesRequest <- R6::R6Class(
     #  @description Serialize the object to bytes.
     #  @return A raw vector of bytes.
     bytes = function() {
-      as.raw(c(0x1c, 0xff, 0x7e, 0x08))
+      as.raw(c(0x08, 0x7e, 0xff, 0x1c))
     }
   )
 )
@@ -7687,13 +7754,14 @@ GetSplitRangesRequest$fromReader <- function(reader) {
   GetSplitRangesRequest$new()
 }
 
-#  @title GetSponsoredMessagesRequest
-#  @description Represents a request to get sponsored messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSponsoredMessagesRequest
+#' @description Telegram API request \code{messages.getSponsoredMessages} (constructor \code{#3d6ce850}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSponsoredMessagesRequest <- R6::R6Class(
   "GetSponsoredMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7731,7 +7799,7 @@ GetSponsoredMessagesRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$msg_id) || !self$msg_id) 0L else 1L
       c(
-        as.raw(c(0x3d, 0x6c, 0xe8, 0x50)),
+        as.raw(c(0x50, 0xe8, 0x6c, 0x3d)),
         pack("<I", flags),
         self$peer$bytes(),
         if (is.null(self$msg_id) || !self$msg_id) raw(0) else pack("<i", self$msg_id)
@@ -7753,13 +7821,14 @@ GetSponsoredMessagesRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetStickerSetRequest
-#  @description Represents a request to get a sticker set. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStickerSetRequest
+#' @description Telegram API request \code{messages.getStickerSet} (constructor \code{#c8a0ec74}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStickerSetRequest <- R6::R6Class(
   "GetStickerSetRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7789,7 +7858,7 @@ GetStickerSetRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xc8, 0xa0, 0xec, 0x74)),
+        as.raw(c(0x74, 0xec, 0xa0, 0xc8)),
         self$stickerset$bytes(),
         pack("<i", self$hash)
       )
@@ -7808,13 +7877,14 @@ GetStickerSetRequest$fromReader <- function(reader) {
   GetStickerSetRequest$new(stickerset = stickerset, hash = hash)
 }
 
-#  @title GetStickersRequest
-#  @description Represents a request to get stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetStickersRequest
+#' @description Telegram API request \code{messages.getStickers} (constructor \code{#d5a5d3a1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetStickersRequest <- R6::R6Class(
   "GetStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7844,7 +7914,7 @@ GetStickersRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xd5, 0xa5, 0xd3, 0xa1)),
+        as.raw(c(0xa1, 0xd3, 0xa5, 0xd5)),
         self$serialize_bytes(self$emoticon),
         pack("<q", self$hash)
       )
@@ -7863,11 +7933,11 @@ GetStickersRequest$fromReader <- function(reader) {
   GetStickersRequest$new(emoticon = emoticon, hash = hash)
 }
 
-#  @title GetSuggestedDialogFiltersRequest
-#  @description Represents a request to get suggested dialog filters. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetSuggestedDialogFiltersRequest
+#' @description Telegram API request \code{messages.getSuggestedDialogFilters} (constructor \code{#a29cd42c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetSuggestedDialogFiltersRequest <- R6::R6Class(
   "GetSuggestedDialogFiltersRequest",
   inherit = TLRequest,
@@ -7888,7 +7958,7 @@ GetSuggestedDialogFiltersRequest <- R6::R6Class(
     #  @description Serialize the object to bytes.
     #  @return A raw vector of bytes.
     bytes = function() {
-      as.raw(c(0xa2, 0x9c, 0xd4, 0x2c))
+      as.raw(c(0x2c, 0xd4, 0x9c, 0xa2))
     }
   )
 )
@@ -7902,13 +7972,14 @@ GetSuggestedDialogFiltersRequest$fromReader <- function(reader) {
   GetSuggestedDialogFiltersRequest$new()
 }
 
-#  @title GetTopReactionsRequest
-#  @description Represents a request to get top reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetTopReactionsRequest
+#' @description Telegram API request \code{messages.getTopReactions} (constructor \code{#bb8125ba}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetTopReactionsRequest <- R6::R6Class(
   "GetTopReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -7938,7 +8009,7 @@ GetTopReactionsRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xbb, 0x81, 0x25, 0xba)),
+        as.raw(c(0xba, 0x25, 0x81, 0xbb)),
         pack("<i", self$limit),
         pack("<q", self$hash)
       )
@@ -7958,13 +8029,14 @@ GetTopReactionsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetUnreadMentionsRequest
-#  @description Represents a request to get unread mentions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUnreadMentionsRequest
+#' @description Telegram API request \code{messages.getUnreadMentions} (constructor \code{#f107e790}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUnreadMentionsRequest <- R6::R6Class(
   "GetUnreadMentionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8048,13 +8120,14 @@ GetUnreadMentionsRequest$fromReader <- function(reader) {
   GetUnreadMentionsRequest$new(peer = peer, offsetId = offsetId, addOffset = addOffset, limit = limit, maxId = maxId, minId = minId, topMsgId = topMsgId)
 }
 
-#  @title GetUnreadReactionsRequest
-#  @description Represents a request to get unread reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetUnreadReactionsRequest
+#' @description Telegram API request \code{messages.getUnreadReactions} (constructor \code{#bd7f90ac}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetUnreadReactionsRequest <- R6::R6Class(
   "GetUnreadReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8146,13 +8219,14 @@ GetUnreadReactionsRequest$fromReader <- function(reader) {
   GetUnreadReactionsRequest$new(peer = peer, offsetId = offsetId, addOffset = addOffset, limit = limit, maxId = maxId, minId = minId, topMsgId = topMsgId, savedPeerId = savedPeerId)
 }
 
-#  @title GetWebPageRequest
-#  @description Represents a request to get a web page. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetWebPageRequest
+#' @description Telegram API request \code{messages.getWebPage} (constructor \code{#8d9692a3}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetWebPageRequest <- R6::R6Class(
   "GetWebPageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8202,13 +8276,14 @@ GetWebPageRequest$fromReader <- function(reader) {
 }
 
 
-#  @title GetWebPagePreviewRequest
-#  @description Represents a request to get a web page preview. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title GetWebPagePreviewRequest
+#' @description Telegram API request \code{messages.getWebPagePreview} (constructor \code{#570d6f6f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 GetWebPagePreviewRequest <- R6::R6Class(
   "GetWebPagePreviewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8269,13 +8344,14 @@ GetWebPagePreviewRequest$fromReader <- function(reader) {
   GetWebPagePreviewRequest$new(message = message, entities = entities)
 }
 
-#  @title HideAllChatJoinRequestsRequest
-#  @description Represents a request to hide all chat join requests. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title HideAllChatJoinRequestsRequest
+#' @description Telegram API request \code{messages.hideAllChatJoinRequests} (constructor \code{#e085f4ea}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 HideAllChatJoinRequestsRequest <- R6::R6Class(
   "HideAllChatJoinRequestsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8338,13 +8414,14 @@ HideAllChatJoinRequestsRequest$fromReader <- function(reader) {
   HideAllChatJoinRequestsRequest$new(peer = peer, approved = approved, link = link)
 }
 
-#  @title HideChatJoinRequestRequest
-#  @description Represents a request to hide a chat join request. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title HideChatJoinRequestRequest
+#' @description Telegram API request \code{messages.hideChatJoinRequest} (constructor \code{#7fe7e815}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 HideChatJoinRequestRequest <- R6::R6Class(
   "HideChatJoinRequestRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8409,13 +8486,14 @@ HideChatJoinRequestRequest$fromReader <- function(reader) {
 }
 
 
-#  @title HidePeerSettingsBarRequest
-#  @description Represents a request to hide peer settings bar. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title HidePeerSettingsBarRequest
+#' @description Telegram API request \code{messages.hidePeerSettingsBar} (constructor \code{#4facb138}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 HidePeerSettingsBarRequest <- R6::R6Class(
   "HidePeerSettingsBarRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8466,65 +8544,58 @@ HidePeerSettingsBarRequest$fromReader <- function(reader) {
   HidePeerSettingsBarRequest$new(peer = peer)
 }
 
-#  @title ImportChatInviteRequest
-#  @description Represents a request to import a chat invite. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ImportChatInviteRequest <- R6::R6Class(
-  "ImportChatInviteRequest",
+#' @title ImportChatInviteRequest
+#' @description Telegram API request \code{messages.importChatInvite} (constructor \code{#de91436e}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ImportChatInviteRequest <- R6::R6Class("ImportChatInviteRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x6c50051c,
-    #  @field SUBCLASS_OF_ID The subclass ID.
-    SUBCLASS_OF_ID = 0x8af52aac,
-    #  @field hash The invite hash.
+    CONSTRUCTOR_ID = 0xde91436e,
+    SUBCLASS_OF_ID = 0x5d0ff992,
     hash = NULL,
-
-    #  @description Initialize the ImportChatInviteRequest object.
-    #  @param hash The invite hash.
     initialize = function(hash) {
       self$hash <- hash
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "ImportChatInviteRequest",
-        "hash" = self$hash
+        `_` = "ImportChatInviteRequest",
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$toDict() else self$hash
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ImportChatInviteRequest",
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$toDict() else self$hash
+      )
+    },
     bytes = function() {
       c(
-        as.raw(c(0x1c, 0x05, 0x50, 0x6c)),
-        self$serialize_bytes(self$hash)
+        as.raw(c(0x6e, 0x43, 0x91, 0xde)),
+        serialize_bytes(self$hash)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$hash <- reader$tgread_string()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name ImportChatInviteRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ImportChatInviteRequest.
-ImportChatInviteRequest$fromReader <- function(reader) {
-  hash <- reader$tgreadString()
-  ImportChatInviteRequest$new(hash = hash)
-}
-
-#  @title InitHistoryImportRequest
-#  @description Represents a request to initialize history import. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InitHistoryImportRequest
+#' @description Telegram API request \code{messages.initHistoryImport} (constructor \code{#34090c3b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InitHistoryImportRequest <- R6::R6Class(
   "InitHistoryImportRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8586,13 +8657,14 @@ InitHistoryImportRequest$fromReader <- function(reader) {
 }
 
 
-#  @title InstallStickerSetRequest
-#  @description Represents a request to install a sticker set. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title InstallStickerSetRequest
+#' @description Telegram API request \code{messages.installStickerSet} (constructor \code{#c78fe460}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InstallStickerSetRequest <- R6::R6Class(
   "InstallStickerSetRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8641,13 +8713,14 @@ InstallStickerSetRequest$fromReader <- function(reader) {
   InstallStickerSetRequest$new(stickerset = stickerset, archived = archived)
 }
 
-#  @title MarkDialogUnreadRequest
-#  @description Represents a request to mark a dialog as unread. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title MarkDialogUnreadRequest
+#' @description Telegram API request \code{messages.markDialogUnread} (constructor \code{#8c5006f8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 MarkDialogUnreadRequest <- R6::R6Class(
   "MarkDialogUnreadRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8715,13 +8788,14 @@ MarkDialogUnreadRequest$fromReader <- function(reader) {
   MarkDialogUnreadRequest$new(peer = peer, unread = unread, parentPeer = parentPeer)
 }
 
-#  @title MigrateChatRequest
-#  @description Represents a request to migrate a chat. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title MigrateChatRequest
+#' @description Telegram API request \code{messages.migrateChat} (constructor \code{#a2875319}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 MigrateChatRequest <- R6::R6Class(
   "MigrateChatRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8749,7 +8823,7 @@ MigrateChatRequest <- R6::R6Class(
     bytes = function() {
       c(
         as.raw(c(0x19, 0x53, 0x87, 0xa2)),
-        writeBin(self$chatId, raw(), size = 8, endian = "little")
+        packInt64(self$chatId)
       )
     }
   )
@@ -8766,13 +8840,14 @@ MigrateChatRequest$fromReader <- function(reader) {
 }
 
 
-#  @title ProlongWebViewRequest
-#  @description Represents a request to prolong a web view. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ProlongWebViewRequest
+#' @description Telegram API request \code{messages.prolongWebView} (constructor \code{#b0d81a83}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ProlongWebViewRequest <- R6::R6Class(
   "ProlongWebViewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8833,7 +8908,7 @@ ProlongWebViewRequest <- R6::R6Class(
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
         self$bot$bytes(),
-        writeBin(self$queryId, raw(), size = 8, endian = "little"),
+        packInt64(self$queryId),
         if (!is.null(self$replyTo) && self$replyTo) self$replyTo$bytes() else raw(),
         if (!is.null(self$sendAs) && self$sendAs) self$sendAs$bytes() else raw()
       )
@@ -8857,13 +8932,14 @@ ProlongWebViewRequest$fromReader <- function(reader) {
   ProlongWebViewRequest$new(peer = peer, bot = bot, queryId = queryId, silent = silent, replyTo = replyTo, sendAs = sendAs)
 }
 
-#  @title RateTranscribedAudioRequest
-#  @description Represents a request to rate transcribed audio. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RateTranscribedAudioRequest
+#' @description Telegram API request \code{messages.rateTranscribedAudio} (constructor \code{#7f1d072f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RateTranscribedAudioRequest <- R6::R6Class(
   "RateTranscribedAudioRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8909,7 +8985,7 @@ RateTranscribedAudioRequest <- R6::R6Class(
         as.raw(c(0x2f, 0x07, 0x1d, 0x7f)),
         self$peer$bytes(),
         writeBin(self$msgId, raw(), size = 4, endian = "little"),
-        writeBin(self$transcriptionId, raw(), size = 8, endian = "little"),
+        packInt64(self$transcriptionId),
         if (self$good) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc))
       )
     }
@@ -8929,13 +9005,14 @@ RateTranscribedAudioRequest$fromReader <- function(reader) {
   RateTranscribedAudioRequest$new(peer = peer, msgId = msgId, transcriptionId = transcriptionId, good = good)
 }
 
-#  @title ReadDiscussionRequest
-#  @description Represents a request to read discussion. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadDiscussionRequest
+#' @description Telegram API request \code{messages.readDiscussion} (constructor \code{#f731a9f4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadDiscussionRequest <- R6::R6Class(
   "ReadDiscussionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -8997,13 +9074,14 @@ ReadDiscussionRequest$fromReader <- function(reader) {
 }
 
 
-#  @title ReadEncryptedHistoryRequest
-#  @description Represents a request to read encrypted history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadEncryptedHistoryRequest
+#' @description Telegram API request \code{messages.readEncryptedHistory} (constructor \code{#7f4b690a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadEncryptedHistoryRequest <- R6::R6Class(
   "ReadEncryptedHistoryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9052,13 +9130,14 @@ ReadEncryptedHistoryRequest$fromReader <- function(reader) {
   ReadEncryptedHistoryRequest$new(peer = peer, maxDate = maxDate)
 }
 
-#  @title ReadFeaturedStickersRequest
-#  @description Represents a request to read featured stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadFeaturedStickersRequest
+#' @description Telegram API request \code{messages.readFeaturedStickers} (constructor \code{#5b118126}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadFeaturedStickersRequest <- R6::R6Class(
   "ReadFeaturedStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9088,7 +9167,7 @@ ReadFeaturedStickersRequest <- R6::R6Class(
         as.raw(c(0x26, 0x81, 0x11, 0x5b)),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
         writeBin(length(self$id), raw(), size = 4, endian = "little"),
-        unlist(lapply(self$id, function(x) writeBin(x, raw(), size = 8, endian = "little")))
+        unlist(lapply(self$id, function(x) packInt64(x)))
       )
     }
   )
@@ -9109,76 +9188,68 @@ ReadFeaturedStickersRequest$fromReader <- function(reader) {
   ReadFeaturedStickersRequest$new(id = id)
 }
 
-#  @title ReadHistoryRequest
-#  @description Represents a request to read history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ReadHistoryRequest <- R6::R6Class(
-  "ReadHistoryRequest",
+#' @title ReadHistoryRequest
+#' @description Telegram API request \code{messages.readHistory} (constructor \code{#0e306d3a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ReadHistoryRequest <- R6::R6Class("ReadHistoryRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xe306d3a,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x0e306d3a,
     SUBCLASS_OF_ID = 0xced3c06e,
-
-    #  @description Initialize the ReadHistoryRequest object.
-    #  @param peer The input peer.
-    #  @param maxId The maximum ID.
+    peer = NULL,
+    maxId = NULL,
     initialize = function(peer, maxId) {
       self$peer <- peer
       self$maxId <- maxId
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "ReadHistoryRequest",
+        `_` = "ReadHistoryRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "max_id" = self$maxId
+        "max_id" = if (inherits(self$maxId, "TLObject")) self$maxId$toDict() else self$maxId
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ReadHistoryRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "max_id" = if (inherits(self$maxId, "TLObject")) self$maxId$toDict() else self$maxId
+      )
+    },
     bytes = function() {
       c(
         as.raw(c(0x3a, 0x6d, 0x30, 0x0e)),
         self$peer$bytes(),
-        writeBin(self$maxId, raw(), size = 4, endian = "little")
+        pack("<i", self$maxId)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$peer <- reader$tgread_object()
+      self$maxId <- reader$read_int()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name ReadHistoryRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ReadHistoryRequest.
-ReadHistoryRequest$fromReader <- function(reader) {
-  peer <- reader$tgreadObject()
-  maxId <- reader$readInt()
-  ReadHistoryRequest$new(peer = peer, maxId = maxId)
-}
-
-
-#  @title ReadMentionsRequest
-#  @description Represents a request to read mentions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadMentionsRequest
+#' @description Telegram API request \code{messages.readMentions} (constructor \code{#36e5bf4d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadMentionsRequest <- R6::R6Class(
   "ReadMentionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9216,7 +9287,7 @@ ReadMentionsRequest <- R6::R6Class(
     bytes = function() {
       flags <- if (is.null(self$topMsgId) || !self$topMsgId) 0L else 1L
       c(
-        as.raw(c(0x36, 0xe5, 0xbf, 0x4d)),
+        as.raw(c(0x4d, 0xbf, 0xe5, 0x36)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
         if (!is.null(self$topMsgId) && self$topMsgId) writeBin(self$topMsgId, raw(), size = 4, endian = "little") else raw()
@@ -9237,70 +9308,58 @@ ReadMentionsRequest$fromReader <- function(reader) {
   ReadMentionsRequest$new(peer = peer, topMsgId = topMsgId)
 }
 
-#  @title ReadMessageContentsRequest
-#  @description Represents a request to read message contents. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ReadMessageContentsRequest <- R6::R6Class(
-  "ReadMessageContentsRequest",
+#' @title ReadMessageContentsRequest
+#' @description Telegram API request \code{messages.readMessageContents} (constructor \code{#36a73f77}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ReadMessageContentsRequest <- R6::R6Class("ReadMessageContentsRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0x36a73f77,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xced3c06e,
-
-    #  @description Initialize the ReadMessageContentsRequest object.
-    #  @param id The list of message IDs.
+    id = NULL,
     initialize = function(id) {
       self$id <- id
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "ReadMessageContentsRequest",
-        "id" = if (is.null(self$id)) list() else self$id
+        `_` = "ReadMessageContentsRequest",
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ReadMessageContentsRequest",
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id
+      )
+    },
     bytes = function() {
       c(
-        as.raw(c(0x36, 0xa7, 0x3f, 0x77)),
-        as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
-        writeBin(length(self$id), raw(), size = 4, endian = "little"),
-        unlist(lapply(self$id, function(x) writeBin(x, raw(), size = 4, endian = "little")))
+        as.raw(c(0x77, 0x3f, 0xa7, 0x36)),
+        c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), if (length(self$id) > 0) do.call(c, lapply(self$id, function(x) pack("<i", x))) else raw(0))
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$id <- { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_int()) else list() }
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name ReadMessageContentsRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ReadMessageContentsRequest.
-ReadMessageContentsRequest$fromReader <- function(reader) {
-  reader$readInt()
-  id <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$readInt()
-    id <- c(id, x)
-  }
-  ReadMessageContentsRequest$new(id = id)
-}
-
-#  @title ReadReactionsRequest
-#  @description Represents a request to read reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadReactionsRequest
+#' @description Telegram API request \code{messages.readReactions} (constructor \code{#9ec44f93}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadReactionsRequest <- R6::R6Class(
   "ReadReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9346,7 +9405,7 @@ ReadReactionsRequest <- R6::R6Class(
       if (!is.null(self$topMsgId) && self$topMsgId) flags <- bitwOr(flags, 1L)
       if (!is.null(self$savedPeerId) && self$savedPeerId) flags <- bitwOr(flags, 2L)
       c(
-        as.raw(c(0x9e, 0xc4, 0x4f, 0x93)),
+        as.raw(c(0x93, 0x4f, 0xc4, 0x9e)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
         if (!is.null(self$topMsgId) && self$topMsgId) writeBin(self$topMsgId, raw(), size = 4, endian = "little") else raw(),
@@ -9370,13 +9429,14 @@ ReadReactionsRequest$fromReader <- function(reader) {
 }
 
 
-#  @title ReadSavedHistoryRequest
-#  @description Represents a request to read saved history. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReadSavedHistoryRequest
+#' @description Telegram API request \code{messages.readSavedHistory} (constructor \code{#ba4a3b5b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReadSavedHistoryRequest <- R6::R6Class(
   "ReadSavedHistoryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9417,7 +9477,7 @@ ReadSavedHistoryRequest <- R6::R6Class(
     #  @return A raw vector of bytes.
     bytes = function() {
       c(
-        as.raw(c(0xba, 0x4a, 0x3b, 0x5b)),
+        as.raw(c(0x5b, 0x3b, 0x4a, 0xba)),
         self$parentPeer$bytes(),
         self$peer$bytes(),
         writeBin(self$maxId, raw(), size = 4, endian = "little")
@@ -9438,13 +9498,14 @@ ReadSavedHistoryRequest$fromReader <- function(reader) {
   ReadSavedHistoryRequest$new(parentPeer = parentPeer, peer = peer, maxId = maxId)
 }
 
-#  @title ReceivedMessagesRequest
-#  @description Represents a request to receive messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReceivedMessagesRequest
+#' @description Telegram API request \code{messages.receivedMessages} (constructor \code{#05a954c0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReceivedMessagesRequest <- R6::R6Class(
   "ReceivedMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9488,13 +9549,14 @@ ReceivedMessagesRequest$fromReader <- function(reader) {
   ReceivedMessagesRequest$new(maxId = maxId)
 }
 
-#  @title ReceivedQueueRequest
-#  @description Represents a request to receive queue. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReceivedQueueRequest
+#' @description Telegram API request \code{messages.receivedQueue} (constructor \code{#55a5bb66}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReceivedQueueRequest <- R6::R6Class(
   "ReceivedQueueRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9549,13 +9611,14 @@ ReceivedQueueRequest$readResult <- function(reader) {
 }
 
 
-#  @title ReorderPinnedDialogsRequest
-#  @description Represents a request to reorder pinned dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderPinnedDialogsRequest
+#' @description Telegram API request \code{messages.reorderPinnedDialogs} (constructor \code{#3b1adf37}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderPinnedDialogsRequest <- R6::R6Class(
   "ReorderPinnedDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9629,13 +9692,14 @@ ReorderPinnedDialogsRequest$from_reader <- function(reader) {
   ReorderPinnedDialogsRequest$new(folder_id = folder_id, order = order, force = force)
 }
 
-#  @title ReorderPinnedSavedDialogsRequest
-#  @description Represents a request to reorder pinned saved dialogs. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderPinnedSavedDialogsRequest
+#' @description Telegram API request \code{messages.reorderPinnedSavedDialogs} (constructor \code{#8b716587}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderPinnedSavedDialogsRequest <- R6::R6Class(
   "ReorderPinnedSavedDialogsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9704,13 +9768,14 @@ ReorderPinnedSavedDialogsRequest$from_reader <- function(reader) {
   ReorderPinnedSavedDialogsRequest$new(order = order, force = force)
 }
 
-#  @title ReorderQuickRepliesRequest
-#  @description Represents a request to reorder quick replies. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderQuickRepliesRequest
+#' @description Telegram API request \code{messages.reorderQuickReplies} (constructor \code{#60331907}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderQuickRepliesRequest <- R6::R6Class(
   "ReorderQuickRepliesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9762,13 +9827,14 @@ ReorderQuickRepliesRequest$from_reader <- function(reader) {
 }
 
 
-#  @title ReorderStickerSetsRequest
-#  @description Represents a request to reorder sticker sets. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReorderStickerSetsRequest
+#' @description Telegram API request \code{messages.reorderStickerSets} (constructor \code{#78337739}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReorderStickerSetsRequest <- R6::R6Class(
   "ReorderStickerSetsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9832,92 +9898,80 @@ ReorderStickerSetsRequest$fromReader <- function(reader) {
   ReorderStickerSetsRequest$new(order = order, masks = masks, emojis = emojis)
 }
 
-#  @title ReportRequest
-#  @description Represents a request to report messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ReportRequest <- R6::R6Class(
-  "ReportRequest",
+#' @title ReportRequest
+#' @description Telegram API request \code{messages.report} (constructor \code{#fc78af9b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ReportRequest <- R6::R6Class("ReportRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0xfc78af9b,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xacd3f438,
-
-    #  @description Initialize the ReportRequest object.
-    #  @param peer The input peer.
-    #  @param id The list of message IDs.
-    #  @param option The option bytes.
-    #  @param message The report message.
+    peer = NULL,
+    id = NULL,
+    option = NULL,
+    message = NULL,
     initialize = function(peer, id, option, message) {
       self$peer <- peer
       self$id <- id
       self$option <- option
       self$message <- message
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$getInputPeer(client$getInputEntity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     toDict = function() {
       list(
-        "_" = "ReportRequest",
+        `_` = "ReportRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
-        "id" = if (is.null(self$id)) list() else self$id,
-        "option" = self$option,
-        "message" = self$message
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "option" = if (inherits(self$option, "TLObject")) self$option$toDict() else self$option,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ReportRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$toDict() else self$peer,
+        "id" = if (inherits(self$id, "TLObject")) self$id$toDict() else self$id,
+        "option" = if (inherits(self$option, "TLObject")) self$option$toDict() else self$option,
+        "message" = if (inherits(self$message, "TLObject")) self$message$toDict() else self$message
+      )
+    },
     bytes = function() {
       c(
         as.raw(c(0x9b, 0xaf, 0x78, 0xfc)),
         self$peer$bytes(),
-        as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
-        packBits(intToBits(length(self$id)), type = "integer"),
-        unlist(lapply(self$id, function(x) packBits(intToBits(x), type = "integer"))),
-        self$serialize_bytes(self$option),
-        self$serialize_bytes(self$message)
+        c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), if (length(self$id) > 0) do.call(c, lapply(self$id, function(x) pack("<i", x))) else raw(0)),
+        serialize_bytes(self$option),
+        serialize_bytes(self$message)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$peer <- reader$tgread_object()
+      self$id <- { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_int()) else list() }
+      self$option <- reader$tgread_bytes()
+      self$message <- reader$tgread_string()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title fromReader
-# @name ReportRequest_fromReader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ReportRequest.
-ReportRequest$fromReader <- function(reader) {
-  peer <- reader$tgreadObject()
-  reader$readInt()
-  id <- list()
-  for (i in 1:reader$readInt()) {
-    x <- reader$readInt()
-    id <- c(id, x)
-  }
-  option <- reader$tgreadBytes()
-  message <- reader$tgreadString()
-  ReportRequest$new(peer = peer, id = id, option = option, message = message)
-}
-
-#  @title ReportEncryptedSpamRequest
-#  @description Represents a request to report encrypted spam. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportEncryptedSpamRequest
+#' @description Telegram API request \code{messages.reportEncryptedSpam} (constructor \code{#4b0c8c0f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportEncryptedSpamRequest <- R6::R6Class(
   "ReportEncryptedSpamRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -9962,13 +10016,14 @@ ReportEncryptedSpamRequest$fromReader <- function(reader) {
 }
 
 
-#  @title ReportMessagesDeliveryRequest
-#  @description Represents a request to report messages delivery. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportMessagesDeliveryRequest
+#' @description Telegram API request \code{messages.reportMessagesDelivery} (constructor \code{#5a6d7395}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportMessagesDeliveryRequest <- R6::R6Class(
   "ReportMessagesDeliveryRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10039,13 +10094,14 @@ ReportMessagesDeliveryRequest$from_reader <- function(reader) {
   ReportMessagesDeliveryRequest$new(peer = peer, id = id, push = push)
 }
 
-#  @title ReportReactionRequest
-#  @description Represents a request to report a reaction. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportReactionRequest
+#' @description Telegram API request \code{messages.reportReaction} (constructor \code{#3f64c076}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportReactionRequest <- R6::R6Class(
   "ReportReactionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10107,70 +10163,62 @@ ReportReactionRequest$from_reader <- function(reader) {
   ReportReactionRequest$new(peer = peer, id = id, reaction_peer = reaction_peer)
 }
 
-#  @title ReportSpamRequest
-#  @description Represents a request to report spam. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ReportSpamRequest <- R6::R6Class(
-  "ReportSpamRequest",
+#' @title ReportSpamRequest
+#' @description Telegram API request \code{messages.reportSpam} (constructor \code{#cf1592db}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ReportSpamRequest <- R6::R6Class("ReportSpamRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0xcf1592db,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xf5b399ac,
-
-    #  @description Initialize the ReportSpamRequest object.
-    #  @param peer The input peer.
+    peer = NULL,
     initialize = function(peer) {
       self$peer <- peer
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "ReportSpamRequest",
+        `_` = "ReportSpamRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "ReportSpamRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer
+      )
+    },
     bytes = function() {
       c(
         as.raw(c(0xdb, 0x92, 0x15, 0xcf)),
         self$peer$bytes()
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      self$peer <- reader$tgread_object()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name ReportSpamRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ReportSpamRequest.
-ReportSpamRequest$from_reader <- function(reader) {
-  peer <- reader$tgread_object()
-  ReportSpamRequest$new(peer = peer)
-}
-
-#  @title ReportSponsoredMessageRequest
-#  @description Represents a request to report a sponsored message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ReportSponsoredMessageRequest
+#' @description Telegram API request \code{messages.reportSponsoredMessage} (constructor \code{#12cbf0c4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ReportSponsoredMessageRequest <- R6::R6Class(
   "ReportSponsoredMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10225,13 +10273,14 @@ ReportSponsoredMessageRequest$from_reader <- function(reader) {
   ReportSponsoredMessageRequest$new(option = option, randomId = randomId)
 }
 
-#  @title RequestAppWebViewRequest
-#  @description Represents a request to request an app web view. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestAppWebViewRequest
+#' @description Telegram API request \code{messages.requestAppWebView} (constructor \code{#53618bce}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestAppWebViewRequest <- R6::R6Class(
   "RequestAppWebViewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10292,7 +10341,7 @@ RequestAppWebViewRequest <- R6::R6Class(
       if (!is.null(self$startParam)) flags <- bitwOr(flags, 2L)
       if (!is.null(self$themeParams)) flags <- bitwOr(flags, 4L)
       c(
-        as.raw(c(0xce, 0x8b, 0xa1, 0x53)), # Note: Adjusted for little-endian if needed, but keeping as is
+        as.raw(c(0xce, 0x8b, 0x61, 0x53)), # Note: Adjusted for little-endian if needed, but keeping as is
         packBits(intToBits(flags), type = "raw")[1:4], # Assuming packBits for flags
         self$peer$bytes(),
         self$app$bytes(),
@@ -10322,13 +10371,14 @@ RequestAppWebViewRequest$from_reader <- function(reader) {
   RequestAppWebViewRequest$new(peer = peer, app = app, platform = platform, writeAllowed = writeAllowed, compact = compact, fullscreen = fullscreen, startParam = startParam, themeParams = themeParams)
 }
 
-#  @title RequestEncryptionRequest
-#  @description Represents a request to request encryption. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestEncryptionRequest
+#' @description Telegram API request \code{messages.requestEncryption} (constructor \code{#f64daf43}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestEncryptionRequest <- R6::R6Class(
   "RequestEncryptionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10395,13 +10445,14 @@ RequestEncryptionRequest$from_reader <- function(reader) {
 }
 
 
-#  @title RequestMainWebViewRequest
-#  @description Represents a request to request the main web view for a bot. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestMainWebViewRequest
+#' @description Telegram API request \code{messages.requestMainWebView} (constructor \code{#c9e01e7b}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestMainWebViewRequest <- R6::R6Class(
   "RequestMainWebViewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10459,7 +10510,7 @@ RequestMainWebViewRequest <- R6::R6Class(
       if (!is.null(self$start_param)) flags <- bitwOr(flags, 2L)
       if (!is.null(self$theme_params)) flags <- bitwOr(flags, 1L)
       c(
-        as.raw(c(0xc9, 0xe0, 0x1e, 0x7b)),
+        as.raw(c(0x7b, 0x1e, 0xe0, 0xc9)),
         packBits(intToBits(flags), type = "raw")[1:4],
         self$peer$bytes(),
         self$bot$bytes(),
@@ -10488,13 +10539,14 @@ RequestMainWebViewRequest$from_reader <- function(reader) {
   RequestMainWebViewRequest$new(peer = peer, bot = bot, platform = platform, compact = compact, fullscreen = fullscreen, start_param = start_param, theme_params = theme_params)
 }
 
-#  @title RequestSimpleWebViewRequest
-#  @description Represents a request to request a simple web view for a bot. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestSimpleWebViewRequest
+#' @description Telegram API request \code{messages.requestSimpleWebView} (constructor \code{#413a3e73}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestSimpleWebViewRequest <- R6::R6Class(
   "RequestSimpleWebViewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10560,7 +10612,7 @@ RequestSimpleWebViewRequest <- R6::R6Class(
       if (!is.null(self$start_param)) flags <- bitwOr(flags, 16L)
       if (!is.null(self$theme_params)) flags <- bitwOr(flags, 1L)
       c(
-        as.raw(c(0x41, 0x3a, 0x3e, 0x73)),
+        as.raw(c(0x73, 0x3e, 0x3a, 0x41)),
         packBits(intToBits(flags), type = "raw")[1:4],
         self$bot$bytes(),
         if (!is.null(self$url)) self$serialize_bytes(self$url) else raw(0),
@@ -10591,107 +10643,94 @@ RequestSimpleWebViewRequest$from_reader <- function(reader) {
   RequestSimpleWebViewRequest$new(bot = bot, platform = platform, from_switch_webview = from_switch_webview, from_side_menu = from_side_menu, compact = compact, fullscreen = fullscreen, url = url, start_param = start_param, theme_params = theme_params)
 }
 
-#  @title RequestUrlAuthRequest
-#  @description Represents a request to request URL auth. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-RequestUrlAuthRequest <- R6::R6Class(
-  "RequestUrlAuthRequest",
+#' @title RequestUrlAuthRequest
+#' @description Telegram API request \code{messages.requestUrlAuth} (constructor \code{#894cc99c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+RequestUrlAuthRequest <- R6::R6Class("RequestUrlAuthRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x198fb446,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x894cc99c,
     SUBCLASS_OF_ID = 0x7765cb1e,
-
-    #  @description Initialize the RequestUrlAuthRequest object.
-    #  @param peer Optional input peer.
-    #  @param msg_id Optional message ID.
-    #  @param button_id Optional button ID.
-    #  @param url Optional URL.
-    initialize = function(peer = NULL, msg_id = NULL, button_id = NULL, url = NULL) {
+    peer = NULL,
+    msg_id = NULL,
+    button_id = NULL,
+    url = NULL,
+    in_app_origin = NULL,
+    initialize = function(peer = NULL, msg_id = NULL, button_id = NULL, url = NULL, in_app_origin = NULL) {
       self$peer <- peer
       self$msg_id <- msg_id
       self$button_id <- button_id
       self$url <- url
+      self$in_app_origin <- in_app_origin
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      if (!is.null(self$peer)) {
-        self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "RequestUrlAuthRequest",
+        `_` = "RequestUrlAuthRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "msg_id" = self$msg_id,
-        "button_id" = self$button_id,
-        "url" = self$url
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "button_id" = if (inherits(self$button_id, "TLObject")) self$button_id$to_dict() else self$button_id,
+        "url" = if (inherits(self$url, "TLObject")) self$url$to_dict() else self$url,
+        "in_app_origin" = if (inherits(self$in_app_origin, "TLObject")) self$in_app_origin$to_dict() else self$in_app_origin
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "RequestUrlAuthRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "button_id" = if (inherits(self$button_id, "TLObject")) self$button_id$to_dict() else self$button_id,
+        "url" = if (inherits(self$url, "TLObject")) self$url$to_dict() else self$url,
+        "in_app_origin" = if (inherits(self$in_app_origin, "TLObject")) self$in_app_origin$to_dict() else self$in_app_origin
+      )
+    },
     bytes = function() {
-      stopifnot(
-        ((!is.null(self$peer)) && (!is.null(self$msg_id)) && (!is.null(self$button_id))) ||
-          (is.null(self$peer) && is.null(self$msg_id) && is.null(self$button_id)),
-        "peer, msg_id, button_id parameters must all be present or all NULL"
-      )
       flags <- 0L
-      if (!is.null(self$peer) || !is.null(self$msg_id) || !is.null(self$button_id)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$peer)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$msg_id)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$button_id)) flags <- bitwOr(flags, 2L)
       if (!is.null(self$url)) flags <- bitwOr(flags, 4L)
+      if (!is.null(self$in_app_origin)) flags <- bitwOr(flags, 8L)
       c(
-        as.raw(c(0x46, 0xb4, 0x8f, 0x19)),
-        struct.pack("<I", flags),
+        as.raw(c(0x9c, 0xc9, 0x4c, 0x89)),
+        pack("<I", flags),
         if (!is.null(self$peer)) self$peer$bytes() else raw(0),
-        if (!is.null(self$msg_id)) struct.pack("<i", self$msg_id) else raw(0),
-        if (!is.null(self$button_id)) struct.pack("<i", self$button_id) else raw(0),
-        if (!is.null(self$url)) self$serialize_bytes(self$url) else raw(0)
+        if (!is.null(self$msg_id)) pack("<i", self$msg_id) else raw(0),
+        if (!is.null(self$button_id)) pack("<i", self$button_id) else raw(0),
+        if (!is.null(self$url)) serialize_bytes(self$url) else raw(0),
+        if (!is.null(self$in_app_origin)) serialize_bytes(self$in_app_origin) else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$peer <- if (bitwAnd(flags, 2L) != 0) reader$tgread_object() else NULL
+      self$msg_id <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
+      self$button_id <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
+      self$url <- if (bitwAnd(flags, 4L) != 0) reader$tgread_string() else NULL
+      self$in_app_origin <- if (bitwAnd(flags, 8L) != 0) reader$tgread_string() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name RequestUrlAuthRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of RequestUrlAuthRequest.
-RequestUrlAuthRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  if (bitwAnd(flags, 2L) != 0) {
-    peer <- reader$tgread_object()
-    msg_id <- reader$read_int()
-    button_id <- reader$read_int()
-  } else {
-    peer <- NULL
-    msg_id <- NULL
-    button_id <- NULL
-  }
-  if (bitwAnd(flags, 4L) != 0) {
-    url <- reader$tgread_string()
-  } else {
-    url <- NULL
-  }
-  RequestUrlAuthRequest$new(peer = peer, msg_id = msg_id, button_id = button_id, url = url)
-}
-
-#  @title RequestWebViewRequest
-#  @description Represents a request to request a web view. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title RequestWebViewRequest
+#' @description Telegram API request \code{messages.requestWebView} (constructor \code{#269dc2c1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 RequestWebViewRequest <- R6::R6Class(
   "RequestWebViewRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10829,13 +10868,14 @@ RequestWebViewRequest$from_reader <- function(reader) {
   RequestWebViewRequest$new(peer = peer, bot = bot, platform = platform, from_bot_menu = from_bot_menu, silent = silent, compact = compact, fullscreen = fullscreen, url = url, start_param = start_param, theme_params = theme_params, reply_to = reply_to, send_as = send_as)
 }
 
-#  @title SaveDefaultSendAsRequest
-#  @description Represents a request to save the default send-as peer for a chat. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveDefaultSendAsRequest
+#' @description Telegram API request \code{messages.saveDefaultSendAs} (constructor \code{#ccfddf96}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveDefaultSendAsRequest <- R6::R6Class(
   "SaveDefaultSendAsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -10892,127 +10932,125 @@ SaveDefaultSendAsRequest$from_reader <- function(reader) {
   SaveDefaultSendAsRequest$new(peer = peer, send_as = send_as)
 }
 
-#  @title SaveDraftRequest
-#  @description Represents a request to save a draft message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SaveDraftRequest <- R6::R6Class(
-  "SaveDraftRequest",
+#' @title SaveDraftRequest
+#' @description Telegram API request \code{messages.saveDraft} (constructor \code{#ad0fa15c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SaveDraftRequest <- R6::R6Class("SaveDraftRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x54ae308e,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xad0fa15c,
     SUBCLASS_OF_ID = 0xf5b399ac,
-
-    #  @description Initialize the SaveDraftRequest object.
-    #  @param peer The input peer.
-    #  @param message The message string.
-    #  @param no_webpage Optional no webpage flag.
-    #  @param invert_media Optional invert media flag.
-    #  @param reply_to Optional input reply to.
-    #  @param entities Optional list of message entities.
-    #  @param media Optional input media.
-    #  @param effect Optional effect ID.
-    #  @param suggested_post Optional suggested post.
-    initialize = function(peer, message, no_webpage = NULL, invert_media = NULL, reply_to = NULL, entities = NULL, media = NULL, effect = NULL, suggested_post = NULL) {
-      self$peer <- peer
-      self$message <- message
+    no_webpage = NULL,
+    invert_media = NULL,
+    reply_to = NULL,
+    peer = NULL,
+    message = NULL,
+    entities = NULL,
+    media = NULL,
+    effect = NULL,
+    suggested_post = NULL,
+    rich_message = NULL,
+    initialize = function(no_webpage = NULL, invert_media = NULL, reply_to = NULL, peer, message, entities = NULL, media = NULL, effect = NULL, suggested_post = NULL, rich_message = NULL) {
       self$no_webpage <- no_webpage
       self$invert_media <- invert_media
       self$reply_to <- reply_to
+      self$peer <- peer
+      self$message <- message
       self$entities <- entities
       self$media <- media
       self$effect <- effect
       self$suggested_post <- suggested_post
+      self$rich_message <- rich_message
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      if (!is.null(self$media)) {
-        self$media <- utils$get_input_media(self$media)
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SaveDraftRequest",
-        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "message" = self$message,
-        "no_webpage" = self$no_webpage,
-        "invert_media" = self$invert_media,
+        `_` = "SaveDraftRequest",
+        "no_webpage" = if (inherits(self$no_webpage, "TLObject")) self$no_webpage$to_dict() else self$no_webpage,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
         "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
-        "entities" = if (is.null(self$entities)) list() else lapply(self$entities, function(x) if (inherits(x, "TLObject")) x$to_dict() else x),
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
         "media" = if (inherits(self$media, "TLObject")) self$media$to_dict() else self$media,
-        "effect" = self$effect,
-        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$to_dict() else self$rich_message
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SaveDraftRequest",
+        "no_webpage" = if (inherits(self$no_webpage, "TLObject")) self$no_webpage$to_dict() else self$no_webpage,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
+        "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
+        "media" = if (inherits(self$media, "TLObject")) self$media$to_dict() else self$media,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$to_dict() else self$rich_message
+      )
+    },
     bytes = function() {
       flags <- 0L
-      if (!is.null(self$no_webpage) && self$no_webpage) flags <- bitwOr(flags, 2L)
-      if (!is.null(self$invert_media) && self$invert_media) flags <- bitwOr(flags, 64L)
+      if (isTRUE(self$no_webpage)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$invert_media)) flags <- bitwOr(flags, 64L)
       if (!is.null(self$reply_to)) flags <- bitwOr(flags, 16L)
       if (!is.null(self$entities)) flags <- bitwOr(flags, 8L)
       if (!is.null(self$media)) flags <- bitwOr(flags, 32L)
       if (!is.null(self$effect)) flags <- bitwOr(flags, 128L)
       if (!is.null(self$suggested_post)) flags <- bitwOr(flags, 256L)
+      if (!is.null(self$rich_message)) flags <- bitwOr(flags, 512L)
       c(
-        as.raw(c(0x8e, 0x30, 0xae, 0x54)),
-        writeBin(as.integer(flags), raw(), size = 4, endian = "little"),
+        as.raw(c(0x5c, 0xa1, 0x0f, 0xad)),
+        pack("<I", flags),
         if (!is.null(self$reply_to)) self$reply_to$bytes() else raw(0),
         self$peer$bytes(),
-        self$serialize_bytes(self$message),
-        if (!is.null(self$entities)) c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), writeBin(as.integer(length(self$entities)), raw(), size = 4, endian = "little"), do.call(c, lapply(self$entities, function(x) x$bytes()))) else raw(0),
+        serialize_bytes(self$message),
+        if (!is.null(self$entities)) .telegramR_tl_vector(self$entities) else raw(0),
         if (!is.null(self$media)) self$media$bytes() else raw(0),
-        if (!is.null(self$effect)) writeBin(as.integer(self$effect), raw(), size = 4, endian = "little") else raw(0),
-        if (!is.null(self$suggested_post)) self$suggested_post$bytes() else raw(0)
+        if (!is.null(self$effect)) packInt64(self$effect) else raw(0),
+        if (!is.null(self$suggested_post)) self$suggested_post$bytes() else raw(0),
+        if (!is.null(self$rich_message)) self$rich_message$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$no_webpage <- bitwAnd(flags, 2L) != 0
+      self$invert_media <- bitwAnd(flags, 64L) != 0
+      self$reply_to <- if (bitwAnd(flags, 16L) != 0) reader$tgread_object() else NULL
+      self$peer <- reader$tgread_object()
+      self$message <- reader$tgread_string()
+      self$entities <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$media <- if (bitwAnd(flags, 32L) != 0) reader$tgread_object() else NULL
+      self$effect <- if (bitwAnd(flags, 128L) != 0) reader$read_long() else NULL
+      self$suggested_post <- if (bitwAnd(flags, 256L) != 0) reader$tgread_object() else NULL
+      self$rich_message <- if (bitwAnd(flags, 512L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SaveDraftRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SaveDraftRequest.
-SaveDraftRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  no_webpage <- bitwAnd(flags, 2L) != 0
-  invert_media <- bitwAnd(flags, 64L) != 0
-  reply_to <- if (bitwAnd(flags, 16L) != 0) reader$tgread_object() else NULL
-  peer <- reader$tgread_object()
-  message <- reader$tgread_string()
-  entities <- if (bitwAnd(flags, 8L) != 0) {
-    reader$read_int() # skip vector ID
-    lapply(1:reader$read_int(), function(i) reader$tgread_object())
-  } else {
-    NULL
-  }
-  media <- if (bitwAnd(flags, 32L) != 0) reader$tgread_object() else NULL
-  effect <- if (bitwAnd(flags, 128L) != 0) reader$read_long() else NULL
-  suggested_post <- if (bitwAnd(flags, 256L) != 0) reader$tgread_object() else NULL
-  SaveDraftRequest$new(peer = peer, message = message, no_webpage = no_webpage, invert_media = invert_media, reply_to = reply_to, entities = entities, media = media, effect = effect, suggested_post = suggested_post)
-}
-
-
-#  @title SaveGifRequest
-#  @description Represents a request to save or unsave a GIF. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveGifRequest
+#' @description Telegram API request \code{messages.saveGif} (constructor \code{#327a30cb}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveGifRequest <- R6::R6Class(
   "SaveGifRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11068,13 +11106,14 @@ SaveGifRequest$from_reader <- function(reader) {
   SaveGifRequest$new(id = id, unsave = unsave)
 }
 
-#  @title SavePreparedInlineMessageRequest
-#  @description Represents a request to save a prepared inline message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SavePreparedInlineMessageRequest
+#' @description Telegram API request \code{messages.savePreparedInlineMessage} (constructor \code{#f21f7f2f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SavePreparedInlineMessageRequest <- R6::R6Class(
   "SavePreparedInlineMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11155,13 +11194,14 @@ SavePreparedInlineMessageRequest$from_reader <- function(reader) {
   SavePreparedInlineMessageRequest$new(result = result, user_id = user_id, peer_types = peer_types)
 }
 
-#  @title SaveRecentStickerRequest
-#  @description Represents a request to save or unsave a recent sticker. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SaveRecentStickerRequest
+#' @description Telegram API request \code{messages.saveRecentSticker} (constructor \code{#392718f8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SaveRecentStickerRequest <- R6::R6Class(
   "SaveRecentStickerRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11226,39 +11266,38 @@ SaveRecentStickerRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SearchRequest
-#  @description Represents a request to search messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SearchRequest <- R6::R6Class(
-  "SearchRequest",
+#' @title SearchRequest
+#' @description Telegram API request \code{messages.search} (constructor \code{#29ee847a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SearchRequest <- R6::R6Class("SearchRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0x29ee847a,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0xd4b40b5e,
-
-    #  @description Initialize the SearchRequest object.
-    #  @param peer The input peer.
-    #  @param q The search query string.
-    #  @param filter The messages filter.
-    #  @param min_date Optional minimum date.
-    #  @param max_date Optional maximum date.
-    #  @param offset_id The offset ID.
-    #  @param add_offset The additional offset.
-    #  @param limit The limit for results.
-    #  @param max_id The maximum ID.
-    #  @param min_id The minimum ID.
-    #  @param hash The hash for caching.
-    #  @param from_id Optional input peer for from ID.
-    #  @param saved_peer_id Optional input peer for saved peer ID.
-    #  @param saved_reaction Optional list of reactions.
-    #  @param top_msg_id Optional top message ID.
-    initialize = function(peer, q, filter, min_date = NULL, max_date = NULL, offset_id, add_offset, limit, max_id, min_id, hash, from_id = NULL, saved_peer_id = NULL, saved_reaction = NULL, top_msg_id = NULL) {
+    peer = NULL,
+    q = NULL,
+    from_id = NULL,
+    saved_peer_id = NULL,
+    saved_reaction = NULL,
+    top_msg_id = NULL,
+    filter = NULL,
+    min_date = NULL,
+    max_date = NULL,
+    offset_id = NULL,
+    add_offset = NULL,
+    limit = NULL,
+    max_id = NULL,
+    min_id = NULL,
+    hash = NULL,
+    initialize = function(peer, q, from_id = NULL, saved_peer_id = NULL, saved_reaction = NULL, top_msg_id = NULL, filter, min_date, max_date, offset_id, add_offset, limit, max_id, min_id, hash) {
       self$peer <- peer
       self$q <- q
+      self$from_id <- from_id
+      self$saved_peer_id <- saved_peer_id
+      self$saved_reaction <- saved_reaction
+      self$top_msg_id <- top_msg_id
       self$filter <- filter
       self$min_date <- min_date
       self$max_date <- max_date
@@ -11268,50 +11307,53 @@ SearchRequest <- R6::R6Class(
       self$max_id <- max_id
       self$min_id <- min_id
       self$hash <- hash
-      self$from_id <- from_id
-      self$saved_peer_id <- saved_peer_id
-      self$saved_reaction <- saved_reaction
-      self$top_msg_id <- top_msg_id
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      if (!is.null(self$from_id)) {
-        self$from_id <- utils$get_input_peer(client$get_input_entity(self$from_id))
-      }
-      if (!is.null(self$saved_peer_id)) {
-        self$saved_peer_id <- utils$get_input_peer(client$get_input_entity(self$saved_peer_id))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      if (!is.null(self$from_id)) self$from_id <- tryCatch(utils$get_input_peer(client$get_input_entity(self$from_id)), error = function(e) self$from_id)
+      if (!is.null(self$saved_peer_id)) self$saved_peer_id <- tryCatch(utils$get_input_peer(client$get_input_entity(self$saved_peer_id)), error = function(e) self$saved_peer_id)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SearchRequest",
+        `_` = "SearchRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "q" = self$q,
-        "filter" = if (inherits(self$filter, "TLObject")) self$filter$to_dict() else self$filter,
-        "min_date" = self$min_date,
-        "max_date" = self$max_date,
-        "offset_id" = self$offset_id,
-        "add_offset" = self$add_offset,
-        "limit" = self$limit,
-        "max_id" = self$max_id,
-        "min_id" = self$min_id,
-        "hash" = self$hash,
+        "q" = if (inherits(self$q, "TLObject")) self$q$to_dict() else self$q,
         "from_id" = if (inherits(self$from_id, "TLObject")) self$from_id$to_dict() else self$from_id,
         "saved_peer_id" = if (inherits(self$saved_peer_id, "TLObject")) self$saved_peer_id$to_dict() else self$saved_peer_id,
-        "saved_reaction" = if (is.null(self$saved_reaction)) list() else lapply(self$saved_reaction, function(x) if (inherits(x, "TLObject")) x$to_dict() else x),
-        "top_msg_id" = self$top_msg_id
+        "saved_reaction" = if (inherits(self$saved_reaction, "TLObject")) self$saved_reaction$to_dict() else self$saved_reaction,
+        "top_msg_id" = if (inherits(self$top_msg_id, "TLObject")) self$top_msg_id$to_dict() else self$top_msg_id,
+        "filter" = if (inherits(self$filter, "TLObject")) self$filter$to_dict() else self$filter,
+        "min_date" = if (inherits(self$min_date, "TLObject")) self$min_date$to_dict() else self$min_date,
+        "max_date" = if (inherits(self$max_date, "TLObject")) self$max_date$to_dict() else self$max_date,
+        "offset_id" = if (inherits(self$offset_id, "TLObject")) self$offset_id$to_dict() else self$offset_id,
+        "add_offset" = if (inherits(self$add_offset, "TLObject")) self$add_offset$to_dict() else self$add_offset,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$to_dict() else self$limit,
+        "max_id" = if (inherits(self$max_id, "TLObject")) self$max_id$to_dict() else self$max_id,
+        "min_id" = if (inherits(self$min_id, "TLObject")) self$min_id$to_dict() else self$min_id,
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$to_dict() else self$hash
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SearchRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "q" = if (inherits(self$q, "TLObject")) self$q$to_dict() else self$q,
+        "from_id" = if (inherits(self$from_id, "TLObject")) self$from_id$to_dict() else self$from_id,
+        "saved_peer_id" = if (inherits(self$saved_peer_id, "TLObject")) self$saved_peer_id$to_dict() else self$saved_peer_id,
+        "saved_reaction" = if (inherits(self$saved_reaction, "TLObject")) self$saved_reaction$to_dict() else self$saved_reaction,
+        "top_msg_id" = if (inherits(self$top_msg_id, "TLObject")) self$top_msg_id$to_dict() else self$top_msg_id,
+        "filter" = if (inherits(self$filter, "TLObject")) self$filter$to_dict() else self$filter,
+        "min_date" = if (inherits(self$min_date, "TLObject")) self$min_date$to_dict() else self$min_date,
+        "max_date" = if (inherits(self$max_date, "TLObject")) self$max_date$to_dict() else self$max_date,
+        "offset_id" = if (inherits(self$offset_id, "TLObject")) self$offset_id$to_dict() else self$offset_id,
+        "add_offset" = if (inherits(self$add_offset, "TLObject")) self$add_offset$to_dict() else self$add_offset,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$to_dict() else self$limit,
+        "max_id" = if (inherits(self$max_id, "TLObject")) self$max_id$to_dict() else self$max_id,
+        "min_id" = if (inherits(self$min_id, "TLObject")) self$min_id$to_dict() else self$min_id,
+        "hash" = if (inherits(self$hash, "TLObject")) self$hash$to_dict() else self$hash
+      )
+    },
     bytes = function() {
       flags <- 0L
       if (!is.null(self$from_id)) flags <- bitwOr(flags, 1L)
@@ -11320,63 +11362,56 @@ SearchRequest <- R6::R6Class(
       if (!is.null(self$top_msg_id)) flags <- bitwOr(flags, 2L)
       c(
         as.raw(c(0x7a, 0x84, 0xee, 0x29)),
-        writeBin(flags, raw(), size = 4, endian = "little"),
+        pack("<I", flags),
         self$peer$bytes(),
-        self$serialize_bytes(self$q),
-        if (!is.null(self$from_id)) self$from_id$bytes() else raw(),
-        if (!is.null(self$saved_peer_id)) self$saved_peer_id$bytes() else raw(),
-        if (!is.null(self$saved_reaction)) c(as.raw(c(0x1c, 0xb5, 0xc4, 0x15)), writeBin(length(self$saved_reaction), raw(), size = 4, endian = "little"), do.call(c, lapply(self$saved_reaction, function(x) x$bytes()))) else raw(),
-        if (!is.null(self$top_msg_id)) writeBin(self$top_msg_id, raw(), size = 4, endian = "little") else raw(),
+        serialize_bytes(self$q),
+        if (!is.null(self$from_id)) self$from_id$bytes() else raw(0),
+        if (!is.null(self$saved_peer_id)) self$saved_peer_id$bytes() else raw(0),
+        if (!is.null(self$saved_reaction)) .telegramR_tl_vector(self$saved_reaction) else raw(0),
+        if (!is.null(self$top_msg_id)) pack("<i", self$top_msg_id) else raw(0),
         self$filter$bytes(),
-        self$serialize_datetime(self$min_date),
-        self$serialize_datetime(self$max_date),
-        writeBin(self$offset_id, raw(), size = 4, endian = "little"),
-        writeBin(self$add_offset, raw(), size = 4, endian = "little"),
-        writeBin(self$limit, raw(), size = 4, endian = "little"),
-        writeBin(self$max_id, raw(), size = 4, endian = "little"),
-        writeBin(self$min_id, raw(), size = 4, endian = "little"),
-        writeBin(self$hash, raw(), size = 8, endian = "little")
+        pack("<i", self$min_date),
+        pack("<i", self$max_date),
+        pack("<i", self$offset_id),
+        pack("<i", self$add_offset),
+        pack("<i", self$limit),
+        pack("<i", self$max_id),
+        pack("<i", self$min_id),
+        packInt64(self$hash)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$peer <- reader$tgread_object()
+      self$q <- reader$tgread_string()
+      self$from_id <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
+      self$saved_peer_id <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
+      self$saved_reaction <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$top_msg_id <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
+      self$filter <- reader$tgread_object()
+      self$min_date <- reader$read_int()
+      self$max_date <- reader$read_int()
+      self$offset_id <- reader$read_int()
+      self$add_offset <- reader$read_int()
+      self$limit <- reader$read_int()
+      self$max_id <- reader$read_int()
+      self$min_id <- reader$read_int()
+      self$hash <- reader$read_long()
+      self
     }
   ),
+  class = TRUE,
   lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SearchRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SearchRequest.
-SearchRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  peer <- reader$tgread_object()
-  q <- reader$tgread_string()
-  from_id <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
-  saved_peer_id <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
-  saved_reaction <- if (bitwAnd(flags, 8L) != 0) {
-    reader$read_int() # skip vector ID
-    lapply(1:reader$read_int(), function(i) reader$tgread_object())
-  } else {
-    NULL
-  }
-  top_msg_id <- if (bitwAnd(flags, 2L) != 0) reader$read_int() else NULL
-  filter <- reader$tgread_object()
-  min_date <- reader$tgread_date()
-  max_date <- reader$tgread_date()
-  offset_id <- reader$read_int()
-  add_offset <- reader$read_int()
-  limit <- reader$read_int()
-  max_id <- reader$read_int()
-  min_id <- reader$read_int()
-  hash <- reader$read_long()
-  SearchRequest$new(peer = peer, q = q, filter = filter, min_date = min_date, max_date = max_date, offset_id = offset_id, add_offset = add_offset, limit = limit, max_id = max_id, min_id = min_id, hash = hash, from_id = from_id, saved_peer_id = saved_peer_id, saved_reaction = saved_reaction, top_msg_id = top_msg_id)
-}
-
-#  @title SearchCustomEmojiRequest
-#  @description Represents a request to search custom emoji. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SearchCustomEmojiRequest
+#' @description Telegram API request \code{messages.searchCustomEmoji} (constructor \code{#2c11c0d7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SearchCustomEmojiRequest <- R6::R6Class(
   "SearchCustomEmojiRequest",
   inherit = TLRequest,
@@ -11410,7 +11445,7 @@ SearchCustomEmojiRequest <- R6::R6Class(
       c(
         as.raw(c(0xd7, 0xc0, 0x11, 0x2c)),
         self$serialize_bytes(self$emoticon),
-        writeBin(self$hash, raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     }
   ),
@@ -11428,13 +11463,14 @@ SearchCustomEmojiRequest$from_reader <- function(reader) {
   SearchCustomEmojiRequest$new(emoticon = emoticon, hash = hash)
 }
 
-#  @title SearchEmojiStickerSetsRequest
-#  @description Represents a request to search emoji sticker sets. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SearchEmojiStickerSetsRequest
+#' @description Telegram API request \code{messages.searchEmojiStickerSets} (constructor \code{#92b4494c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SearchEmojiStickerSetsRequest <- R6::R6Class(
   "SearchEmojiStickerSetsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11472,7 +11508,7 @@ SearchEmojiStickerSetsRequest <- R6::R6Class(
         as.raw(c(0x4c, 0x49, 0xb4, 0x92)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$serialize_bytes(self$q),
-        writeBin(self$hash, raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     }
   )
@@ -11492,34 +11528,35 @@ SearchEmojiStickerSetsRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SearchGlobalRequest
-#  @description Represents a request to search globally. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SearchGlobalRequest <- R6::R6Class(
-  "SearchGlobalRequest",
+#' @title SearchGlobalRequest
+#' @description Telegram API request \code{messages.searchGlobal} (constructor \code{#6126a43c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SearchGlobalRequest <- R6::R6Class("SearchGlobalRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x4bc6589a,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x6126a43c,
     SUBCLASS_OF_ID = 0xd4b40b5e,
-
-    #  @description Initialize the SearchGlobalRequest object.
-    #  @param q The search query string.
-    #  @param filter The messages filter.
-    #  @param min_date Optional minimum date.
-    #  @param max_date Optional maximum date.
-    #  @param offset_rate The offset rate.
-    #  @param offset_peer The offset peer.
-    #  @param offset_id The offset ID.
-    #  @param limit The limit for results.
-    #  @param broadcasts_only Optional broadcasts only flag.
-    #  @param groups_only Optional groups only flag.
-    #  @param users_only Optional users only flag.
-    #  @param folder_id Optional folder ID.
-    initialize = function(q, filter, min_date = NULL, max_date = NULL, offset_rate, offset_peer, offset_id, limit, broadcasts_only = NULL, groups_only = NULL, users_only = NULL, folder_id = NULL) {
+    broadcasts_only = NULL,
+    groups_only = NULL,
+    users_only = NULL,
+    folder_id = NULL,
+    community = NULL,
+    q = NULL,
+    filter = NULL,
+    min_date = NULL,
+    max_date = NULL,
+    offset_rate = NULL,
+    offset_peer = NULL,
+    offset_id = NULL,
+    limit = NULL,
+    initialize = function(broadcasts_only = NULL, groups_only = NULL, users_only = NULL, folder_id = NULL, community = NULL, q, filter, min_date, max_date, offset_rate, offset_peer, offset_id, limit) {
+      self$broadcasts_only <- broadcasts_only
+      self$groups_only <- groups_only
+      self$users_only <- users_only
+      self$folder_id <- folder_id
+      self$community <- community
       self$q <- q
       self$filter <- filter
       self$min_date <- min_date
@@ -11528,92 +11565,100 @@ SearchGlobalRequest <- R6::R6Class(
       self$offset_peer <- offset_peer
       self$offset_id <- offset_id
       self$limit <- limit
-      self$broadcasts_only <- broadcasts_only
-      self$groups_only <- groups_only
-      self$users_only <- users_only
-      self$folder_id <- folder_id
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$offset_peer <- utils$get_input_peer(client$get_input_entity(self$offset_peer))
+      if (!is.null(self$community)) self$community <- tryCatch(utils$get_input_channel(client$get_input_entity(self$community)), error = function(e) self$community)
+      if (!is.null(self$offset_peer)) self$offset_peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$offset_peer)), error = function(e) self$offset_peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SearchGlobalRequest",
-        "q" = self$q,
+        `_` = "SearchGlobalRequest",
+        "broadcasts_only" = if (inherits(self$broadcasts_only, "TLObject")) self$broadcasts_only$to_dict() else self$broadcasts_only,
+        "groups_only" = if (inherits(self$groups_only, "TLObject")) self$groups_only$to_dict() else self$groups_only,
+        "users_only" = if (inherits(self$users_only, "TLObject")) self$users_only$to_dict() else self$users_only,
+        "folder_id" = if (inherits(self$folder_id, "TLObject")) self$folder_id$to_dict() else self$folder_id,
+        "community" = if (inherits(self$community, "TLObject")) self$community$to_dict() else self$community,
+        "q" = if (inherits(self$q, "TLObject")) self$q$to_dict() else self$q,
         "filter" = if (inherits(self$filter, "TLObject")) self$filter$to_dict() else self$filter,
-        "min_date" = self$min_date,
-        "max_date" = self$max_date,
-        "offset_rate" = self$offset_rate,
+        "min_date" = if (inherits(self$min_date, "TLObject")) self$min_date$to_dict() else self$min_date,
+        "max_date" = if (inherits(self$max_date, "TLObject")) self$max_date$to_dict() else self$max_date,
+        "offset_rate" = if (inherits(self$offset_rate, "TLObject")) self$offset_rate$to_dict() else self$offset_rate,
         "offset_peer" = if (inherits(self$offset_peer, "TLObject")) self$offset_peer$to_dict() else self$offset_peer,
-        "offset_id" = self$offset_id,
-        "limit" = self$limit,
-        "broadcasts_only" = self$broadcasts_only,
-        "groups_only" = self$groups_only,
-        "users_only" = self$users_only,
-        "folder_id" = self$folder_id
+        "offset_id" = if (inherits(self$offset_id, "TLObject")) self$offset_id$to_dict() else self$offset_id,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$to_dict() else self$limit
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SearchGlobalRequest",
+        "broadcasts_only" = if (inherits(self$broadcasts_only, "TLObject")) self$broadcasts_only$to_dict() else self$broadcasts_only,
+        "groups_only" = if (inherits(self$groups_only, "TLObject")) self$groups_only$to_dict() else self$groups_only,
+        "users_only" = if (inherits(self$users_only, "TLObject")) self$users_only$to_dict() else self$users_only,
+        "folder_id" = if (inherits(self$folder_id, "TLObject")) self$folder_id$to_dict() else self$folder_id,
+        "community" = if (inherits(self$community, "TLObject")) self$community$to_dict() else self$community,
+        "q" = if (inherits(self$q, "TLObject")) self$q$to_dict() else self$q,
+        "filter" = if (inherits(self$filter, "TLObject")) self$filter$to_dict() else self$filter,
+        "min_date" = if (inherits(self$min_date, "TLObject")) self$min_date$to_dict() else self$min_date,
+        "max_date" = if (inherits(self$max_date, "TLObject")) self$max_date$to_dict() else self$max_date,
+        "offset_rate" = if (inherits(self$offset_rate, "TLObject")) self$offset_rate$to_dict() else self$offset_rate,
+        "offset_peer" = if (inherits(self$offset_peer, "TLObject")) self$offset_peer$to_dict() else self$offset_peer,
+        "offset_id" = if (inherits(self$offset_id, "TLObject")) self$offset_id$to_dict() else self$offset_id,
+        "limit" = if (inherits(self$limit, "TLObject")) self$limit$to_dict() else self$limit
+      )
+    },
     bytes = function() {
       flags <- 0L
-      if (!is.null(self$broadcasts_only) && self$broadcasts_only) flags <- bitwOr(flags, 2L)
-      if (!is.null(self$groups_only) && self$groups_only) flags <- bitwOr(flags, 4L)
-      if (!is.null(self$users_only) && self$users_only) flags <- bitwOr(flags, 8L)
+      if (isTRUE(self$broadcasts_only)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$groups_only)) flags <- bitwOr(flags, 4L)
+      if (isTRUE(self$users_only)) flags <- bitwOr(flags, 8L)
       if (!is.null(self$folder_id)) flags <- bitwOr(flags, 1L)
+      if (!is.null(self$community)) flags <- bitwOr(flags, 16L)
       c(
-        as.raw(c(0x9a, 0x58, 0xc6, 0x4b)),
-        writeBin(flags, raw(), size = 4, endian = "little"),
-        if (!is.null(self$folder_id)) writeBin(self$folder_id, raw(), size = 4, endian = "little") else raw(),
-        self$serialize_bytes(self$q),
+        as.raw(c(0x3c, 0xa4, 0x26, 0x61)),
+        pack("<I", flags),
+        if (!is.null(self$folder_id)) pack("<i", self$folder_id) else raw(0),
+        if (!is.null(self$community)) self$community$bytes() else raw(0),
+        serialize_bytes(self$q),
         self$filter$bytes(),
-        self$serialize_datetime(self$min_date),
-        self$serialize_datetime(self$max_date),
-        writeBin(self$offset_rate, raw(), size = 4, endian = "little"),
+        pack("<i", self$min_date),
+        pack("<i", self$max_date),
+        pack("<i", self$offset_rate),
         self$offset_peer$bytes(),
-        writeBin(self$offset_id, raw(), size = 4, endian = "little"),
-        writeBin(self$limit, raw(), size = 4, endian = "little")
+        pack("<i", self$offset_id),
+        pack("<i", self$limit)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$broadcasts_only <- bitwAnd(flags, 2L) != 0
+      self$groups_only <- bitwAnd(flags, 4L) != 0
+      self$users_only <- bitwAnd(flags, 8L) != 0
+      self$folder_id <- if (bitwAnd(flags, 1L) != 0) reader$read_int() else NULL
+      self$community <- if (bitwAnd(flags, 16L) != 0) reader$tgread_object() else NULL
+      self$q <- reader$tgread_string()
+      self$filter <- reader$tgread_object()
+      self$min_date <- reader$read_int()
+      self$max_date <- reader$read_int()
+      self$offset_rate <- reader$read_int()
+      self$offset_peer <- reader$tgread_object()
+      self$offset_id <- reader$read_int()
+      self$limit <- reader$read_int()
+      self
     }
   ),
+  class = TRUE,
   lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SearchGlobalRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SearchGlobalRequest.
-SearchGlobalRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  broadcasts_only <- bitwAnd(flags, 2L) != 0
-  groups_only <- bitwAnd(flags, 4L) != 0
-  users_only <- bitwAnd(flags, 8L) != 0
-  folder_id <- if (bitwAnd(flags, 1L) != 0) reader$read_int() else NULL
-  q <- reader$tgread_string()
-  filter <- reader$tgread_object()
-  min_date <- reader$tgread_date()
-  max_date <- reader$tgread_date()
-  offset_rate <- reader$read_int()
-  offset_peer <- reader$tgread_object()
-  offset_id <- reader$read_int()
-  limit <- reader$read_int()
-  SearchGlobalRequest$new(q = q, filter = filter, min_date = min_date, max_date = max_date, offset_rate = offset_rate, offset_peer = offset_peer, offset_id = offset_id, limit = limit, broadcasts_only = broadcasts_only, groups_only = groups_only, users_only = users_only, folder_id = folder_id)
-}
-
-#  @title SearchSentMediaRequest
-#  @description Represents a request to search sent media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SearchSentMediaRequest
+#' @description Telegram API request \code{messages.searchSentMedia} (constructor \code{#107e31a0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SearchSentMediaRequest <- R6::R6Class(
   "SearchSentMediaRequest",
   inherit = TLRequest,
@@ -11670,13 +11715,14 @@ SearchSentMediaRequest$from_reader <- function(reader) {
   SearchSentMediaRequest$new(q = q, filter = filter, limit = limit)
 }
 
-#  @title SearchStickerSetsRequest
-#  @description Represents a request to search sticker sets. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SearchStickerSetsRequest
+#' @description Telegram API request \code{messages.searchStickerSets} (constructor \code{#35705b8a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SearchStickerSetsRequest <- R6::R6Class(
   "SearchStickerSetsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11714,7 +11760,7 @@ SearchStickerSetsRequest <- R6::R6Class(
         as.raw(c(0x8a, 0x5b, 0x70, 0x35)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$serialize_bytes(self$q),
-        writeBin(self$hash, raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     }
   )
@@ -11733,13 +11779,14 @@ SearchStickerSetsRequest$from_reader <- function(reader) {
   SearchStickerSetsRequest$new(q = q, hash = hash, exclude_featured = exclude_featured)
 }
 
-#  @title SearchStickersRequest
-#  @description Represents a request to search for stickers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SearchStickersRequest
+#' @description Telegram API request \code{messages.searchStickers} (constructor \code{#29b1c66a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SearchStickersRequest <- R6::R6Class(
   "SearchStickersRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11794,7 +11841,7 @@ SearchStickersRequest <- R6::R6Class(
         do.call(c, lapply(self$lang_code, self$serialize_bytes)),
         writeBin(self$offset, raw(), size = 4, endian = "little"),
         writeBin(self$limit, raw(), size = 4, endian = "little"),
-        writeBin(self$hash, raw(), size = 8, endian = "little")
+        packInt64(self$hash)
       )
     }
   )
@@ -11821,96 +11868,91 @@ SearchStickersRequest$from_reader <- function(reader) {
   SearchStickersRequest$new(q = q, emoticon = emoticon, lang_code = lang_code, offset = offset, limit = limit, hash = hash, emojis = emojis)
 }
 
-#  @title SendBotRequestedPeerRequest
-#  @description Represents a request to send bot requested peers. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SendBotRequestedPeerRequest <- R6::R6Class(
-  "SendBotRequestedPeerRequest",
+#' @title SendBotRequestedPeerRequest
+#' @description Telegram API request \code{messages.sendBotRequestedPeer} (constructor \code{#6c5cf2a7}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SendBotRequestedPeerRequest <- R6::R6Class("SendBotRequestedPeerRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x91b2d060,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x6c5cf2a7,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the SendBotRequestedPeerRequest object.
-    #  @param peer The input peer.
-    #  @param msg_id The message ID.
-    #  @param button_id The button ID.
-    #  @param requested_peers List of requested peers.
-    initialize = function(peer, msg_id, button_id, requested_peers) {
+    peer = NULL,
+    msg_id = NULL,
+    webapp_req_id = NULL,
+    button_id = NULL,
+    requested_peers = NULL,
+    initialize = function(peer, msg_id = NULL, webapp_req_id = NULL, button_id, requested_peers) {
       self$peer <- peer
       self$msg_id <- msg_id
+      self$webapp_req_id <- webapp_req_id
       self$button_id <- button_id
       self$requested_peers <- requested_peers
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      tmp <- list()
-      for (x in self$requested_peers) {
-        tmp <- c(tmp, utils$get_input_peer(client$get_input_entity(x)))
-      }
-      self$requested_peers <- tmp
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SendBotRequestedPeerRequest",
+        `_` = "SendBotRequestedPeerRequest",
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "msg_id" = self$msg_id,
-        "button_id" = self$button_id,
-        "requested_peers" = if (is.null(self$requested_peers)) list() else lapply(self$requested_peers, function(x) if (inherits(x, "TLObject")) x$to_dict() else x)
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "webapp_req_id" = if (inherits(self$webapp_req_id, "TLObject")) self$webapp_req_id$to_dict() else self$webapp_req_id,
+        "button_id" = if (inherits(self$button_id, "TLObject")) self$button_id$to_dict() else self$button_id,
+        "requested_peers" = if (inherits(self$requested_peers, "TLObject")) self$requested_peers$to_dict() else self$requested_peers
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
-    bytes = function() {
-      c(
-        as.raw(c(0x60, 0xd0, 0xb2, 0x91)),
-        self$peer$bytes(),
-        writeBin(self$msg_id, raw(), size = 4, endian = "little"),
-        writeBin(self$button_id, raw(), size = 4, endian = "little"),
-        as.raw(c(0x1c, 0xb5, 0xc4, 0x15)), writeBin(length(self$requested_peers), raw(), size = 4, endian = "little"),
-        do.call(c, lapply(self$requested_peers, function(x) x$bytes()))
+    to_list = function() {
+      list(
+        `_` = "SendBotRequestedPeerRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "webapp_req_id" = if (inherits(self$webapp_req_id, "TLObject")) self$webapp_req_id$to_dict() else self$webapp_req_id,
+        "button_id" = if (inherits(self$button_id, "TLObject")) self$button_id$to_dict() else self$button_id,
+        "requested_peers" = if (inherits(self$requested_peers, "TLObject")) self$requested_peers$to_dict() else self$requested_peers
       )
+    },
+    bytes = function() {
+      flags <- 0L
+      if (!is.null(self$msg_id)) flags <- bitwOr(flags, 1L)
+      if (!is.null(self$webapp_req_id)) flags <- bitwOr(flags, 2L)
+      c(
+        as.raw(c(0xa7, 0xf2, 0x5c, 0x6c)),
+        pack("<I", flags),
+        self$peer$bytes(),
+        if (!is.null(self$msg_id)) pack("<i", self$msg_id) else raw(0),
+        if (!is.null(self$webapp_req_id)) serialize_bytes(self$webapp_req_id) else raw(0),
+        pack("<i", self$button_id),
+        .telegramR_tl_vector(self$requested_peers)
+      )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$peer <- reader$tgread_object()
+      self$msg_id <- if (bitwAnd(flags, 1L) != 0) reader$read_int() else NULL
+      self$webapp_req_id <- if (bitwAnd(flags, 2L) != 0) reader$tgread_string() else NULL
+      self$button_id <- reader$read_int()
+      self$requested_peers <- reader$tgread_vector()
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SendBotRequestedPeerRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SendBotRequestedPeerRequest.
-SendBotRequestedPeerRequest$from_reader <- function(reader) {
-  peer <- reader$tgread_object()
-  msg_id <- reader$read_int()
-  button_id <- reader$read_int()
-  reader$read_int() # skip vector ID
-  requested_peers <- list()
-  for (i in 1:reader$read_int()) {
-    requested_peers[[i]] <- reader$tgread_object()
-  }
-  SendBotRequestedPeerRequest$new(peer = peer, msg_id = msg_id, button_id = button_id, requested_peers = requested_peers)
-}
-
-
-#  @title SendEncryptedRequest
-#  @description Represents a request to send an encrypted message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendEncryptedRequest
+#' @description Telegram API request \code{messages.sendEncrypted} (constructor \code{#44fa7a15}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendEncryptedRequest <- R6::R6Class(
   "SendEncryptedRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -11951,7 +11993,7 @@ SendEncryptedRequest <- R6::R6Class(
         as.raw(c(0x15, 0x7a, 0xfa, 0x44)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
-        writeBin(as.integer(self$random_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
         self$serialize_bytes(self$data)
       )
     }
@@ -11972,13 +12014,14 @@ SendEncryptedRequest$from_reader <- function(reader) {
   SendEncryptedRequest$new(peer = peer, data = data, silent = silent, random_id = random_id)
 }
 
-#  @title SendEncryptedFileRequest
-#  @description Represents a request to send an encrypted file. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendEncryptedFileRequest
+#' @description Telegram API request \code{messages.sendEncryptedFile} (constructor \code{#5559481d}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendEncryptedFileRequest <- R6::R6Class(
   "SendEncryptedFileRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12022,7 +12065,7 @@ SendEncryptedFileRequest <- R6::R6Class(
         as.raw(c(0x1d, 0x48, 0x59, 0x55)),
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
-        writeBin(as.integer(self$random_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
         self$serialize_bytes(self$data),
         self$file$bytes()
       )
@@ -12046,13 +12089,14 @@ SendEncryptedFileRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SendEncryptedServiceRequest
-#  @description Represents a request to send an encrypted service message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendEncryptedServiceRequest
+#' @description Telegram API request \code{messages.sendEncryptedService} (constructor \code{#32d439a4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendEncryptedServiceRequest <- R6::R6Class(
   "SendEncryptedServiceRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12094,7 +12138,7 @@ SendEncryptedServiceRequest <- R6::R6Class(
       c(
         as.raw(c(0xa4, 0x39, 0xd4, 0x32)),
         self$peer$bytes(),
-        writeBin(as.integer(self$random_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
         self$serialize_bytes(self$data)
       )
     }
@@ -12113,13 +12157,14 @@ SendEncryptedServiceRequest$from_reader <- function(reader) {
   SendEncryptedServiceRequest$new(peer = peer, data = data, random_id = random_id)
 }
 
-#  @title SendInlineBotResultRequest
-#  @description Represents a request to send an inline bot result. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendInlineBotResultRequest
+#' @description Telegram API request \code{messages.sendInlineBotResult} (constructor \code{#c0cf7646}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendInlineBotResultRequest <- R6::R6Class(
   "SendInlineBotResultRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12206,13 +12251,13 @@ SendInlineBotResultRequest <- R6::R6Class(
         writeBin(flags, raw(), size = 4, endian = "little"),
         self$peer$bytes(),
         if (!is.null(self$reply_to)) self$reply_to$bytes() else raw(),
-        writeBin(as.integer(self$random_id), raw(), size = 8, endian = "little"),
-        writeBin(as.integer(self$query_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
+        packInt64(self$query_id),
         self$serialize_bytes(self$id),
         if (!is.null(self$schedule_date)) self$serialize_datetime(self$schedule_date) else raw(),
         if (!is.null(self$send_as)) self$send_as$bytes() else raw(),
         if (!is.null(self$quick_reply_shortcut)) self$quick_reply_shortcut$bytes() else raw(),
-        if (!is.null(self$allow_paid_stars)) writeBin(as.integer(self$allow_paid_stars), raw(), size = 8, endian = "little") else raw()
+        if (!is.null(self$allow_paid_stars)) packInt64(self$allow_paid_stars) else raw()
       )
     }
   )
@@ -12242,45 +12287,38 @@ SendInlineBotResultRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SendMediaRequest
-#  @description Represents a request to send media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SendMediaRequest <- R6::R6Class(
-  "SendMediaRequest",
+#' @title SendMediaRequest
+#' @description Telegram API request \code{messages.sendMedia} (constructor \code{#0330e77f}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SendMediaRequest <- R6::R6Class("SendMediaRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xac55d9c1,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0x0330e77f,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the SendMediaRequest object.
-    #  @param peer The input peer.
-    #  @param media The input media.
-    #  @param message The message string.
-    #  @param silent Optional silent flag.
-    #  @param background Optional background flag.
-    #  @param clear_draft Optional clear draft flag.
-    #  @param noforwards Optional no forwards flag.
-    #  @param update_stickersets_order Optional update stickersets order flag.
-    #  @param invert_media Optional invert media flag.
-    #  @param allow_paid_floodskip Optional allow paid floodskip flag.
-    #  @param reply_to Optional input reply to.
-    #  @param random_id Optional random ID, defaults to a generated 64-bit integer.
-    #  @param reply_markup Optional reply markup.
-    #  @param entities Optional list of message entities.
-    #  @param schedule_date Optional schedule date.
-    #  @param send_as Optional input peer to send as.
-    #  @param quick_reply_shortcut Optional input quick reply shortcut.
-    #  @param effect Optional effect ID.
-    #  @param allow_paid_stars Optional allow paid stars count.
-    #  @param suggested_post Optional suggested post.
-    initialize = function(peer, media, message, silent = NULL, background = NULL, clear_draft = NULL, noforwards = NULL, update_stickersets_order = NULL, invert_media = NULL, allow_paid_floodskip = NULL, reply_to = NULL, random_id = NULL, reply_markup = NULL, entities = NULL, schedule_date = NULL, send_as = NULL, quick_reply_shortcut = NULL, effect = NULL, allow_paid_stars = NULL, suggested_post = NULL) {
-      self$peer <- peer
-      self$media <- media
-      self$message <- message
+    silent = NULL,
+    background = NULL,
+    clear_draft = NULL,
+    noforwards = NULL,
+    update_stickersets_order = NULL,
+    invert_media = NULL,
+    allow_paid_floodskip = NULL,
+    peer = NULL,
+    reply_to = NULL,
+    media = NULL,
+    message = NULL,
+    random_id = NULL,
+    reply_markup = NULL,
+    entities = NULL,
+    schedule_date = NULL,
+    schedule_repeat_period = NULL,
+    send_as = NULL,
+    quick_reply_shortcut = NULL,
+    effect = NULL,
+    allow_paid_stars = NULL,
+    suggested_post = NULL,
+    initialize = function(silent = NULL, background = NULL, clear_draft = NULL, noforwards = NULL, update_stickersets_order = NULL, invert_media = NULL, allow_paid_floodskip = NULL, peer, reply_to = NULL, media, message, random_id, reply_markup = NULL, entities = NULL, schedule_date = NULL, schedule_repeat_period = NULL, send_as = NULL, quick_reply_shortcut = NULL, effect = NULL, allow_paid_stars = NULL, suggested_post = NULL) {
       self$silent <- silent
       self$background <- background
       self$clear_draft <- clear_draft
@@ -12288,171 +12326,182 @@ SendMediaRequest <- R6::R6Class(
       self$update_stickersets_order <- update_stickersets_order
       self$invert_media <- invert_media
       self$allow_paid_floodskip <- allow_paid_floodskip
+      self$peer <- peer
       self$reply_to <- reply_to
-      self$random_id <- if (is.null(random_id)) as.integer(runif(1, min = 0, max = 2^64 - 1)) else random_id
+      self$media <- media
+      self$message <- message
+      self$random_id <- random_id
       self$reply_markup <- reply_markup
       self$entities <- entities
       self$schedule_date <- schedule_date
+      self$schedule_repeat_period <- schedule_repeat_period
       self$send_as <- send_as
       self$quick_reply_shortcut <- quick_reply_shortcut
       self$effect <- effect
       self$allow_paid_stars <- allow_paid_stars
       self$suggested_post <- suggested_post
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      self$media <- utils$get_input_media(self$media)
-      if (!is.null(self$send_as)) {
-        self$send_as <- utils$get_input_peer(client$get_input_entity(self$send_as))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      if (!is.null(self$send_as)) self$send_as <- tryCatch(utils$get_input_peer(client$get_input_entity(self$send_as)), error = function(e) self$send_as)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SendMediaRequest",
+        `_` = "SendMediaRequest",
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$to_dict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$to_dict() else self$background,
+        "clear_draft" = if (inherits(self$clear_draft, "TLObject")) self$clear_draft$to_dict() else self$clear_draft,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$to_dict() else self$noforwards,
+        "update_stickersets_order" = if (inherits(self$update_stickersets_order, "TLObject")) self$update_stickersets_order$to_dict() else self$update_stickersets_order,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
+        "allow_paid_floodskip" = if (inherits(self$allow_paid_floodskip, "TLObject")) self$allow_paid_floodskip$to_dict() else self$allow_paid_floodskip,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "media" = if (inherits(self$media, "TLObject")) self$media$to_dict() else self$media,
-        "message" = self$message,
-        "silent" = self$silent,
-        "background" = self$background,
-        "clear_draft" = self$clear_draft,
-        "noforwards" = self$noforwards,
-        "update_stickersets_order" = self$update_stickersets_order,
-        "invert_media" = self$invert_media,
-        "allow_paid_floodskip" = self$allow_paid_floodskip,
         "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
-        "random_id" = self$random_id,
+        "media" = if (inherits(self$media, "TLObject")) self$media$to_dict() else self$media,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "random_id" = if (inherits(self$random_id, "TLObject")) self$random_id$to_dict() else self$random_id,
         "reply_markup" = if (inherits(self$reply_markup, "TLObject")) self$reply_markup$to_dict() else self$reply_markup,
-        "entities" = if (is.null(self$entities)) list() else lapply(self$entities, function(x) if (inherits(x, "TLObject")) x$to_dict() else x),
-        "schedule_date" = self$schedule_date,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
+        "schedule_date" = if (inherits(self$schedule_date, "TLObject")) self$schedule_date$to_dict() else self$schedule_date,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$to_dict() else self$schedule_repeat_period,
         "send_as" = if (inherits(self$send_as, "TLObject")) self$send_as$to_dict() else self$send_as,
         "quick_reply_shortcut" = if (inherits(self$quick_reply_shortcut, "TLObject")) self$quick_reply_shortcut$to_dict() else self$quick_reply_shortcut,
-        "effect" = self$effect,
-        "allow_paid_stars" = self$allow_paid_stars,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "allow_paid_stars" = if (inherits(self$allow_paid_stars, "TLObject")) self$allow_paid_stars$to_dict() else self$allow_paid_stars,
         "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SendMediaRequest",
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$to_dict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$to_dict() else self$background,
+        "clear_draft" = if (inherits(self$clear_draft, "TLObject")) self$clear_draft$to_dict() else self$clear_draft,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$to_dict() else self$noforwards,
+        "update_stickersets_order" = if (inherits(self$update_stickersets_order, "TLObject")) self$update_stickersets_order$to_dict() else self$update_stickersets_order,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
+        "allow_paid_floodskip" = if (inherits(self$allow_paid_floodskip, "TLObject")) self$allow_paid_floodskip$to_dict() else self$allow_paid_floodskip,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
+        "media" = if (inherits(self$media, "TLObject")) self$media$to_dict() else self$media,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "random_id" = if (inherits(self$random_id, "TLObject")) self$random_id$to_dict() else self$random_id,
+        "reply_markup" = if (inherits(self$reply_markup, "TLObject")) self$reply_markup$to_dict() else self$reply_markup,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
+        "schedule_date" = if (inherits(self$schedule_date, "TLObject")) self$schedule_date$to_dict() else self$schedule_date,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$to_dict() else self$schedule_repeat_period,
+        "send_as" = if (inherits(self$send_as, "TLObject")) self$send_as$to_dict() else self$send_as,
+        "quick_reply_shortcut" = if (inherits(self$quick_reply_shortcut, "TLObject")) self$quick_reply_shortcut$to_dict() else self$quick_reply_shortcut,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "allow_paid_stars" = if (inherits(self$allow_paid_stars, "TLObject")) self$allow_paid_stars$to_dict() else self$allow_paid_stars,
+        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post
+      )
+    },
     bytes = function() {
       flags <- 0L
-      if (!is.null(self$silent) && self$silent) flags <- bitwOr(flags, 32L)
-      if (!is.null(self$background) && self$background) flags <- bitwOr(flags, 64L)
-      if (!is.null(self$clear_draft) && self$clear_draft) flags <- bitwOr(flags, 128L)
-      if (!is.null(self$noforwards) && self$noforwards) flags <- bitwOr(flags, 16384L)
-      if (!is.null(self$update_stickersets_order) && self$update_stickersets_order) flags <- bitwOr(flags, 32768L)
-      if (!is.null(self$invert_media) && self$invert_media) flags <- bitwOr(flags, 65536L)
-      if (!is.null(self$allow_paid_floodskip) && self$allow_paid_floodskip) flags <- bitwOr(flags, 524288L)
+      if (isTRUE(self$silent)) flags <- bitwOr(flags, 32L)
+      if (isTRUE(self$background)) flags <- bitwOr(flags, 64L)
+      if (isTRUE(self$clear_draft)) flags <- bitwOr(flags, 128L)
+      if (isTRUE(self$noforwards)) flags <- bitwOr(flags, 16384L)
+      if (isTRUE(self$update_stickersets_order)) flags <- bitwOr(flags, 32768L)
+      if (isTRUE(self$invert_media)) flags <- bitwOr(flags, 65536L)
+      if (isTRUE(self$allow_paid_floodskip)) flags <- bitwOr(flags, 524288L)
       if (!is.null(self$reply_to)) flags <- bitwOr(flags, 1L)
       if (!is.null(self$reply_markup)) flags <- bitwOr(flags, 4L)
       if (!is.null(self$entities)) flags <- bitwOr(flags, 8L)
       if (!is.null(self$schedule_date)) flags <- bitwOr(flags, 1024L)
+      if (!is.null(self$schedule_repeat_period)) flags <- bitwOr(flags, 16777216L)
       if (!is.null(self$send_as)) flags <- bitwOr(flags, 8192L)
       if (!is.null(self$quick_reply_shortcut)) flags <- bitwOr(flags, 131072L)
       if (!is.null(self$effect)) flags <- bitwOr(flags, 262144L)
       if (!is.null(self$allow_paid_stars)) flags <- bitwOr(flags, 2097152L)
       if (!is.null(self$suggested_post)) flags <- bitwOr(flags, 4194304L)
       c(
-        as.raw(c(0xc1, 0xd9, 0x55, 0xac)),
-        packBits(intToBits(flags), type = "raw")[1:4],
+        as.raw(c(0x7f, 0xe7, 0x30, 0x03)),
+        pack("<I", flags),
         self$peer$bytes(),
         if (!is.null(self$reply_to)) self$reply_to$bytes() else raw(0),
         self$media$bytes(),
-        self$serialize_bytes(self$message),
-        packBits(intToBits(self$random_id), type = "raw")[1:8],
+        serialize_bytes(self$message),
+        packInt64(self$random_id),
         if (!is.null(self$reply_markup)) self$reply_markup$bytes() else raw(0),
-        if (!is.null(self$entities)) c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), packBits(intToBits(length(self$entities)), type = "raw")[1:4], do.call(c, lapply(self$entities, function(x) x$bytes()))) else raw(0),
-        if (!is.null(self$schedule_date)) self$serialize_datetime(self$schedule_date) else raw(0),
+        if (!is.null(self$entities)) .telegramR_tl_vector(self$entities) else raw(0),
+        if (!is.null(self$schedule_date)) pack("<i", self$schedule_date) else raw(0),
+        if (!is.null(self$schedule_repeat_period)) pack("<i", self$schedule_repeat_period) else raw(0),
         if (!is.null(self$send_as)) self$send_as$bytes() else raw(0),
         if (!is.null(self$quick_reply_shortcut)) self$quick_reply_shortcut$bytes() else raw(0),
-        if (!is.null(self$effect)) packBits(intToBits(self$effect), type = "raw")[1:8] else raw(0),
-        if (!is.null(self$allow_paid_stars)) packBits(intToBits(self$allow_paid_stars), type = "raw")[1:8] else raw(0),
+        if (!is.null(self$effect)) packInt64(self$effect) else raw(0),
+        if (!is.null(self$allow_paid_stars)) packInt64(self$allow_paid_stars) else raw(0),
         if (!is.null(self$suggested_post)) self$suggested_post$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$silent <- bitwAnd(flags, 32L) != 0
+      self$background <- bitwAnd(flags, 64L) != 0
+      self$clear_draft <- bitwAnd(flags, 128L) != 0
+      self$noforwards <- bitwAnd(flags, 16384L) != 0
+      self$update_stickersets_order <- bitwAnd(flags, 32768L) != 0
+      self$invert_media <- bitwAnd(flags, 65536L) != 0
+      self$allow_paid_floodskip <- bitwAnd(flags, 524288L) != 0
+      self$peer <- reader$tgread_object()
+      self$reply_to <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
+      self$media <- reader$tgread_object()
+      self$message <- reader$tgread_string()
+      self$random_id <- reader$read_long()
+      self$reply_markup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
+      self$entities <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$schedule_date <- if (bitwAnd(flags, 1024L) != 0) reader$read_int() else NULL
+      self$schedule_repeat_period <- if (bitwAnd(flags, 16777216L) != 0) reader$read_int() else NULL
+      self$send_as <- if (bitwAnd(flags, 8192L) != 0) reader$tgread_object() else NULL
+      self$quick_reply_shortcut <- if (bitwAnd(flags, 131072L) != 0) reader$tgread_object() else NULL
+      self$effect <- if (bitwAnd(flags, 262144L) != 0) reader$read_long() else NULL
+      self$allow_paid_stars <- if (bitwAnd(flags, 2097152L) != 0) reader$read_long() else NULL
+      self$suggested_post <- if (bitwAnd(flags, 4194304L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SendMediaRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SendMediaRequest.
-SendMediaRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  silent <- bitwAnd(flags, 32L) != 0
-  background <- bitwAnd(flags, 64L) != 0
-  clear_draft <- bitwAnd(flags, 128L) != 0
-  noforwards <- bitwAnd(flags, 16384L) != 0
-  update_stickersets_order <- bitwAnd(flags, 32768L) != 0
-  invert_media <- bitwAnd(flags, 65536L) != 0
-  allow_paid_floodskip <- bitwAnd(flags, 524288L) != 0
-  peer <- reader$tgread_object()
-  reply_to <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
-  media <- reader$tgread_object()
-  message <- reader$tgread_string()
-  random_id <- reader$read_long()
-  reply_markup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
-  entities <- if (bitwAnd(flags, 8L) != 0) {
-    reader$read_int() # skip vector ID
-    lapply(1:reader$read_int(), function(i) reader$tgread_object())
-  } else {
-    NULL
-  }
-  schedule_date <- if (bitwAnd(flags, 1024L) != 0) reader$tgread_date() else NULL
-  send_as <- if (bitwAnd(flags, 8192L) != 0) reader$tgread_object() else NULL
-  quick_reply_shortcut <- if (bitwAnd(flags, 131072L) != 0) reader$tgread_object() else NULL
-  effect <- if (bitwAnd(flags, 262144L) != 0) reader$read_long() else NULL
-  allow_paid_stars <- if (bitwAnd(flags, 2097152L) != 0) reader$read_long() else NULL
-  suggested_post <- if (bitwAnd(flags, 4194304L) != 0) reader$tgread_object() else NULL
-  SendMediaRequest$new(peer = peer, media = media, message = message, silent = silent, background = background, clear_draft = clear_draft, noforwards = noforwards, update_stickersets_order = update_stickersets_order, invert_media = invert_media, allow_paid_floodskip = allow_paid_floodskip, reply_to = reply_to, random_id = random_id, reply_markup = reply_markup, entities = entities, schedule_date = schedule_date, send_as = send_as, quick_reply_shortcut = quick_reply_shortcut, effect = effect, allow_paid_stars = allow_paid_stars, suggested_post = suggested_post)
-}
-
-#  @title SendMessageRequest
-#  @description Represents a request to send a message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SendMessageRequest <- R6::R6Class(
-  "SendMessageRequest",
+#' @title SendMessageRequest
+#' @description Telegram API request \code{messages.sendMessage} (constructor \code{#fef48f62}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SendMessageRequest <- R6::R6Class("SendMessageRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xfe05dc9a,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xfef48f62,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the SendMessageRequest object.
-    #  @param peer The input peer.
-    #  @param message The message string.
-    #  @param no_webpage Optional no webpage flag.
-    #  @param silent Optional silent flag.
-    #  @param background Optional background flag.
-    #  @param clear_draft Optional clear draft flag.
-    #  @param noforwards Optional no forwards flag.
-    #  @param update_stickersets_order Optional update stickersets order flag.
-    #  @param invert_media Optional invert media flag.
-    #  @param allow_paid_floodskip Optional allow paid floodskip flag.
-    #  @param reply_to Optional input reply to.
-    #  @param random_id Optional random ID, defaults to a generated 64-bit integer.
-    #  @param reply_markup Optional reply markup.
-    #  @param entities Optional list of message entities.
-    #  @param schedule_date Optional schedule date.
-    #  @param send_as Optional input peer to send as.
-    #  @param quick_reply_shortcut Optional input quick reply shortcut.
-    #  @param effect Optional effect ID.
-    #  @param allow_paid_stars Optional allow paid stars count.
-    #  @param suggested_post Optional suggested post.
-    initialize = function(peer, message, no_webpage = NULL, silent = NULL, background = NULL, clear_draft = NULL, noforwards = NULL, update_stickersets_order = NULL, invert_media = NULL, allow_paid_floodskip = NULL, reply_to = NULL, random_id = NULL, reply_markup = NULL, entities = NULL, schedule_date = NULL, send_as = NULL, quick_reply_shortcut = NULL, effect = NULL, allow_paid_stars = NULL, suggested_post = NULL) {
-      self$peer <- peer
-      self$message <- message
+    no_webpage = NULL,
+    silent = NULL,
+    background = NULL,
+    clear_draft = NULL,
+    noforwards = NULL,
+    update_stickersets_order = NULL,
+    invert_media = NULL,
+    allow_paid_floodskip = NULL,
+    peer = NULL,
+    reply_to = NULL,
+    message = NULL,
+    random_id = NULL,
+    reply_markup = NULL,
+    entities = NULL,
+    schedule_date = NULL,
+    schedule_repeat_period = NULL,
+    send_as = NULL,
+    quick_reply_shortcut = NULL,
+    effect = NULL,
+    allow_paid_stars = NULL,
+    suggested_post = NULL,
+    rich_message = NULL,
+    initialize = function(no_webpage = NULL, silent = NULL, background = NULL, clear_draft = NULL, noforwards = NULL, update_stickersets_order = NULL, invert_media = NULL, allow_paid_floodskip = NULL, peer, reply_to = NULL, message, random_id, reply_markup = NULL, entities = NULL, schedule_date = NULL, schedule_repeat_period = NULL, send_as = NULL, quick_reply_shortcut = NULL, effect = NULL, allow_paid_stars = NULL, suggested_post = NULL, rich_message = NULL) {
       self$no_webpage <- no_webpage
       self$silent <- silent
       self$background <- background
@@ -12461,140 +12510,162 @@ SendMessageRequest <- R6::R6Class(
       self$update_stickersets_order <- update_stickersets_order
       self$invert_media <- invert_media
       self$allow_paid_floodskip <- allow_paid_floodskip
+      self$peer <- peer
       self$reply_to <- reply_to
-      self$random_id <- if (is.null(random_id)) as.integer(runif(1, min = 0, max = 2^64 - 1)) else random_id
+      self$message <- message
+      self$random_id <- random_id
       self$reply_markup <- reply_markup
       self$entities <- entities
       self$schedule_date <- schedule_date
+      self$schedule_repeat_period <- schedule_repeat_period
       self$send_as <- send_as
       self$quick_reply_shortcut <- quick_reply_shortcut
       self$effect <- effect
       self$allow_paid_stars <- allow_paid_stars
       self$suggested_post <- suggested_post
+      self$rich_message <- rich_message
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      if (!is.null(self$send_as)) {
-        self$send_as <- utils$get_input_peer(client$get_input_entity(self$send_as))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      if (!is.null(self$send_as)) self$send_as <- tryCatch(utils$get_input_peer(client$get_input_entity(self$send_as)), error = function(e) self$send_as)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SendMessageRequest",
+        `_` = "SendMessageRequest",
+        "no_webpage" = if (inherits(self$no_webpage, "TLObject")) self$no_webpage$to_dict() else self$no_webpage,
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$to_dict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$to_dict() else self$background,
+        "clear_draft" = if (inherits(self$clear_draft, "TLObject")) self$clear_draft$to_dict() else self$clear_draft,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$to_dict() else self$noforwards,
+        "update_stickersets_order" = if (inherits(self$update_stickersets_order, "TLObject")) self$update_stickersets_order$to_dict() else self$update_stickersets_order,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
+        "allow_paid_floodskip" = if (inherits(self$allow_paid_floodskip, "TLObject")) self$allow_paid_floodskip$to_dict() else self$allow_paid_floodskip,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "message" = self$message,
-        "no_webpage" = self$no_webpage,
-        "silent" = self$silent,
-        "background" = self$background,
-        "clear_draft" = self$clear_draft,
-        "noforwards" = self$noforwards,
-        "update_stickersets_order" = self$update_stickersets_order,
-        "invert_media" = self$invert_media,
-        "allow_paid_floodskip" = self$allow_paid_floodskip,
         "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
-        "random_id" = self$random_id,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "random_id" = if (inherits(self$random_id, "TLObject")) self$random_id$to_dict() else self$random_id,
         "reply_markup" = if (inherits(self$reply_markup, "TLObject")) self$reply_markup$to_dict() else self$reply_markup,
-        "entities" = if (is.null(self$entities)) list() else lapply(self$entities, function(x) if (inherits(x, "TLObject")) x$to_dict() else x),
-        "schedule_date" = self$schedule_date,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
+        "schedule_date" = if (inherits(self$schedule_date, "TLObject")) self$schedule_date$to_dict() else self$schedule_date,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$to_dict() else self$schedule_repeat_period,
         "send_as" = if (inherits(self$send_as, "TLObject")) self$send_as$to_dict() else self$send_as,
         "quick_reply_shortcut" = if (inherits(self$quick_reply_shortcut, "TLObject")) self$quick_reply_shortcut$to_dict() else self$quick_reply_shortcut,
-        "effect" = self$effect,
-        "allow_paid_stars" = self$allow_paid_stars,
-        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "allow_paid_stars" = if (inherits(self$allow_paid_stars, "TLObject")) self$allow_paid_stars$to_dict() else self$allow_paid_stars,
+        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$to_dict() else self$rich_message
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SendMessageRequest",
+        "no_webpage" = if (inherits(self$no_webpage, "TLObject")) self$no_webpage$to_dict() else self$no_webpage,
+        "silent" = if (inherits(self$silent, "TLObject")) self$silent$to_dict() else self$silent,
+        "background" = if (inherits(self$background, "TLObject")) self$background$to_dict() else self$background,
+        "clear_draft" = if (inherits(self$clear_draft, "TLObject")) self$clear_draft$to_dict() else self$clear_draft,
+        "noforwards" = if (inherits(self$noforwards, "TLObject")) self$noforwards$to_dict() else self$noforwards,
+        "update_stickersets_order" = if (inherits(self$update_stickersets_order, "TLObject")) self$update_stickersets_order$to_dict() else self$update_stickersets_order,
+        "invert_media" = if (inherits(self$invert_media, "TLObject")) self$invert_media$to_dict() else self$invert_media,
+        "allow_paid_floodskip" = if (inherits(self$allow_paid_floodskip, "TLObject")) self$allow_paid_floodskip$to_dict() else self$allow_paid_floodskip,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "reply_to" = if (inherits(self$reply_to, "TLObject")) self$reply_to$to_dict() else self$reply_to,
+        "message" = if (inherits(self$message, "TLObject")) self$message$to_dict() else self$message,
+        "random_id" = if (inherits(self$random_id, "TLObject")) self$random_id$to_dict() else self$random_id,
+        "reply_markup" = if (inherits(self$reply_markup, "TLObject")) self$reply_markup$to_dict() else self$reply_markup,
+        "entities" = if (inherits(self$entities, "TLObject")) self$entities$to_dict() else self$entities,
+        "schedule_date" = if (inherits(self$schedule_date, "TLObject")) self$schedule_date$to_dict() else self$schedule_date,
+        "schedule_repeat_period" = if (inherits(self$schedule_repeat_period, "TLObject")) self$schedule_repeat_period$to_dict() else self$schedule_repeat_period,
+        "send_as" = if (inherits(self$send_as, "TLObject")) self$send_as$to_dict() else self$send_as,
+        "quick_reply_shortcut" = if (inherits(self$quick_reply_shortcut, "TLObject")) self$quick_reply_shortcut$to_dict() else self$quick_reply_shortcut,
+        "effect" = if (inherits(self$effect, "TLObject")) self$effect$to_dict() else self$effect,
+        "allow_paid_stars" = if (inherits(self$allow_paid_stars, "TLObject")) self$allow_paid_stars$to_dict() else self$allow_paid_stars,
+        "suggested_post" = if (inherits(self$suggested_post, "TLObject")) self$suggested_post$to_dict() else self$suggested_post,
+        "rich_message" = if (inherits(self$rich_message, "TLObject")) self$rich_message$to_dict() else self$rich_message
+      )
+    },
     bytes = function() {
       flags <- 0L
-      if (!is.null(self$no_webpage) && self$no_webpage) flags <- bitwOr(flags, 2L)
-      if (!is.null(self$silent) && self$silent) flags <- bitwOr(flags, 32L)
-      if (!is.null(self$background) && self$background) flags <- bitwOr(flags, 64L)
-      if (!is.null(self$clear_draft) && self$clear_draft) flags <- bitwOr(flags, 128L)
-      if (!is.null(self$noforwards) && self$noforwards) flags <- bitwOr(flags, 16384L)
-      if (!is.null(self$update_stickersets_order) && self$update_stickersets_order) flags <- bitwOr(flags, 32768L)
-      if (!is.null(self$invert_media) && self$invert_media) flags <- bitwOr(flags, 65536L)
-      if (!is.null(self$allow_paid_floodskip) && self$allow_paid_floodskip) flags <- bitwOr(flags, 524288L)
+      if (isTRUE(self$no_webpage)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$silent)) flags <- bitwOr(flags, 32L)
+      if (isTRUE(self$background)) flags <- bitwOr(flags, 64L)
+      if (isTRUE(self$clear_draft)) flags <- bitwOr(flags, 128L)
+      if (isTRUE(self$noforwards)) flags <- bitwOr(flags, 16384L)
+      if (isTRUE(self$update_stickersets_order)) flags <- bitwOr(flags, 32768L)
+      if (isTRUE(self$invert_media)) flags <- bitwOr(flags, 65536L)
+      if (isTRUE(self$allow_paid_floodskip)) flags <- bitwOr(flags, 524288L)
       if (!is.null(self$reply_to)) flags <- bitwOr(flags, 1L)
       if (!is.null(self$reply_markup)) flags <- bitwOr(flags, 4L)
       if (!is.null(self$entities)) flags <- bitwOr(flags, 8L)
       if (!is.null(self$schedule_date)) flags <- bitwOr(flags, 1024L)
+      if (!is.null(self$schedule_repeat_period)) flags <- bitwOr(flags, 16777216L)
       if (!is.null(self$send_as)) flags <- bitwOr(flags, 8192L)
       if (!is.null(self$quick_reply_shortcut)) flags <- bitwOr(flags, 131072L)
       if (!is.null(self$effect)) flags <- bitwOr(flags, 262144L)
       if (!is.null(self$allow_paid_stars)) flags <- bitwOr(flags, 2097152L)
       if (!is.null(self$suggested_post)) flags <- bitwOr(flags, 4194304L)
+      if (!is.null(self$rich_message)) flags <- bitwOr(flags, 8388608L)
       c(
-        as.raw(c(0xfe, 0x05, 0xdc, 0x9a)),
-        packBits(intToBits(flags), type = "raw")[1:4],
+        as.raw(c(0x62, 0x8f, 0xf4, 0xfe)),
+        pack("<I", flags),
         self$peer$bytes(),
         if (!is.null(self$reply_to)) self$reply_to$bytes() else raw(0),
-        self$serialize_bytes(self$message),
-        packBits(intToBits(self$random_id), type = "raw")[1:8],
+        serialize_bytes(self$message),
+        packInt64(self$random_id),
         if (!is.null(self$reply_markup)) self$reply_markup$bytes() else raw(0),
-        if (!is.null(self$entities)) c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), packBits(intToBits(length(self$entities)), type = "raw")[1:4], do.call(c, lapply(self$entities, function(x) x$bytes()))) else raw(0),
-        if (!is.null(self$schedule_date)) self$serialize_datetime(self$schedule_date) else raw(0),
+        if (!is.null(self$entities)) .telegramR_tl_vector(self$entities) else raw(0),
+        if (!is.null(self$schedule_date)) pack("<i", self$schedule_date) else raw(0),
+        if (!is.null(self$schedule_repeat_period)) pack("<i", self$schedule_repeat_period) else raw(0),
         if (!is.null(self$send_as)) self$send_as$bytes() else raw(0),
         if (!is.null(self$quick_reply_shortcut)) self$quick_reply_shortcut$bytes() else raw(0),
-        if (!is.null(self$effect)) packBits(intToBits(self$effect), type = "raw")[1:8] else raw(0),
-        if (!is.null(self$allow_paid_stars)) packBits(intToBits(self$allow_paid_stars), type = "raw")[1:8] else raw(0),
-        if (!is.null(self$suggested_post)) self$suggested_post$bytes() else raw(0)
+        if (!is.null(self$effect)) packInt64(self$effect) else raw(0),
+        if (!is.null(self$allow_paid_stars)) packInt64(self$allow_paid_stars) else raw(0),
+        if (!is.null(self$suggested_post)) self$suggested_post$bytes() else raw(0),
+        if (!is.null(self$rich_message)) self$rich_message$bytes() else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$no_webpage <- bitwAnd(flags, 2L) != 0
+      self$silent <- bitwAnd(flags, 32L) != 0
+      self$background <- bitwAnd(flags, 64L) != 0
+      self$clear_draft <- bitwAnd(flags, 128L) != 0
+      self$noforwards <- bitwAnd(flags, 16384L) != 0
+      self$update_stickersets_order <- bitwAnd(flags, 32768L) != 0
+      self$invert_media <- bitwAnd(flags, 65536L) != 0
+      self$allow_paid_floodskip <- bitwAnd(flags, 524288L) != 0
+      self$peer <- reader$tgread_object()
+      self$reply_to <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
+      self$message <- reader$tgread_string()
+      self$random_id <- reader$read_long()
+      self$reply_markup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
+      self$entities <- if (bitwAnd(flags, 8L) != 0) reader$tgread_vector() else NULL
+      self$schedule_date <- if (bitwAnd(flags, 1024L) != 0) reader$read_int() else NULL
+      self$schedule_repeat_period <- if (bitwAnd(flags, 16777216L) != 0) reader$read_int() else NULL
+      self$send_as <- if (bitwAnd(flags, 8192L) != 0) reader$tgread_object() else NULL
+      self$quick_reply_shortcut <- if (bitwAnd(flags, 131072L) != 0) reader$tgread_object() else NULL
+      self$effect <- if (bitwAnd(flags, 262144L) != 0) reader$read_long() else NULL
+      self$allow_paid_stars <- if (bitwAnd(flags, 2097152L) != 0) reader$read_long() else NULL
+      self$suggested_post <- if (bitwAnd(flags, 4194304L) != 0) reader$tgread_object() else NULL
+      self$rich_message <- if (bitwAnd(flags, 8388608L) != 0) reader$tgread_object() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SendMessageRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SendMessageRequest.
-SendMessageRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  no_webpage <- bitwAnd(flags, 2L) != 0
-  silent <- bitwAnd(flags, 32L) != 0
-  background <- bitwAnd(flags, 64L) != 0
-  clear_draft <- bitwAnd(flags, 128L) != 0
-  noforwards <- bitwAnd(flags, 16384L) != 0
-  update_stickersets_order <- bitwAnd(flags, 32768L) != 0
-  invert_media <- bitwAnd(flags, 65536L) != 0
-  allow_paid_floodskip <- bitwAnd(flags, 524288L) != 0
-  peer <- reader$tgread_object()
-  reply_to <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
-  message <- reader$tgread_string()
-  random_id <- reader$read_long()
-  reply_markup <- if (bitwAnd(flags, 4L) != 0) reader$tgread_object() else NULL
-  entities <- if (bitwAnd(flags, 8L) != 0) {
-    reader$read_int() # skip vector ID
-    lapply(1:reader$read_int(), function(i) reader$tgread_object())
-  } else {
-    NULL
-  }
-  schedule_date <- if (bitwAnd(flags, 1024L) != 0) reader$tgread_date() else NULL
-  send_as <- if (bitwAnd(flags, 8192L) != 0) reader$tgread_object() else NULL
-  quick_reply_shortcut <- if (bitwAnd(flags, 131072L) != 0) reader$tgread_object() else NULL
-  effect <- if (bitwAnd(flags, 262144L) != 0) reader$read_long() else NULL
-  allow_paid_stars <- if (bitwAnd(flags, 2097152L) != 0) reader$read_long() else NULL
-  suggested_post <- if (bitwAnd(flags, 4194304L) != 0) reader$tgread_object() else NULL
-  SendMessageRequest$new(peer = peer, message = message, no_webpage = no_webpage, silent = silent, background = background, clear_draft = clear_draft, noforwards = noforwards, update_stickersets_order = update_stickersets_order, invert_media = invert_media, allow_paid_floodskip = allow_paid_floodskip, reply_to = reply_to, random_id = random_id, reply_markup = reply_markup, entities = entities, schedule_date = schedule_date, send_as = send_as, quick_reply_shortcut = quick_reply_shortcut, effect = effect, allow_paid_stars = allow_paid_stars, suggested_post = suggested_post)
-}
-
-
-#  @title SendMultiMediaRequest
-#  @description Represents a request to send multi media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendMultiMediaRequest
+#' @description Telegram API request \code{messages.sendMultiMedia} (constructor \code{#1bf89d74}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendMultiMediaRequest <- R6::R6Class(
   "SendMultiMediaRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12697,8 +12768,8 @@ SendMultiMediaRequest <- R6::R6Class(
         if (!is.null(self$schedule_date)) self$serialize_datetime(self$schedule_date) else raw(0),
         if (!is.null(self$send_as)) self$send_as$bytes() else raw(0),
         if (!is.null(self$quick_reply_shortcut)) self$quick_reply_shortcut$bytes() else raw(0),
-        if (!is.null(self$effect)) writeBin(as.double(self$effect), raw(), size = 8, endian = "little") else raw(0),
-        if (!is.null(self$allow_paid_stars)) writeBin(as.double(self$allow_paid_stars), raw(), size = 8, endian = "little") else raw(0)
+        if (!is.null(self$effect)) packInt64(self$effect) else raw(0),
+        if (!is.null(self$allow_paid_stars)) packInt64(self$allow_paid_stars) else raw(0)
       )
     }
   )
@@ -12734,13 +12805,14 @@ SendMultiMediaRequest$from_reader <- function(reader) {
   SendMultiMediaRequest$new(peer = peer, multi_media = multi_media, silent = silent, background = background, clear_draft = clear_draft, noforwards = noforwards, update_stickersets_order = update_stickersets_order, invert_media = invert_media, allow_paid_floodskip = allow_paid_floodskip, reply_to = reply_to, schedule_date = schedule_date, send_as = send_as, quick_reply_shortcut = quick_reply_shortcut, effect = effect, allow_paid_stars = allow_paid_stars)
 }
 
-#  @title SendPaidReactionRequest
-#  @description Represents a request to send a paid reaction. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendPaidReactionRequest
+#' @description Telegram API request \code{messages.sendPaidReaction} (constructor \code{#58bbcb50}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendPaidReactionRequest <- R6::R6Class(
   "SendPaidReactionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12793,7 +12865,7 @@ SendPaidReactionRequest <- R6::R6Class(
         self$peer$bytes(),
         packBits(intToBits(self$msg_id), type = "raw")[1:4],
         packBits(intToBits(self$count), type = "raw")[1:4],
-        writeBin(as.double(self$random_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
         if (!is.null(self$private)) self$private$bytes() else raw(0)
       )
     }
@@ -12816,13 +12888,14 @@ SendPaidReactionRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SendQuickReplyMessagesRequest
-#  @description Represents a request to send quick reply messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendQuickReplyMessagesRequest
+#' @description Telegram API request \code{messages.sendQuickReplyMessages} (constructor \code{#6c750de1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendQuickReplyMessagesRequest <- R6::R6Class(
   "SendQuickReplyMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -12877,7 +12950,7 @@ SendQuickReplyMessagesRequest <- R6::R6Class(
         unlist(lapply(self$id, function(x) packBits(intToBits(x), type = "raw")[1:4])),
         as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
         packBits(intToBits(length(self$random_id)), type = "raw")[1:4],
-        unlist(lapply(self$random_id, function(x) writeBin(as.double(x), raw(), size = 8, endian = "little")))
+        unlist(lapply(self$random_id, function(x) packInt64(x)))
       )
     }
   )
@@ -12904,107 +12977,90 @@ SendQuickReplyMessagesRequest$from_reader <- function(reader) {
   SendQuickReplyMessagesRequest$new(peer = peer, shortcut_id = shortcut_id, id = id, random_id = random_id)
 }
 
-#  @title SendReactionRequest
-#  @description Represents a request to send a reaction. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-SendReactionRequest <- R6::R6Class(
-  "SendReactionRequest",
+#' @title SendReactionRequest
+#' @description Telegram API request \code{messages.sendReaction} (constructor \code{#d30d78d4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+SendReactionRequest <- R6::R6Class("SendReactionRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
     CONSTRUCTOR_ID = 0xd30d78d4,
-    #  @field SUBCLASS_OF_ID The subclass ID.
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the SendReactionRequest object.
-    #  @param peer The input peer.
-    #  @param msg_id The message ID.
-    #  @param big Optional big flag.
-    #  @param add_to_recent Optional add to recent flag.
-    #  @param reaction Optional list of reactions.
-    initialize = function(peer, msg_id, big = NULL, add_to_recent = NULL, reaction = NULL) {
-      self$peer <- peer
-      self$msg_id <- msg_id
+    big = NULL,
+    add_to_recent = NULL,
+    peer = NULL,
+    msg_id = NULL,
+    reaction = NULL,
+    initialize = function(big = NULL, add_to_recent = NULL, peer, msg_id, reaction = NULL) {
       self$big <- big
       self$add_to_recent <- add_to_recent
+      self$peer <- peer
+      self$msg_id <- msg_id
       self$reaction <- reaction
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "SendReactionRequest",
+        `_` = "SendReactionRequest",
+        "big" = if (inherits(self$big, "TLObject")) self$big$to_dict() else self$big,
+        "add_to_recent" = if (inherits(self$add_to_recent, "TLObject")) self$add_to_recent$to_dict() else self$add_to_recent,
         "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        "msg_id" = self$msg_id,
-        "big" = self$big,
-        "add_to_recent" = self$add_to_recent,
-        "reaction" = if (is.null(self$reaction)) list() else lapply(self$reaction, function(x) if (inherits(x, "TLObject")) x$to_dict() else x)
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "reaction" = if (inherits(self$reaction, "TLObject")) self$reaction$to_dict() else self$reaction
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
+    to_list = function() {
+      list(
+        `_` = "SendReactionRequest",
+        "big" = if (inherits(self$big, "TLObject")) self$big$to_dict() else self$big,
+        "add_to_recent" = if (inherits(self$add_to_recent, "TLObject")) self$add_to_recent$to_dict() else self$add_to_recent,
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "msg_id" = if (inherits(self$msg_id, "TLObject")) self$msg_id$to_dict() else self$msg_id,
+        "reaction" = if (inherits(self$reaction, "TLObject")) self$reaction$to_dict() else self$reaction
+      )
+    },
     bytes = function() {
       flags <- 0L
-      if (!is.null(self$big) && self$big) flags <- bitwOr(flags, 2L)
-      if (!is.null(self$add_to_recent) && self$add_to_recent) flags <- bitwOr(flags, 4L)
+      if (isTRUE(self$big)) flags <- bitwOr(flags, 2L)
+      if (isTRUE(self$add_to_recent)) flags <- bitwOr(flags, 4L)
       if (!is.null(self$reaction)) flags <- bitwOr(flags, 1L)
       c(
         as.raw(c(0xd4, 0x78, 0x0d, 0xd3)),
-        packBits(intToBits(flags), type = "raw")[1:4],
+        pack("<I", flags),
         self$peer$bytes(),
-        packBits(intToBits(self$msg_id), type = "raw")[1:4],
-        if (!is.null(self$reaction)) {
-          c(
-            as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
-            packBits(intToBits(length(self$reaction)), type = "raw")[1:4],
-            unlist(lapply(self$reaction, function(x) x$bytes()))
-          )
-        } else {
-          raw(0)
-        }
+        pack("<i", self$msg_id),
+        if (!is.null(self$reaction)) .telegramR_tl_vector(self$reaction) else raw(0)
       )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$big <- bitwAnd(flags, 2L) != 0
+      self$add_to_recent <- bitwAnd(flags, 4L) != 0
+      self$peer <- reader$tgread_object()
+      self$msg_id <- reader$read_int()
+      self$reaction <- if (bitwAnd(flags, 1L) != 0) reader$tgread_vector() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name SendReactionRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of SendReactionRequest.
-SendReactionRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  big <- bitwAnd(flags, 2L) != 0
-  add_to_recent <- bitwAnd(flags, 4L) != 0
-  peer <- reader$tgread_object()
-  msg_id <- reader$read_int()
-  reaction <- if (bitwAnd(flags, 1L) != 0) {
-    reader$read_int()
-    lapply(1:reader$read_int(), function(i) reader$tgread_object())
-  } else {
-    NULL
-  }
-  SendReactionRequest$new(peer = peer, msg_id = msg_id, big = big, add_to_recent = add_to_recent, reaction = reaction)
-}
-
-#  @title SendScheduledMessagesRequest
-#  @description Represents a request to send scheduled messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendScheduledMessagesRequest
+#' @description Telegram API request \code{messages.sendScheduledMessages} (constructor \code{#bd38850a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendScheduledMessagesRequest <- R6::R6Class(
   "SendScheduledMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13067,13 +13123,14 @@ SendScheduledMessagesRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SendScreenshotNotificationRequest
-#  @description Represents a request to send a screenshot notification. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendScreenshotNotificationRequest
+#' @description Telegram API request \code{messages.sendScreenshotNotification} (constructor \code{#a1405817}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendScreenshotNotificationRequest <- R6::R6Class(
   "SendScreenshotNotificationRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13116,7 +13173,7 @@ SendScreenshotNotificationRequest <- R6::R6Class(
         as.raw(c(0x17, 0x58, 0x40, 0xa1)),
         self$peer$bytes(),
         self$reply_to$bytes(),
-        writeBin(as.double(self$random_id), raw(), size = 8, endian = "little")
+        packInt64(self$random_id)
       )
     }
   )
@@ -13134,13 +13191,14 @@ SendScreenshotNotificationRequest$from_reader <- function(reader) {
   SendScreenshotNotificationRequest$new(peer = peer, reply_to = reply_to, random_id = random_id)
 }
 
-#  @title SendVoteRequest
-#  @description Represents a request to send a vote. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendVoteRequest
+#' @description Telegram API request \code{messages.sendVote} (constructor \code{#10ea6184}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendVoteRequest <- R6::R6Class(
   "SendVoteRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13207,13 +13265,14 @@ SendVoteRequest$from_reader <- function(reader) {
   SendVoteRequest$new(peer = peer, msg_id = msg_id, options = options)
 }
 
-#  @title SendWebViewDataRequest
-#  @description Represents a request to send web view data. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendWebViewDataRequest
+#' @description Telegram API request \code{messages.sendWebViewData} (constructor \code{#dc0242c8}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendWebViewDataRequest <- R6::R6Class(
   "SendWebViewDataRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13258,7 +13317,7 @@ SendWebViewDataRequest <- R6::R6Class(
       c(
         as.raw(c(0xc8, 0x42, 0x02, 0xdc)),
         self$bot$bytes(),
-        writeBin(as.double(self$random_id), raw(), size = 8, endian = "little"),
+        packInt64(self$random_id),
         self$serialize_bytes(self$button_text),
         self$serialize_bytes(self$data)
       )
@@ -13280,13 +13339,14 @@ SendWebViewDataRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SendWebViewResultMessageRequest
-#  @description Represents a request to send a web view result message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SendWebViewResultMessageRequest
+#' @description Telegram API request \code{messages.sendWebViewResultMessage} (constructor \code{#0a4314f5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SendWebViewResultMessageRequest <- R6::R6Class(
   "SendWebViewResultMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13335,13 +13395,14 @@ SendWebViewResultMessageRequest$from_reader <- function(reader) {
   SendWebViewResultMessageRequest$new(bot_query_id = bot_query_id, result = result)
 }
 
-#  @title SetBotCallbackAnswerRequest
-#  @description Represents a request to set bot callback answer. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetBotCallbackAnswerRequest
+#' @description Telegram API request \code{messages.setBotCallbackAnswer} (constructor \code{#d58f130a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetBotCallbackAnswerRequest <- R6::R6Class(
   "SetBotCallbackAnswerRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13386,7 +13447,7 @@ SetBotCallbackAnswerRequest <- R6::R6Class(
       c(
         as.raw(c(0x0a, 0x13, 0x8f, 0xd5)),
         packBits(intToBits(flags), type = "raw")[1:4],
-        writeBin(as.double(self$query_id), raw(), size = 8, endian = "little"),
+        packInt64(self$query_id),
         if (!is.null(self$message) && self$message != FALSE) self$serialize_bytes(self$message) else raw(0),
         if (!is.null(self$url) && self$url != FALSE) self$serialize_bytes(self$url) else raw(0),
         packBits(intToBits(self$cache_time), type = "raw")[1:4]
@@ -13410,13 +13471,14 @@ SetBotCallbackAnswerRequest$from_reader <- function(reader) {
   SetBotCallbackAnswerRequest$new(query_id = query_id, cache_time = cache_time, alert = alert, message = message, url = url)
 }
 
-#  @title SetBotPrecheckoutResultsRequest
-#  @description Represents a request to set bot precheckout results. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetBotPrecheckoutResultsRequest
+#' @description Telegram API request \code{messages.setBotPrecheckoutResults} (constructor \code{#09c2dd95}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetBotPrecheckoutResultsRequest <- R6::R6Class(
   "SetBotPrecheckoutResultsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13454,7 +13516,7 @@ SetBotPrecheckoutResultsRequest <- R6::R6Class(
       c(
         as.raw(c(0x95, 0xdd, 0xc2, 0x09)),
         packBits(intToBits(flags), type = "raw")[1:4],
-        writeBin(as.double(self$query_id), raw(), size = 8, endian = "little"),
+        packInt64(self$query_id),
         if (!is.null(self$error) && self$error != FALSE) self$serialize_bytes(self$error) else raw(0)
       )
     }
@@ -13475,13 +13537,14 @@ SetBotPrecheckoutResultsRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SetBotShippingResultsRequest
-#  @description Represents a request to set bot shipping results. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetBotShippingResultsRequest
+#' @description Telegram API request \code{messages.setBotShippingResults} (constructor \code{#e5f672fa}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetBotShippingResultsRequest <- R6::R6Class(
   "SetBotShippingResultsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13519,7 +13582,7 @@ SetBotShippingResultsRequest <- R6::R6Class(
       c(
         as.raw(c(0xfa, 0x72, 0xf6, 0xe5)),
         packBits(intToBits(flags), type = "raw")[1:4],
-        writeBin(as.double(self$query_id), raw(), size = 8, endian = "little"),
+        packInt64(self$query_id),
         if (!is.null(self$error) && self$error != FALSE) self$serialize_bytes(self$error) else raw(0),
         if (!is.null(self$shipping_options) && self$shipping_options != FALSE) c(as.raw(c(0x1c, 0xb5, 0xc4, 0x15)), packBits(intToBits(length(self$shipping_options)), type = "raw")[1:4], do.call(c, lapply(self$shipping_options, function(x) x$bytes()))) else raw(0)
       )
@@ -13545,13 +13608,14 @@ SetBotShippingResultsRequest$from_reader <- function(reader) {
   SetBotShippingResultsRequest$new(query_id = query_id, error = error, shipping_options = shipping_options)
 }
 
-#  @title SetChatAvailableReactionsRequest
-#  @description Represents a request to set chat available reactions. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetChatAvailableReactionsRequest
+#' @description Telegram API request \code{messages.setChatAvailableReactions} (constructor \code{#864b2581}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetChatAvailableReactionsRequest <- R6::R6Class(
   "SetChatAvailableReactionsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13622,13 +13686,14 @@ SetChatAvailableReactionsRequest$from_reader <- function(reader) {
   SetChatAvailableReactionsRequest$new(peer = peer, available_reactions = available_reactions, reactions_limit = reactions_limit, paid_enabled = paid_enabled)
 }
 
-#  @title SetChatThemeRequest
-#  @description Represents a request to set chat theme. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetChatThemeRequest
+#' @description Telegram API request \code{messages.setChatTheme} (constructor \code{#081202c9}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetChatThemeRequest <- R6::R6Class(
   "SetChatThemeRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13685,13 +13750,14 @@ SetChatThemeRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SetChatWallPaperRequest
-#  @description Represents a request to set chat wallpaper. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetChatWallPaperRequest
+#' @description Telegram API request \code{messages.setChatWallPaper} (constructor \code{#8ffacae1}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetChatWallPaperRequest <- R6::R6Class(
   "SetChatWallPaperRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13773,13 +13839,14 @@ SetChatWallPaperRequest$from_reader <- function(reader) {
   SetChatWallPaperRequest$new(peer = peer, for_both = for_both, revert = revert, wallpaper = wallpaper, settings = settings, id = id)
 }
 
-#  @title SetDefaultHistoryTTLRequest
-#  @description Represents a request to set default history TTL. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetDefaultHistoryTTLRequest
+#' @description Telegram API request \code{messages.setDefaultHistoryTTL} (constructor \code{#9eb51445}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetDefaultHistoryTTLRequest <- R6::R6Class(
   "SetDefaultHistoryTTLRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13823,13 +13890,14 @@ SetDefaultHistoryTTLRequest$from_reader <- function(reader) {
   SetDefaultHistoryTTLRequest$new(period = period)
 }
 
-#  @title SetDefaultReactionRequest
-#  @description Represents a request to set default reaction. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetDefaultReactionRequest
+#' @description Telegram API request \code{messages.setDefaultReaction} (constructor \code{#4f47a016}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetDefaultReactionRequest <- R6::R6Class(
   "SetDefaultReactionRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13874,13 +13942,14 @@ SetDefaultReactionRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SetEncryptedTypingRequest
-#  @description Represents a request to set encrypted typing. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetEncryptedTypingRequest
+#' @description Telegram API request \code{messages.setEncryptedTyping} (constructor \code{#791451ed}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetEncryptedTypingRequest <- R6::R6Class(
   "SetEncryptedTypingRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -13929,13 +13998,14 @@ SetEncryptedTypingRequest$from_reader <- function(reader) {
   SetEncryptedTypingRequest$new(peer = peer, typing = typing)
 }
 
-#  @title SetGameScoreRequest
-#  @description Represents a request to set game score. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetGameScoreRequest
+#' @description Telegram API request \code{messages.setGameScore} (constructor \code{#8ef8ecc0}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetGameScoreRequest <- R6::R6Class(
   "SetGameScoreRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14015,13 +14085,14 @@ SetGameScoreRequest$from_reader <- function(reader) {
   SetGameScoreRequest$new(peer = peer, id = id, user_id = user_id, score = score, edit_message = edit_message, force = force)
 }
 
-#  @title SetHistoryTTLRequest
-#  @description Represents a request to set history TTL. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetHistoryTTLRequest
+#' @description Telegram API request \code{messages.setHistoryTTL} (constructor \code{#b80e5fe4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetHistoryTTLRequest <- R6::R6Class(
   "SetHistoryTTLRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14078,13 +14149,14 @@ SetHistoryTTLRequest$from_reader <- function(reader) {
 }
 
 
-#  @title SetInlineBotResultsRequest
-#  @description Represents a request to set inline bot results. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetInlineBotResultsRequest
+#' @description Telegram API request \code{messages.setInlineBotResults} (constructor \code{#bb12a419}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetInlineBotResultsRequest <- R6::R6Class(
   "SetInlineBotResultsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14175,13 +14247,14 @@ SetInlineBotResultsRequest$from_reader <- function(reader) {
   SetInlineBotResultsRequest$new(query_id = query_id, results = results, cache_time = cache_time, gallery = gallery, private = private, next_offset = next_offset, switch_pm = switch_pm, switch_webview = switch_webview)
 }
 
-#  @title SetInlineGameScoreRequest
-#  @description Represents a request to set inline game score. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetInlineGameScoreRequest
+#' @description Telegram API request \code{messages.setInlineGameScore} (constructor \code{#15ad9f64}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetInlineGameScoreRequest <- R6::R6Class(
   "SetInlineGameScoreRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14255,13 +14328,14 @@ SetInlineGameScoreRequest$from_reader <- function(reader) {
   SetInlineGameScoreRequest$new(id = id, user_id = user_id, score = score, edit_message = edit_message, force = force)
 }
 
-#  @title SetTypingRequest
-#  @description Represents a request to set typing. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title SetTypingRequest
+#' @description Telegram API request \code{messages.setTyping} (constructor \code{#58943ee2}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 SetTypingRequest <- R6::R6Class(
   "SetTypingRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14327,13 +14401,14 @@ SetTypingRequest$from_reader <- function(reader) {
 }
 
 
-#  @title StartBotRequest
-#  @description Represents a request to start a bot. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title StartBotRequest
+#' @description Telegram API request \code{messages.startBot} (constructor \code{#e6df7378}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 StartBotRequest <- R6::R6Class(
   "StartBotRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14404,13 +14479,14 @@ StartBotRequest$from_reader <- function(reader) {
   StartBotRequest$new(bot = bot, peer = peer, start_param = start_param, random_id = random_id)
 }
 
-#  @title StartHistoryImportRequest
-#  @description Represents a request to start history import. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title StartHistoryImportRequest
+#' @description Telegram API request \code{messages.startHistoryImport} (constructor \code{#b43df344}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 StartHistoryImportRequest <- R6::R6Class(
   "StartHistoryImportRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14466,13 +14542,14 @@ StartHistoryImportRequest$from_reader <- function(reader) {
   StartHistoryImportRequest$new(peer = peer, import_id = import_id)
 }
 
-#  @title ToggleBotInAttachMenuRequest
-#  @description Represents a request to toggle bot in attach menu. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleBotInAttachMenuRequest
+#' @description Telegram API request \code{messages.toggleBotInAttachMenu} (constructor \code{#69f59d69}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleBotInAttachMenuRequest <- R6::R6Class(
   "ToggleBotInAttachMenuRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14537,13 +14614,14 @@ ToggleBotInAttachMenuRequest$from_reader <- function(reader) {
 }
 
 
-#  @title ToggleDialogFilterTagsRequest
-#  @description Represents a request to toggle dialog filter tags. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleDialogFilterTagsRequest
+#' @description Telegram API request \code{messages.toggleDialogFilterTags} (constructor \code{#fd2dda49}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleDialogFilterTagsRequest <- R6::R6Class(
   "ToggleDialogFilterTagsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14587,13 +14665,14 @@ ToggleDialogFilterTagsRequest$from_reader <- function(reader) {
   ToggleDialogFilterTagsRequest$new(enabled = enabled)
 }
 
-#  @title ToggleDialogPinRequest
-#  @description Represents a request to toggle dialog pin. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleDialogPinRequest
+#' @description Telegram API request \code{messages.toggleDialogPin} (constructor \code{#a731e257}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleDialogPinRequest <- R6::R6Class(
   "ToggleDialogPinRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14652,76 +14731,78 @@ ToggleDialogPinRequest$from_reader <- function(reader) {
   ToggleDialogPinRequest$new(peer = peer, pinned = pinned)
 }
 
-#  @title ToggleNoForwardsRequest
-#  @description Represents a request to toggle no forwards. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-ToggleNoForwardsRequest <- R6::R6Class(
-  "ToggleNoForwardsRequest",
+#' @title ToggleNoForwardsRequest
+#' @description Telegram API request \code{messages.toggleNoForwards} (constructor \code{#b2081a35}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+ToggleNoForwardsRequest <- R6::R6Class("ToggleNoForwardsRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0xb11eafa2,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xb2081a35,
     SUBCLASS_OF_ID = 0x8af52aac,
-
-    #  @description Initialize the ToggleNoForwardsRequest object.
-    #  @param peer The input peer.
-    #  @param enabled Whether no forwards is enabled.
-    initialize = function(peer, enabled) {
+    peer = NULL,
+    enabled = NULL,
+    request_msg_id = NULL,
+    initialize = function(peer, enabled, request_msg_id = NULL) {
       self$peer <- peer
       self$enabled <- enabled
+      self$request_msg_id <- request_msg_id
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "ToggleNoForwardsRequest",
-        peer = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        enabled = self$enabled
+        `_` = "ToggleNoForwardsRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "enabled" = if (inherits(self$enabled, "TLObject")) self$enabled$to_dict() else self$enabled,
+        "request_msg_id" = if (inherits(self$request_msg_id, "TLObject")) self$request_msg_id$to_dict() else self$request_msg_id
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
-    bytes = function() {
-      c(
-        as.raw(c(0xa2, 0xaf, 0x1e, 0xb1)),
-        self$peer$bytes(),
-        if (self$enabled) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc))
+    to_list = function() {
+      list(
+        `_` = "ToggleNoForwardsRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "enabled" = if (inherits(self$enabled, "TLObject")) self$enabled$to_dict() else self$enabled,
+        "request_msg_id" = if (inherits(self$request_msg_id, "TLObject")) self$request_msg_id$to_dict() else self$request_msg_id
       )
+    },
+    bytes = function() {
+      flags <- 0L
+      if (!is.null(self$request_msg_id)) flags <- bitwOr(flags, 1L)
+      c(
+        as.raw(c(0x35, 0x1a, 0x08, 0xb2)),
+        pack("<I", flags),
+        self$peer$bytes(),
+        if (isTRUE(self$enabled)) as.raw(c(0xb5, 0x75, 0x72, 0x99)) else as.raw(c(0x37, 0x97, 0x79, 0xbc)),
+        if (!is.null(self$request_msg_id)) pack("<i", self$request_msg_id) else raw(0)
+      )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$peer <- reader$tgread_object()
+      self$enabled <- reader$tgread_bool()
+      self$request_msg_id <- if (bitwAnd(flags, 1L) != 0) reader$read_int() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name ToggleNoForwardsRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of ToggleNoForwardsRequest.
-ToggleNoForwardsRequest$from_reader <- function(reader) {
-  peer <- reader$tgread_object()
-  enabled <- reader$tgread_bool()
-  ToggleNoForwardsRequest$new(peer = peer, enabled = enabled)
-}
-
-
-#  @title TogglePaidReactionPrivacyRequest
-#  @description Represents a request to toggle paid reaction privacy. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title TogglePaidReactionPrivacyRequest
+#' @description Telegram API request \code{messages.togglePaidReactionPrivacy} (constructor \code{#435885b5}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 TogglePaidReactionPrivacyRequest <- R6::R6Class(
   "TogglePaidReactionPrivacyRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14782,13 +14863,14 @@ TogglePaidReactionPrivacyRequest$from_reader <- function(reader) {
   TogglePaidReactionPrivacyRequest$new(peer = peer, msg_id = msg_id, private = private)
 }
 
-#  @title TogglePeerTranslationsRequest
-#  @description Represents a request to toggle peer translations. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title TogglePeerTranslationsRequest
+#' @description Telegram API request \code{messages.togglePeerTranslations} (constructor \code{#e47cb579}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 TogglePeerTranslationsRequest <- R6::R6Class(
   "TogglePeerTranslationsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14847,13 +14929,14 @@ TogglePeerTranslationsRequest$from_reader <- function(reader) {
   TogglePeerTranslationsRequest$new(peer = peer, disabled = disabled)
 }
 
-#  @title ToggleSavedDialogPinRequest
-#  @description Represents a request to toggle saved dialog pin. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleSavedDialogPinRequest
+#' @description Telegram API request \code{messages.toggleSavedDialogPin} (constructor \code{#ac81bbde}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleSavedDialogPinRequest <- R6::R6Class(
   "ToggleSavedDialogPinRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14913,13 +14996,14 @@ ToggleSavedDialogPinRequest$from_reader <- function(reader) {
 }
 
 
-#  @title ToggleStickerSetsRequest
-#  @description Represents a request to toggle sticker sets. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleStickerSetsRequest
+#' @description Telegram API request \code{messages.toggleStickerSets} (constructor \code{#b5052fea}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleStickerSetsRequest <- R6::R6Class(
   "ToggleStickerSetsRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -14987,13 +15071,14 @@ ToggleStickerSetsRequest$from_reader <- function(reader) {
   ToggleStickerSetsRequest$new(stickersets = stickersets, uninstall = uninstall, archive = archive, unarchive = unarchive)
 }
 
-#  @title ToggleSuggestedPostApprovalRequest
-#  @description Represents a request to toggle suggested post approval. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleSuggestedPostApprovalRequest
+#' @description Telegram API request \code{messages.toggleSuggestedPostApproval} (constructor \code{#8107455c}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleSuggestedPostApprovalRequest <- R6::R6Class(
   "ToggleSuggestedPostApprovalRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15069,13 +15154,14 @@ ToggleSuggestedPostApprovalRequest$from_reader <- function(reader) {
   ToggleSuggestedPostApprovalRequest$new(peer = peer, msg_id = msg_id, reject = reject, schedule_date = schedule_date, reject_comment = reject_comment)
 }
 
-#  @title ToggleTodoCompletedRequest
-#  @description Represents a request to toggle todo completed status. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ToggleTodoCompletedRequest
+#' @description Telegram API request \code{messages.toggleTodoCompleted} (constructor \code{#d3e03124}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ToggleTodoCompletedRequest <- R6::R6Class(
   "ToggleTodoCompletedRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15154,13 +15240,14 @@ ToggleTodoCompletedRequest$from_reader <- function(reader) {
 }
 
 
-#  @title TranscribeAudioRequest
-#  @description Represents a request to transcribe audio. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title TranscribeAudioRequest
+#' @description Telegram API request \code{messages.transcribeAudio} (constructor \code{#269e9a49}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 TranscribeAudioRequest <- R6::R6Class(
   "TranscribeAudioRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15216,117 +15303,93 @@ TranscribeAudioRequest$from_reader <- function(reader) {
   TranscribeAudioRequest$new(peer = peer, msg_id = msg_id)
 }
 
-#  @title TranslateTextRequest
-#  @description Represents a request to translate text. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
-TranslateTextRequest <- R6::R6Class(
-  "TranslateTextRequest",
+#' @title TranslateTextRequest
+#' @description Telegram API request \code{messages.translateText} (constructor \code{#a5eec345}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
+TranslateTextRequest <- R6::R6Class("TranslateTextRequest",
   inherit = TLRequest,
   public = list(
-    #  @field CONSTRUCTOR_ID The constructor ID.
-    CONSTRUCTOR_ID = 0x63183030,
-    #  @field SUBCLASS_OF_ID The subclass ID.
+    CONSTRUCTOR_ID = 0xa5eec345,
     SUBCLASS_OF_ID = 0x24243e8,
-
-    #  @description Initialize the TranslateTextRequest object.
-    #  @param to_lang The target language.
-    #  @param peer Optional input peer.
-    #  @param id Optional list of IDs.
-    #  @param text Optional list of text with entities.
-    initialize = function(to_lang, peer = NULL, id = NULL, text = NULL) {
-      self$to_lang <- to_lang
+    peer = NULL,
+    id = NULL,
+    text = NULL,
+    to_lang = NULL,
+    tone = NULL,
+    initialize = function(peer = NULL, id = NULL, text = NULL, to_lang, tone = NULL) {
       self$peer <- peer
       self$id <- id
       self$text <- text
+      self$to_lang <- to_lang
+      self$tone <- tone
     },
-
-    #  @description Resolve the request using client and utils.
-    #  @param client The client object.
-    #  @param utils The utils object.
     resolve = function(client, utils) {
-      if (!is.null(self$peer)) {
-        self$peer <- utils$get_input_peer(client$get_input_entity(self$peer))
-      }
+      if (!is.null(self$peer)) self$peer <- tryCatch(utils$get_input_peer(client$get_input_entity(self$peer)), error = function(e) self$peer)
+      invisible(self)
     },
-
-    #  @description Convert the object to a dictionary.
-    #  @return A list representing the object.
     to_dict = function() {
       list(
-        "_" = "TranslateTextRequest",
-        to_lang = self$to_lang,
-        peer = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
-        id = if (is.null(self$id)) list() else self$id,
-        text = if (is.null(self$text)) list() else lapply(self$text, function(x) if (inherits(x, "TLObject")) x$to_dict() else x)
+        `_` = "TranslateTextRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "id" = if (inherits(self$id, "TLObject")) self$id$to_dict() else self$id,
+        "text" = if (inherits(self$text, "TLObject")) self$text$to_dict() else self$text,
+        "to_lang" = if (inherits(self$to_lang, "TLObject")) self$to_lang$to_dict() else self$to_lang,
+        "tone" = if (inherits(self$tone, "TLObject")) self$tone$to_dict() else self$tone
       )
     },
-
-    #  @description Serialize the object to bytes.
-    #  @return A raw vector of bytes.
-    bytes = function() {
-      if (!((!is.null(self$peer) && self$peer != FALSE) && (!is.null(self$id) && self$id != FALSE)) &&
-        ((is.null(self$peer) || self$peer == FALSE) && (is.null(self$id) || self$id == FALSE))) {
-        stop("peer, id parameters must all be False-y (like NULL) or all be True-y")
-      }
-      flags <- 0L
-      if (!is.null(self$peer) && self$peer != FALSE) flags <- bitwOr(flags, 1L)
-      if (!is.null(self$id) && self$id != FALSE) flags <- bitwOr(flags, 1L)
-      if (!is.null(self$text) && self$text != FALSE) flags <- bitwOr(flags, 2L)
-      c(
-        as.raw(c(0x30, 0x30, 0x18, 0x63)),
-        struct_pack("<I", flags),
-        if (!is.null(self$peer) && self$peer != FALSE) self$peer$bytes() else raw(),
-        if (!is.null(self$id) && self$id != FALSE) c(as.raw(c(0x1c, 0xb5, 0xc4, 0x15)), struct_pack("<i", length(self$id)), do.call(c, lapply(self$id, function(x) struct_pack("<i", x)))) else raw(),
-        if (!is.null(self$text) && self$text != FALSE) c(as.raw(c(0x1c, 0xb5, 0xc4, 0x15)), struct_pack("<i", length(self$text)), do.call(c, lapply(self$text, function(x) x$bytes()))) else raw(),
-        self$serialize_bytes(self$to_lang)
+    to_list = function() {
+      list(
+        `_` = "TranslateTextRequest",
+        "peer" = if (inherits(self$peer, "TLObject")) self$peer$to_dict() else self$peer,
+        "id" = if (inherits(self$id, "TLObject")) self$id$to_dict() else self$id,
+        "text" = if (inherits(self$text, "TLObject")) self$text$to_dict() else self$text,
+        "to_lang" = if (inherits(self$to_lang, "TLObject")) self$to_lang$to_dict() else self$to_lang,
+        "tone" = if (inherits(self$tone, "TLObject")) self$tone$to_dict() else self$tone
       )
+    },
+    bytes = function() {
+      flags <- 0L
+      if (!is.null(self$peer)) flags <- bitwOr(flags, 1L)
+      if (!is.null(self$id)) flags <- bitwOr(flags, 1L)
+      if (!is.null(self$text)) flags <- bitwOr(flags, 2L)
+      if (!is.null(self$tone)) flags <- bitwOr(flags, 4L)
+      c(
+        as.raw(c(0x45, 0xc3, 0xee, 0xa5)),
+        pack("<I", flags),
+        if (!is.null(self$peer)) self$peer$bytes() else raw(0),
+        if (!is.null(self$id)) c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(self$id)), if (length(self$id) > 0) do.call(c, lapply(self$id, function(x) pack("<i", x))) else raw(0)) else raw(0),
+        if (!is.null(self$text)) .telegramR_tl_vector(self$text) else raw(0),
+        serialize_bytes(self$to_lang),
+        if (!is.null(self$tone)) serialize_bytes(self$tone) else raw(0)
+      )
+    },
+    serialize = function() self$bytes()
+  ),
+  private = list(
+    from_reader = function(reader) {
+      flags <- reader$read_int()
+      self$peer <- if (bitwAnd(flags, 1L) != 0) reader$tgread_object() else NULL
+      self$id <- if (bitwAnd(flags, 1L) != 0) { reader$read_int(); n_ <- reader$read_int(); if (n_ > 0) lapply(seq_len(n_), function(.i) reader$read_int()) else list() } else NULL
+      self$text <- if (bitwAnd(flags, 2L) != 0) reader$tgread_vector() else NULL
+      self$to_lang <- reader$tgread_string()
+      self$tone <- if (bitwAnd(flags, 4L) != 0) reader$tgread_string() else NULL
+      self
     }
-  )
+  ),
+  class = TRUE,
+  lock_objects = FALSE
 )
 
-# @title from_reader
-# @name TranslateTextRequest_from_reader
-# @description Class method to create an instance from a reader.
-# @param reader The reader object.
-# @return An instance of TranslateTextRequest.
-TranslateTextRequest$from_reader <- function(reader) {
-  flags <- reader$read_int()
-  if (bitwAnd(flags, 1L) != 0) {
-    peer <- reader$tgread_object()
-  } else {
-    peer <- NULL
-  }
-  if (bitwAnd(flags, 1L) != 0) {
-    reader$read_int()
-    id <- list()
-    for (i in 1:reader$read_int()) {
-      id <- c(id, reader$read_int())
-    }
-  } else {
-    id <- NULL
-  }
-  if (bitwAnd(flags, 2L) != 0) {
-    reader$read_int()
-    text <- list()
-    for (i in 1:reader$read_int()) {
-      text <- c(text, reader$tgread_object())
-    }
-  } else {
-    text <- NULL
-  }
-  to_lang <- reader$tgread_string()
-  TranslateTextRequest$new(to_lang = to_lang, peer = peer, id = id, text = text)
-}
-
-#  @title UninstallStickerSetRequest
-#  @description Represents a request to uninstall a sticker set. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UninstallStickerSetRequest
+#' @description Telegram API request \code{messages.uninstallStickerSet} (constructor \code{#f96e55de}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UninstallStickerSetRequest <- R6::R6Class(
   "UninstallStickerSetRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15371,13 +15434,14 @@ UninstallStickerSetRequest$from_reader <- function(reader) {
 }
 
 
-#  @title UnpinAllMessagesRequest
-#  @description Represents a request to unpin all messages. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UnpinAllMessagesRequest
+#' @description Telegram API request \code{messages.unpinAllMessages} (constructor \code{#062dd747}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UnpinAllMessagesRequest <- R6::R6Class(
   "UnpinAllMessagesRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15446,13 +15510,14 @@ UnpinAllMessagesRequest$from_reader <- function(reader) {
   UnpinAllMessagesRequest$new(peer = peer, top_msg_id = top_msg_id, saved_peer_id = saved_peer_id)
 }
 
-#  @title UpdateDialogFilterRequest
-#  @description Represents a request to update a dialog filter. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateDialogFilterRequest
+#' @description Telegram API request \code{messages.updateDialogFilter} (constructor \code{#1ad4a04a}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateDialogFilterRequest <- R6::R6Class(
   "UpdateDialogFilterRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15505,13 +15570,14 @@ UpdateDialogFilterRequest$from_reader <- function(reader) {
   UpdateDialogFilterRequest$new(id = id, filter = filter)
 }
 
-#  @title UpdateDialogFiltersOrderRequest
-#  @description Represents a request to update the order of dialog filters. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateDialogFiltersOrderRequest
+#' @description Telegram API request \code{messages.updateDialogFiltersOrder} (constructor \code{#c563c1e4}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateDialogFiltersOrderRequest <- R6::R6Class(
   "UpdateDialogFiltersOrderRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15562,13 +15628,14 @@ UpdateDialogFiltersOrderRequest$from_reader <- function(reader) {
 }
 
 
-#  @title UpdatePinnedMessageRequest
-#  @description Represents a request to update a pinned message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdatePinnedMessageRequest
+#' @description Telegram API request \code{messages.updatePinnedMessage} (constructor \code{#d2aaf7ec}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdatePinnedMessageRequest <- R6::R6Class(
   "UpdatePinnedMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15642,13 +15709,14 @@ UpdatePinnedMessageRequest$from_reader <- function(reader) {
   UpdatePinnedMessageRequest$new(peer = peer, id = id, silent = silent, unpin = unpin, pm_oneside = pm_oneside)
 }
 
-#  @title UpdateSavedReactionTagRequest
-#  @description Represents a request to update a saved reaction tag. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UpdateSavedReactionTagRequest
+#' @description Telegram API request \code{messages.updateSavedReactionTag} (constructor \code{#60297dec}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UpdateSavedReactionTagRequest <- R6::R6Class(
   "UpdateSavedReactionTagRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15701,13 +15769,14 @@ UpdateSavedReactionTagRequest$from_reader <- function(reader) {
   UpdateSavedReactionTagRequest$new(reaction = reaction, title = title)
 }
 
-#  @title UploadEncryptedFileRequest
-#  @description Represents a request to upload an encrypted file. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadEncryptedFileRequest
+#' @description Telegram API request \code{messages.uploadEncryptedFile} (constructor \code{#5057c497}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadEncryptedFileRequest <- R6::R6Class(
   "UploadEncryptedFileRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15757,13 +15826,14 @@ UploadEncryptedFileRequest$from_reader <- function(reader) {
 }
 
 
-#  @title UploadImportedMediaRequest
-#  @description Represents a request to upload imported media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadImportedMediaRequest
+#' @description Telegram API request \code{messages.uploadImportedMedia} (constructor \code{#2a862092}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadImportedMediaRequest <- R6::R6Class(
   "UploadImportedMediaRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15830,13 +15900,14 @@ UploadImportedMediaRequest$from_reader <- function(reader) {
   UploadImportedMediaRequest$new(peer = peer, import_id = import_id, file_name = file_name, media = media)
 }
 
-#  @title UploadMediaRequest
-#  @description Represents a request to upload media. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title UploadMediaRequest
+#' @description Telegram API request \code{messages.uploadMedia} (constructor \code{#14967978}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 UploadMediaRequest <- R6::R6Class(
   "UploadMediaRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.
@@ -15902,13 +15973,14 @@ UploadMediaRequest$from_reader <- function(reader) {
   UploadMediaRequest$new(peer = peer, media = media, business_connection_id = business_connection_id)
 }
 
-#  @title ViewSponsoredMessageRequest
-#  @description Represents a request to view a sponsored message. This class inherits from TLRequest.
-#  @export
-#  @noRd
-#  @noRd
+#' @title ViewSponsoredMessageRequest
+#' @description Telegram API request \code{messages.viewSponsoredMessage} (constructor \code{#269e3643}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 ViewSponsoredMessageRequest <- R6::R6Class(
   "ViewSponsoredMessageRequest",
+  lock_objects = FALSE,
   inherit = TLRequest,
   public = list(
     #  @field CONSTRUCTOR_ID The constructor ID.

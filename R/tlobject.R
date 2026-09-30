@@ -1,23 +1,21 @@
-#  @import base64enc
-#  @import jsonlite
 NULL
 EPOCH_NAIVE <- as.POSIXct("1970-01-01 00:00:00", tz = "UTC")
 EPOCH_NAIVE_LOCAL <- as.POSIXct(format(Sys.time(), "%Y-%m-%d %H:%M:%S"), tz = Sys.timezone())
 EPOCH <- EPOCH_NAIVE
 
-#  Convert a datetime object to a timestamp.
-# 
-#  This function converts a datetime object to a timestamp in seconds since the epoch.
-#  It handles both UTC and local timezones.
-# 
-#  @param dt A datetime object to be converted.
-#  @return A numeric value representing the timestamp in seconds since the epoch.
-#  @examples
-#  \donttest{
-#  datetime_to_timestamp(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
-#  datetime_to_timestamp(as.POSIXct("2023-01-01 12:00:00"))
-#  }
-#  @export
+#' Convert a datetime object to a timestamp.
+#'
+#' This function converts a datetime object to a timestamp in seconds since the epoch.
+#' It handles both UTC and local timezones.
+#'
+#' @param dt A datetime object to be converted.
+#' @return A numeric value representing the timestamp in seconds since the epoch.
+#' @examples
+#' \donttest{
+#' datetime_to_timestamp(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
+#' datetime_to_timestamp(as.POSIXct("2023-01-01 12:00:00"))
+#' }
+#' @noRd
 datetime_to_timestamp <- function(dt) {
   if (is.na(attr(dt, "tzone"))) {
     attr(dt, "tzone") <- "UTC"
@@ -26,20 +24,20 @@ datetime_to_timestamp <- function(dt) {
   return(secs %% 2^32)
 }
 
-#  Default JSON serialization function.
-# 
-#  This function is used to serialize various data types to JSON format.
-#  It handles raw data, POSIXt objects, and other types.
-# 
-#  @param value The value to be serialized.
-#  @return A character string representing the serialized value.
-#  @examples
-#  \donttest{
-#  json_default(charToRaw("test"))
-#  json_default(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
-#  json_default(123)
-#  }
-#  @export
+#' Default JSON serialization function.
+#'
+#' This function is used to serialize various data types to JSON format.
+#' It handles raw data, POSIXt objects, and other types.
+#'
+#' @param value The value to be serialized.
+#' @return A character string representing the serialized value.
+#' @examples
+#' \donttest{
+#' json_default(charToRaw("test"))
+#' json_default(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
+#' json_default(123)
+#' }
+#' @noRd
 json_default <- function(value) {
   if (is.raw(value)) {
     return(base64enc::base64encode(value))
@@ -50,20 +48,20 @@ json_default <- function(value) {
   }
 }
 
-#  Pretty format a TL object.
-# 
-#  This function formats a TL object for pretty printing. It handles nested lists,
-#  vectors, and other data types.
-# 
-#  @param obj The object to be formatted.
-#  @param indent The current indentation level (used for recursive calls).
-#  @return A character string representing the formatted object.
-#  @examples
-#  \donttest{
-#  pretty_format(list(a = 1, b = "test", c = list(d = 2)))
-#  pretty_format(c(1, 2, 3))
-#  }
-#  @export
+#' Pretty format a TL object.
+#'
+#' This function formats a TL object for pretty printing. It handles nested lists,
+#' vectors, and other data types.
+#'
+#' @param obj The object to be formatted.
+#' @param indent The current indentation level (used for recursive calls).
+#' @return A character string representing the formatted object.
+#' @examples
+#' \donttest{
+#' pretty_format(list(a = 1, b = "test", c = list(d = 2)))
+#' pretty_format(c(1, 2, 3))
+#' }
+#' @noRd
 pretty_format <- function(obj, indent = NULL) {
   if (is.null(indent)) {
     if (inherits(obj, "TLObject")) {
@@ -145,18 +143,18 @@ pretty_format <- function(obj, indent = NULL) {
   }
 }
 
-#  Serialize data to bytes.
-# 
-#  This function serializes data to a byte array. It handles both raw data and character strings.
-# 
-#  @param data The data to be serialized.
-#  @return A raw vector representing the serialized data.
-#  @examples
-#  \donttest{
-#  serialize_bytes(charToRaw("test"))
-#  serialize_bytes("test")
-#  }
-#  @export
+#' Serialize data to bytes.
+#'
+#' This function serializes data to a byte array. It handles both raw data and character strings.
+#'
+#' @param data The data to be serialized.
+#' @return A raw vector representing the serialized data.
+#' @examples
+#' \donttest{
+#' serialize_bytes(charToRaw("test"))
+#' serialize_bytes("test")
+#' }
+#' @noRd
 serialize_bytes <- function(data) {
   if (!is.raw(data)) {
     if (is.character(data)) {
@@ -193,21 +191,21 @@ serialize_bytes <- function(data) {
   return(do.call(c, r))
 }
 
-#  Serialize a datetime object to bytes.
-# 
-#  This function serializes a datetime object to a byte array. It handles various datetime formats,
-#  including POSIXct, Date, numeric, and difftime.
-# 
-#  @param dt The datetime object to be serialized.
-#  @return A raw vector representing the serialized datetime.
-#  @examples
-#  \donttest{
-#  serialize_datetime(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
-#  serialize_datetime(as.Date("2023-01-01"))
-#  serialize_datetime(as.numeric(1234567890))
-#  serialize_datetime(as.difftime(3600, units = "secs"))
-#  }
-#  @export
+#' Serialize a datetime object to bytes.
+#'
+#' This function serializes a datetime object to a byte array. It handles various datetime formats,
+#' including POSIXct, Date, numeric, and difftime.
+#'
+#' @param dt The datetime object to be serialized.
+#' @return A raw vector representing the serialized datetime.
+#' @examples
+#' \donttest{
+#' serialize_datetime(as.POSIXct("2023-01-01 12:00:00", tz = "UTC"))
+#' serialize_datetime(as.Date("2023-01-01"))
+#' serialize_datetime(as.numeric(1234567890))
+#' serialize_datetime(as.difftime(3600, units = "secs"))
+#' }
+#' @noRd
 serialize_datetime <- function(dt) {
   if (is.null(dt)) {
     return(as.raw(rep(0, 4)))
@@ -228,14 +226,12 @@ serialize_datetime <- function(dt) {
   stop("Cannot interpret '", dt, "' as a date.")
 }
 
-#  TLObject Class
-# 
-# 
-#  @title TLObject
-#  @description Telegram API type TLObject
-#  @export
-#  @noRd
-#  @noRd
+#' TLObject Class
+#'
+#'
+#' @title TLObject
+#' @description Telegram API type TLObject
+#' @noRd
 TLObject <- R6::R6Class(
   "TLObject",
   public = list(
@@ -327,6 +323,14 @@ TLObject <- R6::R6Class(
     #  Serialize data to bytes.
     #  @param data The data to be serialized.
     #  @return A raw vector representing the serialized data.
+    #  @description
+    #  Alias of serialize_bytes(); the generated TL classes call
+    #  self$serializebytes() in ~300 places.
+    #  @param data Raw vector or string to serialize.
+    serializebytes = function(data) {
+      self$serialize_bytes(data)
+    },
+
     serialize_bytes = function(data) {
       if (!is.raw(data)) {
         if (is.character(data)) {
@@ -414,6 +418,24 @@ TLObject <- R6::R6Class(
     },
 
     #  @description
+    #  Serialize to bytes. Generated classes define either bytes() or
+    #  to_bytes(); these base methods delegate to whichever a subclass
+    #  actually implements, so callers can use either name on any TLObject.
+    #  @return A raw vector.
+    to_bytes = function() {
+      if (.telegramR_defines(self, "bytes")) return(self$bytes())
+      stop(sprintf("Not implemented: %s defines neither bytes() nor to_bytes()", class(self)[1]))
+    },
+
+    #  @description
+    #  Serialize to bytes (alias of to_bytes()). See to_bytes().
+    #  @return A raw vector.
+    bytes = function() {
+      if (.telegramR_defines(self, "to_bytes")) return(self$to_bytes())
+      stop(sprintf("Not implemented: %s defines neither bytes() nor to_bytes()", class(self)[1]))
+    },
+
+    #  @description
     #  Create a new object from a binary reader.
     #  @param reader A binary reader object.
     #  @return A new object created from the binary reader.
@@ -453,14 +475,12 @@ TLObject <- R6::R6Class(
   )
 )
 
-#  TLRequest Class
-# 
-# 
-#  @title TLRequest
-#  @description Telegram API type TLRequest
-#  @export
-#  @noRd
-#  @noRd
+#' TLRequest Class
+#'
+#'
+#' @title TLRequest
+#' @description Telegram API type TLRequest
+#' @noRd
 TLRequest <- R6::R6Class(
   "TLRequest",
   inherit = TLObject,
@@ -484,14 +504,12 @@ TLRequest <- R6::R6Class(
   )
 )
 
-#  PQInnerData Class
-# 
-# 
-#  @title PQInnerData
-#  @description Telegram API type PQInnerData
-#  @export
-#  @noRd
-#  @noRd
+#' PQInnerData Class
+#'
+#'
+#' @title PQInnerData
+#' @description Telegram API type PQInnerData
+#' @noRd
 PQInnerData <- R6::R6Class(
   "PQInnerData",
   inherit = TLObject,
@@ -587,14 +605,12 @@ PQInnerData <- R6::R6Class(
   )
 )
 
-#  ClientDHInnerData Class
-# 
-# 
-#  @title ClientDHInnerData
-#  @description Telegram API type ClientDHInnerData
-#  @export
-#  @noRd
-#  @noRd
+#' ClientDHInnerData Class
+#'
+#'
+#' @title ClientDHInnerData
+#' @description Telegram API type ClientDHInnerData
+#' @noRd
 ClientDHInnerData <- R6::R6Class(
   "ClientDHInnerData",
   inherit = TLObject,
@@ -674,14 +690,12 @@ ClientDHInnerData <- R6::R6Class(
   )
 )
 
-#  SetClientDHParamsRequest Class
-# 
-# 
-#  @title SetClientDHParamsRequest
-#  @description Telegram API type SetClientDHParamsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' SetClientDHParamsRequest Class
+#'
+#'
+#' @title SetClientDHParamsRequest
+#' @description Telegram API type SetClientDHParamsRequest
+#' @noRd
 SetClientDHParamsRequest <- R6::R6Class(
   "SetClientDHParamsRequest",
   inherit = TLRequest,
@@ -751,14 +765,12 @@ SetClientDHParamsRequest <- R6::R6Class(
   )
 )
 
-#  ReqPqMultiRequest Class
-# 
-# 
-#  @title ReqPqMultiRequest
-#  @description Telegram API type ReqPqMultiRequest
-#  @export
-#  @noRd
-#  @noRd
+#' ReqPqMultiRequest Class
+#'
+#'
+#' @title ReqPqMultiRequest
+#' @description Telegram API type ReqPqMultiRequest
+#' @noRd
 ReqPqMultiRequest <- R6::R6Class(
   "ReqPqMultiRequest",
   inherit = TLRequest,
@@ -812,14 +824,12 @@ ReqPqMultiRequest <- R6::R6Class(
   )
 )
 
-#  ReqDHParamsRequest Class
-# 
-# 
-#  @title ReqDHParamsRequest
-#  @description Telegram API type ReqDHParamsRequest
-#  @export
-#  @noRd
-#  @noRd
+#' ReqDHParamsRequest Class
+#'
+#'
+#' @title ReqDHParamsRequest
+#' @description Telegram API type ReqDHParamsRequest
+#' @noRd
 ReqDHParamsRequest <- R6::R6Class(
   "ReqDHParamsRequest",
   inherit = TLRequest,
@@ -920,14 +930,11 @@ ReqDHParamsRequest <- R6::R6Class(
   )
 )
 
-#  InputPeerEmpty Class
-# 
-# 
-#  @title InputPeerEmpty
-#  @description Telegram API type InputPeerEmpty
-#  @export
-#  @noRd
-#  @noRd
+#' @title InputPeerEmpty
+#' @description Telegram API type \code{inputPeerEmpty} (constructor \code{#7f3b18ea}).
+#'   Auto-generated from the TL schema by \code{data-raw/generate_tl.R}; do not edit by hand.
+#' @keywords internal
+#' @noRd
 InputPeerEmpty <- R6::R6Class(
   "InputPeerEmpty",
   inherit = TLObject,
@@ -961,3 +968,25 @@ InputPeerEmpty <- R6::R6Class(
     }
   )
 )
+
+
+# TRUE if `obj` overrides `method` with its own implementation (i.e. the bound
+# method differs from TLObject's base delegator). Used by TLObject$to_bytes()/
+# bytes() to delegate to a real implementation without infinite recursion.
+# Works for any class, including ad-hoc R6 subclasses defined outside the package.
+.telegramR_defines <- function(obj, method) {
+  f <- tryCatch(obj[[method]], error = function(e) NULL)
+  if (!is.function(f)) return(FALSE)
+  base_f <- TLObject$public_methods[[method]]
+  if (is.null(base_f)) return(TRUE)
+  !identical(body(f), body(base_f))
+}
+
+# Serialize an R list as a TL Vector<T>: 0x1cb5c415 + count + each item's bytes().
+.telegramR_tl_vector <- function(items) {
+  items <- items %||% list()
+  c(as.raw(c(0x15, 0xc4, 0xb5, 0x1c)), pack("<i", length(items)),
+    if (length(items) > 0) do.call(c, lapply(items, function(e) {
+      if (is.raw(e)) e else if (is.function(e$bytes)) e$bytes() else e$to_bytes()
+    })) else raw(0))
+}

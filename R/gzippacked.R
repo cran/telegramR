@@ -1,15 +1,13 @@
-#  R6 Class Representing GzipPacked
-# 
-# 
-#  @details
-#  This class provides methods to initialize, compress, decompress, serialize, and convert gzipped data to various formats.
-# 
-# 
-#  @title GzipPacked
-#  @description Telegram API type GzipPacked
-#  @export
-#  @noRd
-#  @noRd
+#' R6 Class Representing GzipPacked
+#'
+#'
+#' @details
+#' This class provides methods to initialize, compress, decompress, serialize, and convert gzipped data to various formats.
+#'
+#'
+#' @title GzipPacked
+#' @description Telegram API type GzipPacked
+#' @noRd
 GzipPacked <- R6::R6Class(
   "GzipPacked",
   inherit = TLObject,

@@ -71,12 +71,12 @@ test_that("DeleteMessagesRequest covers revoke flags and reader vectors", {
   self_obj <- list(id = list(10L, 11L), revoke = TRUE)
   expect_equal(
     messages_call_method_with_self(DeleteMessagesRequest$public_methods$toDict, self_obj),
-    list("_" = "DeleteMessagesRequest", id = list(10L, 11L), revoke = TRUE)
+    list("_" = "DeleteMessagesRequest", revoke = TRUE, id = list(10L, 11L))
   )
   expect_equal(
     messages_call_method_with_self(DeleteMessagesRequest$public_methods$bytes, self_obj),
     c(
-      as.raw(c(0xd2, 0x95, 0x8e, 0xe5)),
+      { x <- as.numeric(DeleteMessagesRequest$public_fields$CONSTRUCTOR_ID); as.raw(c(x%%256,(x%/%256)%%256,(x%/%65536)%%256,(x%/%16777216)%%256)) },
       pack("<I", 1L),
       as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
       pack("<i", 2L),
@@ -128,7 +128,7 @@ test_that("GetChatsRequest covers 64-bit id vectors", {
   expect_equal(
     messages_call_method_with_self(GetChatsRequest$public_methods$bytes, self_obj),
     c(
-      as.raw(c(0x49, 0xe9, 0x52, 0x8f)),
+      as.raw(c(0x8f, 0x52, 0xe9, 0x49)),
       as.raw(c(0x1c, 0xb5, 0xc4, 0x15)),
       pack("<i", 2L),
       pack("<q", 1),

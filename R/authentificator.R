@@ -1,8 +1,8 @@
-#  Execute the authentication process with the Telegram servers.
-# 
-#  @param sender A connected MTProtoPlainSender-like object with a send method.
-#  @return A list with elements \code{auth_key} and \code{time_offset}.
-#  @export
+#' Execute the authentication process with the Telegram servers.
+#'
+#' @param sender A connected MTProtoPlainSender-like object with a send method.
+#' @return A list with elements \code{auth_key} and \code{time_offset}.
+#' @noRd
 do_authentication <- function(sender) {
   resolve_maybe <- function(x) {
     if (inherits(x, "promise") || inherits(x, "Future")) {
@@ -369,12 +369,12 @@ do_authentication <- function(sender) {
   list(auth_key = AuthKey$new(auth_key_raw), time_offset = time_offset)
 }
 
-#  Convert a raw byte array to an integer.
-# 
-#  @param byte_array A raw vector representing the integer.
-#  @param signed Logical; whether the integer is signed.
-#  @return An integer converted from the byte array.
-#  @export
+#' Convert a raw byte array to an integer.
+#'
+#' @param byte_array A raw vector representing the integer.
+#' @param signed Logical; whether the integer is signed.
+#' @return An integer converted from the byte array.
+#' @noRd
 get_int <- function(byte_array, signed = TRUE) {
   int_val <- int_from_bytes(byte_array, endian = "big")
   if (!signed) {
@@ -388,12 +388,12 @@ get_int <- function(byte_array, signed = TRUE) {
   int_val
 }
 
-#  Convert a raw byte array in little-endian order to an integer.
-# 
-#  @param byte_array A raw vector in little-endian order.
-#  @param signed Logical; whether the integer is signed.
-#  @return An integer converted from the byte array.
-#  @export
+#' Convert a raw byte array in little-endian order to an integer.
+#'
+#' @param byte_array A raw vector in little-endian order.
+#' @param signed Logical; whether the integer is signed.
+#' @return An integer converted from the byte array.
+#' @noRd
 get_int_little <- function(byte_array, signed = TRUE) {
   int_val <- int_from_bytes(byte_array, endian = "little")
   if (!signed) {
@@ -407,13 +407,13 @@ get_int_little <- function(byte_array, signed = TRUE) {
   int_val
 }
 
-#  Modular exponentiation.
-# 
-#  @param base The base value.
-#  @param exp The exponent.
-#  @param mod The modulus.
-#  @return The result of \code{base^exp \% mod \%}.
-#  @export
+#' Modular exponentiation.
+#'
+#' @param base The base value.
+#' @param exp The exponent.
+#' @param mod The modulus.
+#' @return The result of \code{base^exp \% mod \%}.
+#' @noRd
 modexp <- function(base, exp, mod) {
   powmod(base, exp, mod)
 }

@@ -1,10 +1,8 @@
-#  This module contains the class used to communicate with Telegram's servers
-#  in plain text, when no authorization key has been created yet.
-#  @title MTProtoPlainSender
-#  @description Telegram API type MTProtoPlainSender
-#  @export
-#  @noRd
-#  @noRd
+#' This module contains the class used to communicate with Telegram's servers
+#' in plain text, when no authorization key has been created yet.
+#' @title MTProtoPlainSender
+#' @description Telegram API type MTProtoPlainSender
+#' @noRd
 MTProtoPlainSender <- R6::R6Class("MTProtoPlainSender",
   public = list(
     #  @description Initializes the MTProto plain sender.
@@ -116,10 +114,10 @@ MTProtoPlainSender <- R6::R6Class("MTProtoPlainSender",
   )
 )
 
-#  Pack a 64-bit integer into a raw vector (little-endian)
-#  @param value The integer value to pack
-#  @return A raw vector representation of the integer
-#  @export
+#' Pack a 64-bit integer into a raw vector (little-endian)
+#' @param value The integer value to pack
+#' @return A raw vector representation of the integer
+#' @noRd
 packInt64 <- function(value) {
   if (is.raw(value)) {
     if (length(value) == 8) return(value)
@@ -130,10 +128,10 @@ packInt64 <- function(value) {
   pack_int64(value)
 }
 
-#  Pack a 32-bit integer into a raw vector (little-endian)
-#  @param value The integer value to pack
-#  @return A raw vector representation of the integer
-#  @export
+#' Pack a 32-bit integer into a raw vector (little-endian)
+#' @param value The integer value to pack
+#' @return A raw vector representation of the integer
+#' @noRd
 packInt32 <- function(value) {
   if (length(value) != 1 || is.na(value)) {
     stop("Invalid input: value must be a single, non-NA number")

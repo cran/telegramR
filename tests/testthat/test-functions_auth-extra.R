@@ -67,8 +67,8 @@ test_that("BindTempAuthKeyRequest serializes datetimes via package helper", {
     req$to_bytes(),
     c(
       as.raw(c(0x05, 0x2A, 0xD4, 0xCD)),
-      writeBin(1, raw(), size = 8, endian = "little"),
-      writeBin(2, raw(), size = 8, endian = "little"),
+      packInt64(1),
+      packInt64(2),
       serialize_datetime(expires_at),
       serialize_bytes(charToRaw("x"))
     )
@@ -128,8 +128,8 @@ test_that("vector-based auth requests serialize compact payloads", {
       as.raw(c(0x88, 0xA1, 0x48, 0x8E)),
       as.raw(c(0x15, 0xC4, 0xB5, 0x1C)),
       writeBin(2L, raw(), size = 4, endian = "little"),
-      writeBin(1, raw(), size = 8, endian = "little"),
-      writeBin(2, raw(), size = 8, endian = "little")
+      packInt64(1),
+      packInt64(2)
     )
   )
 
@@ -151,8 +151,8 @@ test_that("vector-based auth requests serialize compact payloads", {
       serialize_bytes("hash"),
       as.raw(c(0x15, 0xC4, 0xB5, 0x1C)),
       writeBin(2L, raw(), size = 4, endian = "little"),
-      writeBin(4, raw(), size = 8, endian = "little"),
-      writeBin(5, raw(), size = 8, endian = "little")
+      packInt64(4),
+      packInt64(5)
     )
   )
 })
@@ -174,7 +174,7 @@ test_that("auth import and logout requests serialize", {
   )
   expect_equal(
     import_auth$to_bytes(),
-    c(as.raw(c(0xad, 0x7d, 0x7a, 0xa5)), writeBin(7, raw(), size = 8, endian = "little"), serialize_bytes(charToRaw("abc")))
+    c(as.raw(c(0xad, 0x7d, 0x7a, 0xa5)), packInt64(7), serialize_bytes(charToRaw("abc")))
   )
 
   bot_auth <- ImportBotAuthorizationRequest$new(

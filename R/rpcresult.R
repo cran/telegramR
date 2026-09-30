@@ -1,15 +1,13 @@
-#  RpcResult Class
-# 
-# 
-#  @details
-#  The `RpcResult` class encapsulates the response of an RPC call, including the request message ID, the body of the response, and any error that occurred.
-# 
-# 
-#  @title RpcResult
-#  @description Telegram API type RpcResult
-#  @export
-#  @noRd
-#  @noRd
+#' RpcResult Class
+#'
+#'
+#' @details
+#' The `RpcResult` class encapsulates the response of an RPC call, including the request message ID, the body of the response, and any error that occurred.
+#'
+#'
+#' @title RpcResult
+#' @description Telegram API type RpcResult
+#' @noRd
 RpcResult <- R6::R6Class(
   "RpcResult",
   inherit = TLObject,

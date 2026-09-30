@@ -2,12 +2,11 @@
 # 
 #  These functions are used to simulate Python's asyncio and threading behavior in R.
 # 
-#  @import promises
 # 
 NULL
-#  The `get_running_loop` function simulates getting the current event loop.
-#  @return A promise object or NULL.
-#  @export
+#' The `get_running_loop` function simulates getting the current event loop.
+#' @return A promise object or NULL.
+#' @noRd
 get_running_loop <- function() {
   return(Sys.time()) # Simplification - returns current time
 }
@@ -16,12 +15,10 @@ get_running_loop <- function() {
 is_typing <- FALSE
 
 
-#  EventBuilderDict class
-#  @title EventBuilderDict
-#  @description Telegram API type EventBuilderDict
-#  @export
-#  @noRd
-#  @noRd
+#' EventBuilderDict class
+#' @title EventBuilderDict
+#' @description Telegram API type EventBuilderDict
+#' @noRd
 EventBuilderDict <- R6::R6Class("EventBuilderDict",
   public = list(
     #  @field client The Telegram client instance.

@@ -1,9 +1,7 @@
-#  @title AbridgedPacketCodec
-#  @description An R6 class that implements the Abridged Packet Codec for encoding and decoding packets.
-#  @inherit PacketCodec
-#  @export
-#  @noRd
-#  @noRd
+#' @title AbridgedPacketCodec
+#' @description An R6 class that implements the Abridged Packet Codec for encoding and decoding packets.
+#' @inherit PacketCodec
+#' @noRd
 AbridgedPacketCodec <- R6::R6Class(
   "AbridgedPacketCodec",
   inherit = PacketCodec,
@@ -55,12 +53,10 @@ AbridgedPacketCodec <- R6::R6Class(
   )
 )
 
-#  @title ConnectionTcpAbridged
-#  @description An R6 class that represents a TCP connection using the Abridged Packet Codec.
-#  @inherit Connection
-#  @export
-#  @noRd
-#  @noRd
+#' @title ConnectionTcpAbridged
+#' @description An R6 class that represents a TCP connection using the Abridged Packet Codec.
+#' @inherit Connection
+#' @noRd
 ConnectionTcpAbridged <- R6::R6Class(
   "ConnectionTcpAbridged",
   inherit = Connection,

@@ -291,8 +291,7 @@ test_that("file_to_media returns nulls for NULL input and external media for URL
   url <- "http://example.com/somefile.pdf"
   res_url <- um$file_to_media(url)
   expect_equal(res_url$file_handle, NULL)
-  expect_true(is.list(res_url$media))
-  expect_equal(res_url$media$type, "InputMediaDocumentExternal")
+  expect_true(inherits(res_url$media, "InputMediaDocumentExternal"))
   expect_false(res_url$as_image)
 })
 

@@ -17,10 +17,9 @@ test_that("GetCdnFileRequest numeric token serializes as single byte with length
   skip_on_cran()
   req <- GetCdnFileRequest$new(257, 1, 2)
   b <- req$to_bytes()
-  # constructor id (4 bytes) then serialized bytes length (4 bytes little-endian)
-  expect_equal(as.integer(b[5:8]), c(1L, 0L, 0L, 0L))
-  # the byte value is 257 %% 256 == 1
-  expect_equal(b[9], as.raw(1))
+  # TL bytes: length byte (1) then the value byte, padded to a multiple of 4
+  expect_equal(b[5], as.raw(1))   # length prefix = 1
+  expect_equal(b[6], as.raw(1))   # value 257 %% 256 == 1
 })
 
 
@@ -43,8 +42,9 @@ test_that("SaveFilePartRequest serializes bytes_data correctly", {
   b <- req$to_bytes()
   expect_equal(b[1:4], as.raw(c(0x21, 0xa6, 0x04, 0xb3)))
   # constructor(4) + file_id(8) + file_part(4) => serialized bytes start at byte 17
-  expect_equal(as.integer(b[17:20]), c(2L, 0L, 0L, 0L))
-  expect_equal(b[21:22], charToRaw("hi"))
+  # TL bytes: length byte (2) then "hi" then padding to a multiple of 4
+  expect_equal(b[17], as.raw(2))
+  expect_equal(b[18:19], charToRaw("hi"))
 })
 
 

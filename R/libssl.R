@@ -1,9 +1,9 @@
-#  @title Finds and loads the system's SSL library.
-#  @description
-#  This function attempts to locate the system's SSL library and load it using R's
-#  `dyn.load` function. On macOS, it handles versioning issues for compatibility.
-#  @return A reference (path) to the loaded SSL library.
-#  @export
+#' @title Finds and loads the system's SSL library.
+#' @description
+#' This function attempts to locate the system's SSL library and load it using R's
+#' `dyn.load` function. On macOS, it handles versioning issues for compatibility.
+#' @return A reference (path) to the loaded SSL library.
+#' @noRd
 find_ssl_lib <- function() {
   try_load_ssl <- function(path) {
     tryCatch(
